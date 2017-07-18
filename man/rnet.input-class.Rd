@@ -4,7 +4,27 @@
 \name{rnet.input-class}
 \alias{rnet.input-class}
 \alias{rnet.input}
-\title{Rnet Classes}
+\title{An S4 class for accepting input data common for generating all rnet objects. These objects are used to handle rnet objects and need not be called by the user.}
 \description{
-The Class definitions for Rnets package.
+An S4 class for accepting input data common for generating all rnet objects. These objects are used to handle rnet objects and need not be called by the user.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{RawData}}{A dataframe containing the original dataset.}
+
+\item{\code{cor_method}}{The type of correlation matrix to use. Must be a partial match to one of the following strings: 'pearson', 'spearman', 'kendall'.}
+
+\item{\code{cor_pairing}}{Method for handling how missing data is handled in pairs. See 'pair' argument in function 'cor' for more information.}
+
+\item{\code{n_threshold}}{The minimum number of valid pair-wise observations that must exist for an edge to be estimated. Vertex pairs with fewer valid pair-wise observations are assumed to be conditiontally independent.}
+
+\item{\code{L1_orig}}{The declared L1 penalty to be used when estimating rnet topology}
+
+\item{\code{v_set_orig}}{The declared set of k variables to be included in the rnet as vertices}
+
+\item{\code{Forced_zeros}}{A matrix with 2 columns containing pairs of vertices to force to be conditionally independent in the rnet}
+
+\item{\code{Layout_master}}{A k x 2 matrix x & y coordinates of each vertex in the graph.}
+}}
+

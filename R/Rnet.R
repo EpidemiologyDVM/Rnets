@@ -32,7 +32,7 @@
 #' 						n_threshold = 20,
 #'						Stratify = expression(Year == 2008)
 #' 						)
-#' class(EC_Rnet_2008)[1]	#EC_Rnet_ALL is a 'rnet.stratum' object
+#' class(EC_Rnet_2008)[1]	#EC_Rnet_ALL is an 'rnet.stratum' object
 #'
 #' #Create a set of R-nets, one for each year of E.coli isolates.
 #' EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA, 
@@ -42,7 +42,7 @@
 #' 						n_threshold = 20,
 #'						Stratify = 'Year'
 #' 						)
-#' class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is a 'rnet.strata.multi' object
+#' class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
 
 setGeneric('Rnet',
 	function(								#Cornerstone Function to generate an Rnet from data
@@ -65,7 +65,7 @@ setGeneric('Rnet',
 			L1_orig = L1,
 			V_set_orig = if(is.null(V_set)) V_set = names(Data) else V_set,
 			Forced_zeros = if(is.null(Forced_zeros)) matrix(nrow = 0, ncol = 2, dimnames = list(NULL, c("V1", "V2"))) else Forced_zeros,
-			Layout_master = if(is.null(Plot_layout)) data.frame(V1 = numeric(0), V2 = numeric(0) ) else Plot_layout
+			Layout_master = Plot_layout
 			)
 		return(.Gen_R(rnet.obj))
 	})
@@ -92,7 +92,7 @@ setMethod('Rnet',
 			L1_orig = L1,
 			V_set_orig = if(is.null(V_set)) V_set = names(Data) else V_set,
 			Forced_zeros = if(is.null(Forced_zeros)) matrix(nrow = 0, ncol = 2, dimnames = list(NULL, c("V1", "V2"))) else Forced_zeros,
-			Layout_master = if(is.null(Plot_layout)) data.frame(V1 = numeric(0), V2 = numeric(0) ) else Plot_layout,
+			Layout_master = Plot_layout,
 			Strata_def = Stratify
 			)
 		return(.Gen_R(rnet.obj))

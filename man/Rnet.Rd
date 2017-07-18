@@ -51,7 +51,7 @@ EC_Rnet_2008 <- Rnet(Data = NARMS_EC_DATA,
 						n_threshold = 20,
 					Stratify = expression(Year == 2008)
 						)
-class(EC_Rnet_2008)[1]	#EC_Rnet_ALL is a 'rnet.stratum' object
+class(EC_Rnet_2008)[1]	#EC_Rnet_ALL is an 'rnet.stratum' object
 
 #Create a set of R-nets, one for each year of E.coli isolates.
 EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA, 
@@ -61,5 +61,5 @@ EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA,
 						n_threshold = 20,
 					Stratify = 'Year'
 						)
-class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is a 'rnet.strata.multi' object
+class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
 }
