@@ -17,3 +17,27 @@ RoxygenNote: 6.0.1
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
+Collate: 
+    'Rnet_classes.R'
+    'Assign_Emetadata.R'
+    'Rnet_classes'
+    'Assign_Vmetadata.R'
+    'Clean_Sigma.R'
+    'EC_COORDS.R'
+    'E_ATTRS.R'
+    'Estimate_pCorrs.R'
+    'GenR.R'
+    'Gomez_modularity_v4_1.R'
+    'L1_selection.R'
+    'Rnet.R'
+    'Rnet_heatmap.r'
+    'Rnet_methods.R'
+    'Sq2L.R'
+    'V_ATTRS.R'
+    'data.r'
+    'rnet.L1.set.R'
+    'rnet.basic.R'
+    'rnet.input.R'
+    'rnet.strata.R'
+    'rnet.strata.multi.R'
+    'summary_methods.r'

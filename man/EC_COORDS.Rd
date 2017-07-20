@@ -16,3 +16,4 @@ data(EC_COORDS)
 \description{
 Cartesian vertex coordinates for plotting networks
 }
+\keyword{datasets}

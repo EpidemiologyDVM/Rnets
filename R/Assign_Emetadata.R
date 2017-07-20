@@ -12,6 +12,7 @@
 #' @param attr_abs_val A logical argument determining if the absolute value of match.attr is used when binning values.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
+#' @include Rnet_classes.R
 #' @export
 
 setGeneric('Assign_Emetadata',

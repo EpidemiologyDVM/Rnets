@@ -11,4 +11,4 @@
 #'  \item{x}{x-coordinate for positioning vertex in plot}
 #'  \item{y}{x-coordinate for positioning vertex in plot}
 #' }
-NULL
+"EC_COORDS"
