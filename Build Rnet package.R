@@ -22,6 +22,3 @@ build()
 sink(file = 'check.txt')
 check()
 sink()
-
-build(path = '.')
-check()

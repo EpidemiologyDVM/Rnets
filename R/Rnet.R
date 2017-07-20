@@ -10,7 +10,7 @@
 #' @param Forced_zeros The set of edges to be omitted from the Rnet. These partial correlations are forced to zero. Additional edges and vertices may be set to zero if n_threshold is employed.
 #' @param Plot_layout A dataframe of two or three columns. See plot methods for more information.
 #' @param Stratify Either a character variable of length one or expression. If a character value is supplied, it must match a column name in 'Data' and an object of type 'rnet.strata.multi' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnet.strata' will be returned with the network estimated from a subset of 'Data' defined by the expression. If no value is supplied, an object of 'rnet.basic' will be returned with the network estimated from all observations in 'Data'.
-#' @import method
+#' @import methods
 #' @import data.table
 #' @import igraph
 #' @export
