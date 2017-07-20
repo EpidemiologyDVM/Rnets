@@ -11,11 +11,9 @@
 #' @param Stratify The rule for stratifying the data, if desired. 
 #' @param Forced_zeros Edges to be omitted from the Rnet.
 #' @param Rand_seed Allows a random seed to be set subsampling results may be consistently regenerated.
-<<<<<<< HEAD
 #' @import igraph 
 =======
 #' @import 'data.table'
->>>>>>> dd82ce56a18055308c811db62925214022c2f6da
 #' @export
 
 setGeneric('L1Selection',
