@@ -146,14 +146,14 @@ setMethod('Rnet',
 .Assemble_Edge_Matrix <- function(rnet.list, e_attr, round_output = 3) {
 	strata.var <- rnet.list@Stratify_by
 	rnet.list <- rnet.list@R_Strata
-	edgelist <- as.data.frame(rbindlist(lapply(rnet.list, function(x) {
+	edgelist <- as.data.frame(data.table::rbindlist(lapply(rnet.list, function(x) {
 		edges <- as.data.frame(as_edgelist(x@R))
 		edges[[e_attr]] <- round(edge_attr(x@R, e_attr), round_output)
 		def.string <- unlist(strsplit(as.character(x@Strata_def), ' == '))
 		edges[[strata.var]] <- def.string[2]
 		return(edges)}
 		)))
-	edgematr <- reshape(edgelist,
+	edgematr <- stats::reshape(edgelist,
 		timevar = strata.var,
 		idvar = c('V1', 'V2'),
 		dir = 'wide'

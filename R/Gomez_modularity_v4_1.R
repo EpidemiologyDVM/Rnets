@@ -6,6 +6,7 @@
 #' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
 #' @description For flexibility, x may be provided as any of the following formats: an edgelist (data.frame), a weighted adjacency matrix (square numeric matrix), an igraph object, or an rnet.* object (e.g., rnet.basic, rnet.strata.multi, etc.).
 #' @return a numeric value estimating the weighted, signed modularity of x, or a numeric vector containing respective modularity estimates if x contained multiple network.
+#' @import igraph
 #' @export
 
 setGeneric('Modularity_Signed',

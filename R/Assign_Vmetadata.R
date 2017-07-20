@@ -9,6 +9,7 @@
 #' @param match.attr The name of the column in V_metadata used to match metadata to vertices. Defaults to the first column of V_metadata.
 #' @param vertex.match.attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(network)$name), which is typically assigned when the network is created with igraph functions.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
+#' @import igraph
 #' @export
 
 setGeneric('Assign_Vmetadata',

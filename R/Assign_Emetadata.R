@@ -11,6 +11,7 @@
 #' @param sign.color By default, a two-element vector containing colors for edges representing positive and negative attribute values(black and red, respectively). This behavior will be overriden if this argument is set to FALSE, NA, or NULL. Note, edge_attr('color') will ALWAYS be assinged to network edges when this method is called.
 #' @param attr_abs_val A logical argument determining if the absolute value of match.attr is used when binning values.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
+#' @import igraph
 #' @export
 
 setGeneric('Assign_Emetadata',
