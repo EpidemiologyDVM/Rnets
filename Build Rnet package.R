@@ -18,8 +18,13 @@ devtools::use_build_ignore(".*.Rproj")
 
 
 document()
+<<<<<<< HEAD
 build()
 sink(file = 'check.txt')
 check()
 sink()
 
+=======
+build(path = '.')
+check()
+>>>>>>> dd82ce56a18055308c811db62925214022c2f6da

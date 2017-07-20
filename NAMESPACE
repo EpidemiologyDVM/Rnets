@@ -18,4 +18,7 @@ exportMethods(plot)
 exportMethods(print)
 exportMethods(summary)
 import(glasso)
+<<<<<<< HEAD
 import(igraph)
+=======
+>>>>>>> dd82ce56a18055308c811db62925214022c2f6da

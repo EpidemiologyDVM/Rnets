@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+Rnets.Rproj
+Build Rnet package.R
+inst/doc
