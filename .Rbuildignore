@@ -1,2 +1,6 @@
+^Build Rnet package\.R$
+^.*\.tar\.gz$
+^check\.txt$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.*\.Rproj$
