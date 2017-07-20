@@ -1,0 +1,116 @@
+Skipping invalid path:  .Gen_R.Rd 
+checking whether package 'Rnets' can be installed ... WARNING
+Found the following significant warnings:
+  Warning: objects 'E_ATTRS', 'NARMS_EC_DATA', 'V_ATTRS' are created by more than one data call
+See 'C:/Users/Will/AppData/Local/Temp/RtmpQhGArQ/Rnets.Rcheck/00install.out' for details.
+
+checking for missing documentation entries ... WARNING
+Undocumented S4 methods:
+  generic '.Gen_R' and siglist 'rnet.strata'
+  generic 'Assign_Emetadata' and siglist 'rnet.basic'
+  generic 'Assign_Emetadata' and siglist 'rnet.strata.multi'
+  generic 'Assign_Vmetadata' and siglist 'rnet.basic'
+  generic 'Assign_Vmetadata' and siglist 'rnet.strata'
+  generic 'Assign_Vmetadata' and siglist 'rnet.strata.multi'
+  generic 'Modularity_Signed' and siglist 'igraph'
+  generic 'Modularity_Signed' and siglist 'matrix'
+  generic 'Modularity_Signed' and siglist 'rnet.basic'
+  generic 'Modularity_Signed' and siglist 'rnet.strata.multi'
+  generic 'Rnet' and siglist
+    'ANY,ANY,ANY,ANY,ANY,ANY,ANY,ANY,character'
+  generic 'Rnet' and siglist
+    'ANY,ANY,ANY,ANY,ANY,ANY,ANY,ANY,expression'
+  generic 'plot' and siglist 'rnet.strata'
+  generic 'print' and siglist 'rnet.strata'
+  generic 'print' and siglist 'rnet.strata.multi'
+  generic 'summary' and siglist 'rnet.strata'
+All user-level objects in a package (including S4 classes and methods)
+should have documentation entries.
+See chapter 'Writing R documentation files' in the 'Writing R
+Extensions' manual.
+
+checking for code/documentation mismatches ... WARNING
+Data with usage in documentation object 'EC_COORDS' but not in code:
+  EC_COORDS
+
+S4 class codoc mismatches from documentation object 'rnet.input-class':
+Slots for class 'rnet.input'
+  Code: Forced_zeros L1_orig Layout_master RawData V_set_orig
+        cor_method cor_pairing n_threshold
+  Docs: Forced_zeros L1_orig Layout_master RawData cor_method
+        cor_pairing n_threshold v_set_orig
+... 8 lines ...
+        V_set_orig Forced_zeros Layout_master
+  Docs: A Data E_metadata L1 Omega R Sigma Theta V_metadata V_ommitted
+        V_set Zeros n
+
+S4 class codoc mismatches from documentation object 'rnet.strata.multi-class':
+Slots for class 'rnet.strata.multi'
+  Code: E_matrix Forced_zeros L1_orig Layout_master R_Strata RawData
+        Stratify_by V_set_orig cor_method cor_pairing n_threshold
+  Inherited: RawData cor_method cor_pairing n_threshold L1_orig
+        V_set_orig Forced_zeros Layout_master
+  Docs: E_matrix R_strata Stratify_by
+
+checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'L1Selection'
+  'Data' 'cor_method' 'cor_pairing'
+Documented arguments not in \usage in documentation object 'L1Selection':
+  'corr_type' 'corr_pairing'
+
+Undocumented arguments in documentation object 'summary,rnet.basic-method'
+  'object' '...'
+Documented arguments not in \usage in documentation object 'summary,rnet.basic-method':
+  'x'
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter 'Writing R documentation files' in the 'Writing R
+Extensions' manual.
+
+checking top-level files ... NOTE
+File
+  LICENSE
+is not mentioned in the DESCRIPTION file.
+
+checking dependencies in R code ... NOTE
+Package in Depends field not imported from: 'data.table'
+  These packages need to be imported from (in the NAMESPACE file)
+  for when this namespace is loaded but not attached.
+
+checking R code for possible problems ... NOTE
+.sign.Q.internal: no visible global function definition for 'aggregate'
+Clean_Sigma: no visible global function definition for 'cor'
+Rnet_Heatmap: no visible global function definition for 'reshape'
+Rnet_Heatmap: no visible global function definition for 'slot'
+Sq2L: no visible global function definition for 'reshape'
+rnet.L1.set: no visible global function definition for 'new'
+rnet.basic: no visible global function definition for 'new'
+rnet.input: no visible global function definition for 'new'
+rnet.strata: no visible global function definition for 'new'
+... 18 lines ...
+  function definition for 'as'
+Rnet,ANY-ANY-ANY-ANY-ANY-ANY-ANY-ANY-expression: no visible global
+  function definition for 'new'
+print,rnet.strata: no visible global function definition for 'as'
+Undefined global functions or variables:
+  V1 V2 V_set_orig aggregate as cor n new reshape slot slot<-
+Consider adding
+  importFrom("methods", "as", "new", "slot", "slot<-")
+  importFrom("stats", "aggregate", "cor", "reshape")
+to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+contains 'methods').
+
+checking Rd line widths ... NOTE
+Rd file 'Rnet.Rd':
+  \examples lines wider than 100 characters:
+                                                     V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
+                                                     V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
+                                                     V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
+
+Rd file 'Rnet_Heatmap.Rd':
+  \examples lines wider than 100 characters:
+                                                     V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
+
+These lines will be truncated in the PDF manual.
