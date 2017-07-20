@@ -1,6 +1,7 @@
 #'.Gen_R - internal methods for generating Rnets.
 #'
 #'Internal for the "Rnet" methods. .Gen_R should not be called directly.
+#' @import glasso
 #' @export
 
 setGeneric('.Gen_R', function(rnet.obj){
