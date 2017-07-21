@@ -28,3 +28,4 @@ This method assigns metadata to edges in an igraph object based on a continuous 
 \details{
 This method also works with all rnet objects (currently class 'rnet.basic', 'rnet.strata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'E_metadata' slot.
 }
+

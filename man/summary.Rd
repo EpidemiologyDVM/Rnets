@@ -3,13 +3,14 @@
 \docType{methods}
 \name{summary,rnet.basic-method}
 \alias{summary,rnet.basic-method}
-\title{Summary methods of rnet objects.}
+\title{Summary - rnet.basic.}
 \usage{
 \S4method{summary}{rnet.basic}(object, ...)
 }
 \arguments{
-\item{x}{An rnet object}
+\item{object}{An rnet object}
 }
 \description{
-Summary methods for classes 'rnet.basic', 'rnet.strata', 'rnet.multi.strata'. Gives more information than 'print'.
+Gives more information than 'print'.
 }
+

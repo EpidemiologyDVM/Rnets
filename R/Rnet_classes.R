@@ -67,7 +67,7 @@ rnet.basic <- setClass(Class = "rnet.basic",
 #'
 #' Inheirits from 'rnet.basic'
 #' @slot Strata_def The expression used to define the stratum of data represented by the rnet, e.g., if Statra_def = as.expression(Year == 2008), the rnet is estimated from the subset of data collected in the Year 2008.
-#' @@rdname rnet.strata
+#' @rdname rnet.strata
 rnet.strata <- setClass(Class = "rnet.strata",
 	slots = list(Strata_def = 'expression'),
 	contains = 'rnet.basic'

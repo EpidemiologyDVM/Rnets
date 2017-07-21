@@ -13,3 +13,4 @@
 \description{
 print methods for classes 'rnet.basic', 'rnet.strata', 'rnet.multi.strata'.
 }
+

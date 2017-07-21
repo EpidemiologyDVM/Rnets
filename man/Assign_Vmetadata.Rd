@@ -24,3 +24,4 @@ This method assigns metadata to vertices in an igraph object based on an existin
 \details{
 This method also works with all rnet objects (currently class 'rnet.basic', 'rnet.strata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'V_metadata' slot.
 }
+

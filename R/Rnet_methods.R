@@ -1,7 +1,8 @@
-#'Summary methods of rnet objects.
+#'Summary - rnet.basic.
 #'
-#'Summary methods for classes 'rnet.basic', 'rnet.strata', 'rnet.multi.strata'. Gives more information than 'print'.
-#' @param x An rnet object
+#'Gives more information than 'print'.
+#' @param object An rnet object
+#' @rdname summary
 #' @export
 
 setMethod(f = 'summary',
