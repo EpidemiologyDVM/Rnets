@@ -26,7 +26,7 @@ Where...
     + The vertex set $V$, with $|V| = k$ vertices and
     + The edge set $E$, with $|E| = m$edges. 
 
-
+more words.
 
 ## Functions
 The example dataset `NARMS_EC_DATA` is included in the package and contains a subset of AMR data from _E. coli_ isolates collected by the FDA & USDA as part of the National Antimicrobial Resistance Monitoring System^[<https://www.fda.gov/animalveterinary/safetyhealth/antimicrobialresistance/nationalantimicrobialresistancemonitoringsystem/>].
