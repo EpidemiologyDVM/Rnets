@@ -2,8 +2,8 @@
 % Please edit documentation in R/Rnet_classes.R
 \docType{class}
 \name{rnet.strata.multi-class}
-\alias{rnet.strata.multi-class}
 \alias{rnet.strata.multi}
+\alias{rnet.strata.multi-class}
 \title{An S4 class containing multiple Rnets, each the information of an rnet representing one stratum of data. These objects are used to handle rnet objects and need not be called by the user.}
 \description{
 Inheirits from 'rnet.input'

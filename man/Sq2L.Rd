@@ -26,3 +26,4 @@ demo_mat <- matrix(c(1, 5, 2, 5, 1, 0, 2, 0, NA), nrow = 3)
 Sq2L(demo_mat, c('A', 'B', 'value'))
 Sq2L(demo_mat, c('A', 'B', 'value'), drop.values = 0, drop.NA = FALSE)
 }
+

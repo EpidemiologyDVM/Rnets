@@ -4,20 +4,34 @@ author: "WJ Love"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{"Rnets Vignette"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+## Introduction
 
-The `Rnets` package provides a largely automated analysis pipeline for translating antimicrobial resistance (AMR) data into Markov random fields (MRF). An MRF is a graphical model which represents the non-zero partial correlations between variables in a dataset. MRFs of AMR data are network models of resistance relationships, referred to as 'rnets' for brevity.
+The `Rnets` package provides a largely automated analysis pipeline for translating antimicrobial resistance (AMR) data into Markov random fields (MRF). An MRF is a graphical model which represents the non-zero partial correlations between variables in a dataset. Sparse MRFs of AMR data are network models of resistance relationships, referred to as 'rnets' for brevity.
 
-To make the rnets sparse, some edges must be removed. Here, we use the `glasso` package to penalize trivial partial correlations to 0. The graphical least absolute shrinkage and selection operator (LASSO) is used to to create sparse networks from the data.  
+_Sparsity_ is a concept in network models desribing how many or how few links, or _edges_, exist between the units, or _vertices_, of the network. A network in which all possible edges exist is referred to as dense. Sparsity is an appealing characteristic because sparse networks are much easier to interpret than completely dense networks. An MRF may be made sparse by reducing trivially small partial correlations to 0. Several approaches to this problem, and we employ the graphical least absolute shrinkage and selection operator (LASSO) here using the `glasso` function from the eponymous package maintained by R. Tibshirani^[Friedman, Hastie & Tibshirani. "Sparse inverse covariance estimation with the graphical lasso."" _Biostatistics_ (2007)]. This method applies an L~1~ penalty to the inverse covariance matrix to increase it's sparsity. Higher L~1~ values leads to fewer edges and a sparser network and the graph is empty when $L_1 \geq max(|\sigma_{ij}|)$, i.e., there a no edges and all the variables appear to be conditionally independent. 
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+The analysis pipeline can be summarized as follows:
+$$\Large D_{n \times k} \underset{cor}{\rightarrow} \Sigma_{k \times k} \underset{glasso}{\rightarrow} \Theta_{k \times k} \underset{std'ize}{\rightarrow}\Omega_{k \times k} \underset{igraph}{\rightarrow}R(V, E)$$
+Where...
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+* $D$ is the data matrix with _n_ observations (single isolates) over _k_ variables (Resistances tested).
+* $\Sigma$ is the empirical correlation/covariance matrix for the _k_ variables in _D_.
+* $\Theta$ is the penalized precision matrix.
+* $\Omega$ is the partial correlation matrix, estimated as $\omega_{ij}=\frac{-\theta_{ij}}{\theta_{ii} \theta_{jj}}|i\neq j$
+* $R$ is the network defined by the two sets:
+    + The vertex set $V$, with $|V| = k$ vertices and
+    + The edge set $E$, with $|E| = m$edges. 
+
+
+
+## Functions
+The example dataset `NARMS_EC_DATA` is included in the package and contains a subset of AMR data from _E. coli_ isolates collected by the FDA & USDA as part of the National Antimicrobial Resistance Monitoring System^[<https://www.fda.gov/animalveterinary/safetyhealth/antimicrobialresistance/nationalantimicrobialresistancemonitoringsystem/>].
+
+The `Rnet` function is the core of the package. This function intakes a dataframe containing the AMR data, the L~1~ penalty, and other options and produces an rnet object (the specific type varies on how the "Stratify" argument is specified) that contains the processed network and associated attributes.
 
 ## Vignette Info
 

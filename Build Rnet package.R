@@ -18,7 +18,7 @@ devtools::use_build_ignore(".*.Rproj")
 
 
 document()
-build()
+build(path = '.')
 sink(file = 'check.txt')
 check()
 sink()

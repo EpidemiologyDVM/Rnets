@@ -1,4 +1,34 @@
+Writing NAMESPACE
+Writing rnet.input.Rd
+Writing rnet.basic.Rd
+Writing rnet.strata.Rd
+Writing rnet.strata.multi.Rd
+Writing Assign_Emetadata.Rd
+Writing Assign_Vmetadata.Rd
+Writing Clean_Sigma.Rd
+Writing EC_COORDS.Rd
+Writing E_ATTRS.Rd
+Writing Estimate_pCorrs.Rd
 Skipping invalid path:  .Gen_R.Rd 
+Writing Modularity_Signed.Rd
+Writing L1Selection.Rd
+Writing Rnet.Rd
+Writing Rnet_Heatmap.Rd
+Writing summary.Rd
+Writing print-rnet.basic-method.Rd
+Writing plot-rnet.basic-method.Rd
+Writing Sq2L.Rd
+Writing V_ATTRS.Rd
+Writing NARMS_EC_DATA.Rd
+checking whether package 'Rnets' can be installed ... WARNING
+Found the following significant warnings:
+  Warning: objects 'E_ATTRS', 'NARMS_EC_DATA', 'V_ATTRS' are created by more than one data call
+  Warning: package 'data.table' was built under R version 3.3.2
+  Warning: namespace 'DBI' is not available and has been replaced
+  Warning: namespace 'RMySQL' is not available and has been replaced
+  Warning: namespace 'RSQLite' is not available and has been replaced
+See 'C:/Users/wjlove/AppData/Local/Temp/RtmpsrFjxt/Rnets.Rcheck/00install.out' for details.
+
 checking for missing documentation entries ... WARNING
 Undocumented S4 methods:
   generic '.Gen_R' and siglist 'rnet.strata'
@@ -24,16 +54,17 @@ should have documentation entries.
 See chapter 'Writing R documentation files' in the 'Writing R
 Extensions' manual.
 
+checking for code/documentation mismatches ... WARNING
+Data with usage in documentation object 'EC_COORDS' but not in code:
+  EC_COORDS
+
+
 checking Rd \usage sections ... WARNING
 Undocumented arguments in documentation object 'L1Selection'
-  'Data' 'cor_method' 'cor_pairing'
-Documented arguments not in \usage in documentation object 'L1Selection':
-  'corr_type' 'corr_pairing'
+  'Data'
 
 Undocumented arguments in documentation object 'summary,rnet.basic-method'
-  'object' '...'
-Documented arguments not in \usage in documentation object 'summary,rnet.basic-method':
-  'x'
+  '...'
 
 Functions with \usage entries need to have the appropriate \alias
 entries, and all their arguments documented.

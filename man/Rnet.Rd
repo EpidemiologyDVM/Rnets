@@ -63,3 +63,4 @@ EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA,
 						)
 class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
 }
+
