@@ -36,12 +36,23 @@ setGeneric('.Gen_R', function(rnet.obj){
 	dimnames(rnet.obj@Theta) <- list(V_sorted, V_sorted)
 
 	rnet.obj@Omega <- Estimate_pCorrs(rnet.obj@Theta)
-	omega_list <- Sq2L(rnet.obj@Omega, c("Abx1", "Abx2", "omega"), c(T, F, F), 0)
 
 	rnet.obj@A <- rnet.obj@Omega!=0
 
 	rnet.obj@R <-  graph_from_adjacency_matrix(rnet.obj@A, mode = 'undirected')
-	E(rnet.obj@R)$omega <- omega_list$omega
+	
+	E(rnet.obj@R)$omega <- merge(x = as.data.frame(
+	                               as_edgelist(rnet.obj@R), 
+	                               stringsAsFactors = F
+	                               ), 
+	                             y = Sq2L(
+	                               rnet.obj@Omega, 
+	                               c("V1", "V2", "omega"), 
+	                               c(T, F, F),
+	                               0
+	                               ),
+	                             by = c('V1', 'V2')
+	                             )$omega
 	
   if(is.null(rnet.obj@Layout_master)) rnet.obj@Layout <- layout_with_fr(rnet.obj@R)
 	
@@ -83,13 +94,25 @@ setMethod('.Gen_R',
 		dimnames(rnet.obj@Theta) <- list(V_sorted, V_sorted)
 	
 		rnet.obj@Omega <- Estimate_pCorrs(rnet.obj@Theta)
-		omega_list <- Sq2L(rnet.obj@Omega, c("Abx1", "Abx2", "omega"), c(T, F, F), 0)
-
-		rnet.obj@A <- rnet.obj@Omega!=0
-
-		rnet.obj@R <- graph.adjacency(rnet.obj@A, mode = 'undirected')
-		E(rnet.obj@R)$omega <- omega_list$omega
 		
+		rnet.obj@A <- rnet.obj@Omega!=0
+		
+		rnet.obj@R <- graph.adjacency(rnet.obj@A, mode = 'undirected')
+
+		E(rnet.obj@R)$omega <- merge(
+		  x = as.data.frame(
+		    as_edgelist(rnet.obj@R), 
+		    stringsAsFactors = F
+		  ), 
+		  y = Sq2L(
+		    rnet.obj@Omega, 
+		    c("V1", "V2", "omega"), 
+		    c(T, F, F),
+		    0
+		  ),
+		  by = c('V1', 'V2')
+		)$omega
+		rnet.obj@A <- rnet.obj@Omega!=0		
 		if(is.null(rnet.obj@Layout_master)) rnet.obj@Layout <- layout_with_fr(rnet.obj@R)
 		
 		rnet.obj@V_omitted <- rnet.obj@V_set_orig[!rnet.obj@V_set_orig%in%rnet.obj@V_set]
