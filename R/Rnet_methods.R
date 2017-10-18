@@ -101,10 +101,12 @@ setMethod('plot',
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
 
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
-		
+
+		#browser()
+
 		eval(parse(text = plot.call))
-		plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
-		return(plot.call)
+		#plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
+		#return(plot.call)
 	})
 
 setMethod('plot',
@@ -126,13 +128,15 @@ setMethod('plot',
 		
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
 		
+		#browser()
+		
 		eval(parse(text = plot.call))
-		plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
-		return(plot.call)
+		#plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
+		#return(plot.call)
 	})
 
 .Assign_Layout_Matrix <- function(x){ 
-	if(dim(x@Layout_master)[1] == 0) return(layout_with_fr(x@R))
+  if(is.null(x@Layout_master)) return(layout_with_fr(x@R))
 	
   if(dim(x@Layout_master)[2] == 3) {
     coord_ref.vec <- x@Layout_master[,1]
@@ -144,15 +148,19 @@ setMethod('plot',
     coord_y.vec <- x@Layout_master[,2]
   } else stop('Layout_master invalid must have 2 or 3 column')
 
-  
-  if(is.factor(coord_ref.vec)) coord_ref.vec <- as.character(coord_ref.vec)
-  if(!all(x@V_set%in%coord_ref.vec)) stop('Layout_master not valid: Vertex names are missing from the first column.')
   if(!is.numeric(coord_x.vec)|!is.numeric(coord_y.vec)) stop('Layout_master not valid: Coordinate columns must be numeric')
   
-  if(is.null(coord_ref.vec) & length(x@V_set)!= length(coord_x.vec)) stop('Layout_master not valid: Number of rows in layout frame must match number of vertices in graph OR a column for vertex matching must be provided.')
-  browser()
-	seq.vec <- match(V(x@R)$name,coord_ref.vec)
-	layout.mat <- cbind(coord_x.vec[seq.vec], coord_y.vec[seq.vec])
-	dimnames(layout.mat) <- list(V(x@R)$name[seq.vec],c('x', 'y'))
+  if(is.factor(coord_ref.vec)) coord_ref.vec <- as.character(coord_ref.vec)
+  if(is.null(coord_ref.vec)) {
+    if(length(x@V_set)!= length(coord_x.vec)) stop('Layout_master not valid: Number of rows in layout frame must match number of vertices in graph OR a column for vertex matching must be provided.')
+    layout.mat <- cbind(coord_x.vec, coord_y.vec)
+
+    dimnames(layout.mat) <- list(V(x@R)$name,c('x', 'y'))
+    } else {
+      if(!all(V(x@R)$name%in%coord_ref.vec)) stop('Layout_master not valid: Vertex names are missing from the first column.')
+      seq.vec <- match(V(x@R)$name,coord_ref.vec)
+	    layout.mat <- cbind(coord_x.vec[seq.vec], coord_y.vec[seq.vec])
+	    dimnames(layout.mat) <- list(V(x@R)$name[seq.vec],c('x', 'y'))
+    }   
 	return(layout.mat)
 	}
