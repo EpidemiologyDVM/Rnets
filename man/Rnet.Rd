@@ -32,11 +32,14 @@ This method takes an dataset (typically containing MICs values, AMR phenotypes, 
 }
 \examples{
 #Create a single R-net for all E. coli isolates in the provided dataset. 
+#Vertices to be used defined by 'ABX_LIST' below.
 #Edges require at least 20 observations to be valid.
+
+ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
+
 EC_Rnet_ALL <- Rnet(Data = NARMS_EC_DATA, 
 						L1 = 0.3, 
-						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
-						'GEN', 'COT', 'FIS'), 
+						V_set = ABX_LIST, 
 						n_threshold = 20
 						)
 class(EC_Rnet_ALL)[1]	#EC_Rnet_ALL is a 'rnet.basic' object
@@ -46,8 +49,7 @@ summary(EC_Rnet_ALL) 	#More detailed information
 #Create a single R-net for only E. coli isolates collected during 2008
 EC_Rnet_2008 <- Rnet(Data = NARMS_EC_DATA, 
 						L1 = 0.3, 
-						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
-						'GEN', 'COT', 'FIS'), 
+						V_set = ABX_LIST, 
 						n_threshold = 20,
 					Stratify = expression(Year == 2008)
 						)
@@ -56,11 +58,9 @@ class(EC_Rnet_2008)[1]	#EC_Rnet_ALL is an 'rnet.stratum' object
 #Create a set of R-nets, one for each year of E.coli isolates.
 EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA, 
 						L1 = 0.3, 
-						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
-						'GEN', 'COT', 'FIS'), 
+						V_set = ABX_LIST, 
 						n_threshold = 20,
 					Stratify = 'Year'
 						)
 class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
 }
-

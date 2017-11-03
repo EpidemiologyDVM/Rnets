@@ -16,4 +16,3 @@ Clean_Sigma(x, cor_method = "s", cor_pairing = "pair")
 \description{
 Primarily a convenience function, Clean_Sigma estimates a correlation (Sigma) matrix that may contain substantial amounts of missing data and returns it in an easily usable form for the glasso function.
 }
-

@@ -13,4 +13,3 @@
 \description{
 Gives more information than 'print'.
 }
-

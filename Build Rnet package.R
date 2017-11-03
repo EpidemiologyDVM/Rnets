@@ -4,9 +4,9 @@ library(devtools)
 library(roxygen2)
 library(rmarkdown)
 
-#load(file = 'data\\Narms_data.rdata')
-#load(file = 'data\\Attributes.rdata')
-#load(file = 'data\\EC_coords.rdata')
+load(file = 'data\\Narms_data.rdata')
+load(file = 'data\\Attributes.rdata')
+load(file = 'data\\EC_coords.rdata')
 
 NARMS_EC_DATA <- NARMS_EC_DATA[,c(1, 6,8, 10:34)]
 

@@ -2,8 +2,8 @@
 % Please edit documentation in R/Rnet_classes.R
 \docType{class}
 \name{rnet.basic-class}
-\alias{rnet.basic}
 \alias{rnet.basic-class}
+\alias{rnet.basic}
 \title{An S4 class containg the information of a basic rnet. These objects are used to handle rnet objects and need not be called by the user.}
 \description{
 Inherits from 'rnet.input'

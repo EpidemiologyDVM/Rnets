@@ -16,4 +16,3 @@ data(E_ATTRS)
 \description{
 A small data frame that contains metadata for decorating graph edges using "Assign_Emetadata"
 }
-

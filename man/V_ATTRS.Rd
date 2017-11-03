@@ -19,4 +19,3 @@ data(V_ATTRS)
 \description{
 A small data frame that contains vertex metadata for variables in the NARMS_EC_DATA set.  See also documentation for "Assign_Vmetadata"
 }
-

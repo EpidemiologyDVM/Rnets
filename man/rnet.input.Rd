@@ -2,10 +2,10 @@
 % Please edit documentation in R/Rnet_classes.R
 \docType{class}
 \name{rnet.input-class}
-\alias{rnet.L1.set}
-\alias{rnet.L1.set-class}
-\alias{rnet.input}
 \alias{rnet.input-class}
+\alias{rnet.input}
+\alias{rnet.L1.set-class}
+\alias{rnet.L1.set}
 \title{An S4 class for accepting input data common for generating all rnet objects. These objects are used to handle rnet objects and need not be called by the user.}
 \description{
 An S4 class for accepting input data common for generating all rnet objects. These objects are used to handle rnet objects and need not be called by the user.

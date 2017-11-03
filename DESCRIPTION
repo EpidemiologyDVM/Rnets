@@ -1,7 +1,7 @@
 Package: Rnets
 Title: Generate Resistance Relationship Networks using Graphical LASSO
-Version: 0.9.4.9009
-Date: 2017-10-17
+Version: 0.9.4.9010
+Date: 2017-11-03
 Authors@R: person("William", "Love", email = "wjlove@ncsu.edu", role = c("aut", "cre"))
 Maintainer: William Love <wjlove@ncsu.edu>
 Description: This package creates resistance relationship networks, or 'Rnets'.

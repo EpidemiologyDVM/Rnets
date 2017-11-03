@@ -22,4 +22,3 @@ For flexibility, x may be provided as any of the following formats: an edgelist 
 \details{
 Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, e.g. edges with both positive and negative. Gomez, et al, proposed a similar estimator of modularity estimated in two parts corresponding to positive (Q+) and negative (Q-) edges, and the latter is subtracted from the former. The 'Modularity_Signed' function implements this method of modularity estimation, and returns a scalar.
 }
-

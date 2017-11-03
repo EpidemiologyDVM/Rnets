@@ -21,4 +21,3 @@ data(NARMS_EC_DATA)
 \description{
 A dataset of isolate resistance and metadata for 14,418 E. coli isolates from commercial chicken breasts and chicken carcasses rinsates. Resistance data stored log2 transformed minimum inhibitory concentration (MIC). Columns beyond SAMPLE_ID, Year, and SOURCE are log2(MICs). See source for key for antimicrobials.
 }
-

@@ -32,4 +32,3 @@ L1Selection(Data, L1_set, B = 100, n_b = 0.5, V_set = NULL,
 \description{
 An implementation of the Stability Approach to Regularization Selection (StARS) method for L1 penalty selection for use with Rnets method.
 }
-

@@ -57,7 +57,7 @@ setMethod('Modularity_Signed',
 })
 
 setMethod('Modularity_Signed',
-	signature(x='list'),
+	signature(x='igraph'),
 	function(x, membership, weight = NULL) {
 
 		x.frame <- data.frame(as_edgelist(x, F))
