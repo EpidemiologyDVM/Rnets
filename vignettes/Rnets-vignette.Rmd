@@ -10,7 +10,10 @@ vignette: >
 ---
 ## Introduction
 
-The `Rnets` package provides a largely automated analysis pipeline for translating antimicrobial resistance (AMR) data into Markov random fields (MRF). An MRF is a graphical model which represents the non-zero partial correlations between variables in a dataset. Sparse MRFs of AMR data are network models of resistance relationships, referred to as 'rnets' for brevity.
+The `Rnets` package provides a mostly automated analysis pipeline for translating antimicrobial resistance (AMR) data from bacterial populations into network models. Representing resistance relationships as networks greatly facilitates visualization of data and allows noval analytic approaches by mapping the relationships to a network. Currently, the package is focused on mapping relationships betweeen phenotypic resistances, e.g. minimum inihibitory concentrations (MICs), but methods to incorporate genetic information into the analysis are currently in development.
+##Under the Hood
+The networks models created by this package are probabalistic graphical models (PGMs), more specifically Markov random fields (MRF). MRFs are undirected graphical models where the vertex set is defined by a set of random variables and the edge set is defined by non-zero partial correlations between 
+represent the non-zero partial correlations between variables in a dataset. Sparse MRFs of AMR data are network models of resistance relationships, referred to as 'rnets' for brevity.
 
 _Sparsity_ is a concept in network models desribing how many or how few links, or _edges_, exist between the units, or _vertices_, of the network. A network in which all possible edges exist is referred to as dense. Sparsity is an appealing characteristic because sparse networks are much easier to interpret than completely dense networks. An MRF may be made sparse by reducing trivially small partial correlations to 0. Several approaches to this problem, and we employ the graphical least absolute shrinkage and selection operator (LASSO) here using the `glasso` function from the eponymous package maintained by R. Tibshirani^[Friedman, Hastie & Tibshirani. "Sparse inverse covariance estimation with the graphical lasso."" _Biostatistics_ (2007)]. This method applies an L~1~ penalty to the inverse covariance matrix to increase it's sparsity. Higher L~1~ values leads to fewer edges and a sparser network and the graph is empty when $L_1 \geq max(|\sigma_{ij}|)$, i.e., there a no edges and all the variables appear to be conditionally independent. 
 
@@ -29,9 +32,10 @@ Where...
 more words.
 
 ## Functions
-The example dataset `NARMS_EC_DATA` is included in the package and contains a subset of AMR data from _E. coli_ isolates collected by the FDA & USDA as part of the National Antimicrobial Resistance Monitoring System^[<https://www.fda.gov/animalveterinary/safetyhealth/antimicrobialresistance/nationalantimicrobialresistancemonitoringsystem/>].
 
 The `Rnet` function is the core of the package. This function intakes a dataframe containing the AMR data, the L~1~ penalty, and other options and produces an rnet object (the specific type varies on how the "Stratify" argument is specified) that contains the processed network and associated attributes.
+
+The example dataset `NARMS_EC_DATA` is included in the package and contains a subset of AMR data from _E. coli_ isolates collected by the FDA & USDA as part of the National Antimicrobial Resistance Monitoring System^[<https://www.fda.gov/animalveterinary/safetyhealth/antimicrobialresistance/nationalantimicrobialresistancemonitoringsystem/>].
 
 ## Vignette Info
 
