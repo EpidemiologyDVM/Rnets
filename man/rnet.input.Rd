@@ -8,8 +8,6 @@
 \alias{rnet.L1.set}
 \title{An S4 class for accepting input data common for generating all rnet objects. These objects are used to handle rnet objects and need not be called by the user.}
 \description{
-An S4 class for accepting input data common for generating all rnet objects. These objects are used to handle rnet objects and need not be called by the user.
-
 See "L1_selection" documentation for more information.
 }
 \section{Slots}{

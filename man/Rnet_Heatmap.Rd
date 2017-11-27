@@ -29,7 +29,8 @@ Bitmaps can be used to show how edges in a network change over time or other cri
 #Example using EC_Rnets_byYear
 EC_Rnets_byYear <- Rnet(Data = NARMS_EC_DATA, 
 						L1 = 0.3, 
-						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
+						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 
+						  'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
 						n_threshold = 20,
 					Stratify = 'Year'
 						)

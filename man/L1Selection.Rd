@@ -9,6 +9,8 @@ L1Selection(Data, L1_set, B = 100, n_b = 0.5, V_set = NULL,
   Forced_zeros = NULL, Stratify = NULL, Rand_seed = NULL)
 }
 \arguments{
+\item{Data}{The dataset containing the MICs}
+
 \item{L1_set}{The set of candidate L1 penalties to be evaluated for creating a sparse precision matrix. Must be non-negative.}
 
 \item{B}{The number of subsamples to evaluate network stability. Defaults to 100 subsamples.}

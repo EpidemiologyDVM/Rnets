@@ -1,13 +1,12 @@
+Writing NAMESPACE
+Writing NAMESPACE
 Skipping invalid path:  .Gen_R.Rd 
-Skipping invalid path:  .Assign_Layout_Matrix.Rd 
 checking whether package 'Rnets' can be installed ... WARNING
 Found the following significant warnings:
   Warning: objects 'E_ATTRS', 'NARMS_EC_DATA', 'V_ATTRS' are created by more than one data call
-  Warning: package 'igraph' was built under R version 3.4.2
-  Warning: package 'data.table' was built under R version 3.4.2
   Warning: replacing previous import 'igraph::decompose' by 'stats::decompose' when loading 'Rnets'
   Warning: replacing previous import 'igraph::spectrum' by 'stats::spectrum' when loading 'Rnets'
-See 'C:/Users/Will/AppData/Local/Temp/RtmpkHdumI/Rnets.Rcheck/00install.out' for details.
+See 'C:/Users/Will/AppData/Local/Temp/RtmpIjtOvJ/Rnets.Rcheck/00install.out' for details.
 
 checking for code/documentation mismatches ... WARNING
 Data with usage in documentation object 'EC_COORDS' but not in code:
@@ -15,12 +14,15 @@ Data with usage in documentation object 'EC_COORDS' but not in code:
 
 
 checking Rd \usage sections ... WARNING
-Undocumented arguments in documentation object 'L1Selection'
-  'Data'
-
 Undocumented arguments in documentation object 'Modularity_Signed'
   'Data' 'L1' 'V_set' 'n_threshold' 'cor_method' 'cor_pairing'
   'Forced_zeros' 'Plot_layout' 'Stratify'
+
+Undocumented arguments in documentation object '.Assign_Layout_Matrix'
+  'x'
+
+Undocumented arguments in documentation object '.Gen_R'
+  'rnet.obj'
 
 Undocumented arguments in documentation object 'summary,rnet.basic-method'
   '...'
@@ -61,10 +63,3 @@ Rnet,ANY-ANY-ANY-ANY-ANY-ANY-ANY-ANY-character: no visible binding for
   global variable 'V_set_orig'
 Undefined global functions or variables:
   V1 V2 V_set_orig n
-
-checking Rd line widths ... NOTE
-Rd file 'Rnet_Heatmap.Rd':
-  \examples lines wider than 100 characters:
-                                                     V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
-
-These lines will be truncated in the PDF manual.

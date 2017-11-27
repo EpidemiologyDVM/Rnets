@@ -1,6 +1,7 @@
 #' L1 Selection for Rnets
 #'
 #' An implementation of the Stability Approach to Regularization Selection (StARS) method for L1 penalty selection for use with Rnets method.
+#' @param Data The dataset containing the MICs
 #' @param L1_set The set of candidate L1 penalties to be evaluated for creating a sparse precision matrix. Must be non-negative.
 #' @param B The number of subsamples to evaluate network stability. Defaults to 100 subsamples.
 #' @param n_b The size of the subsample to be drawn from the data. If 0 < n_b < 1, this is interpreted as a proportion of the data set; if n_b > 1, it is interpreted as a set sample size. Defaults to 50\% of sample size.
