@@ -23,6 +23,8 @@ setMethod(f = 'summary',
 		cat('\n')
 	})	
 
+#' @rdname summary
+
 setMethod(f = 'summary',
 	signature(object = 'rnet.strata'),
 	function(object) {
@@ -45,7 +47,9 @@ setMethod(f = 'summary',
 #'
 #'print methods for classes 'rnet.basic', 'rnet.strata', 'rnet.multi.strata'.
 #' @param x An rnet object
+#' @rdname print
 #' @export
+#' 
 setMethod(f = 'print',
 	signature(x = 'rnet.basic'),
 	function(x) {
@@ -60,6 +64,8 @@ setMethod(f = 'print',
 		print(edge.frame)
 	})
 
+#' @rdname print
+#' 
 setMethod(f = 'print',
 	signature(x = 'rnet.strata'),
 	function(x) {
@@ -67,6 +73,8 @@ setMethod(f = 'print',
 		print(as(x, 'rnet.basic'))
 	})
 
+#' @rdname print
+#' 
 setMethod(f = 'print',
 	signature(x = 'rnet.strata.multi'),
 	function(x) {
@@ -81,6 +89,7 @@ setMethod(f = 'print',
 #'
 #' A plot method for R-nets, and incorporates vertex and edge metadata and layout, if assigns. Only vertex and edge metadata with names that match igraph decoration options (without 'vertex.' or 'edge.' appended to the attribute name; see plot.igraph). Layout is pulled from 'Layout_master' in the rnet object, if it exists. The layout frame can contain 3 columns, with the first column used to match the coordinates in the next two columns to graph vertices OR can contain 2 columns with the same number of vertices in the graph.
 #' @param x an rnet object (currently, objects of class 'rnet.basic', 'rnet.strata', 'rnet.multi.strata')
+#' @rdname plot
 #' @export
 
 setMethod('plot',
@@ -97,7 +106,7 @@ setMethod('plot',
 		edge.attribs <- intersect(x@E_metadata, EDGE.PARAMS)
 		if(length(edge.attribs) > 0) for(attrib.name in edge.attribs) edge.attrib.lines <- c(edge.attrib.lines, paste('edge.', attrib.name, '= E(x@R)$', attrib.name, sep = ''))
 
-		x@Layout <- .Assign_Layout_Matrix(x)
+		x@Layout <- Rnets::.Assign_Layout_Matrix(x)
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
 
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
@@ -109,6 +118,8 @@ setMethod('plot',
 		#return(plot.call)
 	})
 
+#' @rdname plot
+#' 
 setMethod('plot',
 	signature(x = 'rnet.strata'),
 	function(x) {
@@ -123,7 +134,7 @@ setMethod('plot',
 		edge.attribs <- intersect(x@E_metadata, EDGE.PARAMS)
 		if(length(edge.attribs) > 0) for(attrib.name in edge.attribs) edge.attrib.lines <- c(edge.attrib.lines, paste('edge.', attrib.name, '= E(x@R)$', attrib.name, sep = ''))
 
-		x@Layout <- .Assign_Layout_Matrix(x)
+		x@Layout <- Rnets::.Assign_Layout_Matrix(x)
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
 		
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
@@ -135,6 +146,7 @@ setMethod('plot',
 		#return(plot.call)
 	})
 
+#' Hidden function for 
 .Assign_Layout_Matrix <- function(x){ 
   if(is.null(x@Layout_master)) return(layout_with_fr(x@R))
 	

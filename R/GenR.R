@@ -2,9 +2,9 @@
 #'
 #'Internal for the "Rnet" methods. .Gen_R should not be called directly.
 #' @import igraph
-
 #' @import glasso
-#' @export
+#' @import igraph
+#' @import stats
 
 setGeneric('.Gen_R', function(rnet.obj){
 
@@ -61,6 +61,11 @@ setGeneric('.Gen_R', function(rnet.obj){
 	return(rnet.obj)
 })
 
+#'Internal for the "Rnet" methods. .Gen_R should not be called directly.
+
+#' @rdname .Gen_R
+#' @name .Gen_R
+#' 
 setMethod('.Gen_R',
 	'rnet.strata',
 	function (rnet.obj) {

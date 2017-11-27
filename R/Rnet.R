@@ -48,6 +48,8 @@
 #' 						)
 #' class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
 
+#' @rdname Rnet
+#' 
 setGeneric('Rnet',
 	function(								#Cornerstone Function to generate an Rnet from data
 			Data, #WAS MIC_data
@@ -74,6 +76,8 @@ setGeneric('Rnet',
 		return(.Gen_R(rnet.obj))
 	})
 
+#' @rdname Rnet
+#' 
 setMethod('Rnet',
 	signature(Stratify = 'expression'),
 	function(							
@@ -102,6 +106,8 @@ setMethod('Rnet',
 		return(.Gen_R(rnet.obj))
 	})
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Rnet',
 	signature(Stratify = 'character'),
 	function(							

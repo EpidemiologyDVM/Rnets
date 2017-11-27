@@ -35,6 +35,8 @@ setGeneric('Modularity_Signed',
 	return(Q)
 })
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x = 'matrix'),
 	function(x, membership, weight = NULL) {
@@ -56,6 +58,8 @@ setMethod('Modularity_Signed',
 		return(Q)
 })
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x='igraph'),
 	function(x, membership, weight = NULL) {
@@ -93,11 +97,15 @@ setMethod('Modularity_Signed',
 		return(Q)
 })
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x='rnet.basic'),
 	function(x, membership = NULL, weight = 'omega') Modularity_Signed(x@R, membership, weight)
 	)
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x = 'rnet.strata.multi'),
 	function(x, membership, weight = 'omega') {

@@ -3,9 +3,12 @@
 \docType{methods}
 \name{summary,rnet.basic-method}
 \alias{summary,rnet.basic-method}
+\alias{summary,rnet.strata-method}
 \title{Summary - rnet.basic.}
 \usage{
 \S4method{summary}{rnet.basic}(object, ...)
+
+\S4method{summary}{rnet.strata}(object)
 }
 \arguments{
 \item{object}{An rnet object}

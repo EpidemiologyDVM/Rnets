@@ -3,9 +3,12 @@
 \docType{methods}
 \name{plot,rnet.basic-method}
 \alias{plot,rnet.basic-method}
+\alias{plot,rnet.strata-method}
 \title{Plot methods for R-nets}
 \usage{
 \S4method{plot}{rnet.basic}(x)
+
+\S4method{plot}{rnet.strata}(x)
 }
 \arguments{
 \item{x}{an rnet object (currently, objects of class 'rnet.basic', 'rnet.strata', 'rnet.multi.strata')}

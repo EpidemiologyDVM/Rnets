@@ -1,1 +1,70 @@
 Skipping invalid path:  .Gen_R.Rd 
+Skipping invalid path:  .Assign_Layout_Matrix.Rd 
+checking whether package 'Rnets' can be installed ... WARNING
+Found the following significant warnings:
+  Warning: objects 'E_ATTRS', 'NARMS_EC_DATA', 'V_ATTRS' are created by more than one data call
+  Warning: package 'igraph' was built under R version 3.4.2
+  Warning: package 'data.table' was built under R version 3.4.2
+  Warning: replacing previous import 'igraph::decompose' by 'stats::decompose' when loading 'Rnets'
+  Warning: replacing previous import 'igraph::spectrum' by 'stats::spectrum' when loading 'Rnets'
+See 'C:/Users/Will/AppData/Local/Temp/RtmpkHdumI/Rnets.Rcheck/00install.out' for details.
+
+checking for code/documentation mismatches ... WARNING
+Data with usage in documentation object 'EC_COORDS' but not in code:
+  EC_COORDS
+
+
+checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'L1Selection'
+  'Data'
+
+Undocumented arguments in documentation object 'Modularity_Signed'
+  'Data' 'L1' 'V_set' 'n_threshold' 'cor_method' 'cor_pairing'
+  'Forced_zeros' 'Plot_layout' 'Stratify'
+
+Undocumented arguments in documentation object 'summary,rnet.basic-method'
+  '...'
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter 'Writing R documentation files' in the 'Writing R
+Extensions' manual.
+
+checking top-level files ... NOTE
+File
+  LICENSE
+is not mentioned in the DESCRIPTION file.
+
+checking R code for possible problems ... NOTE
+Rnet_Heatmap: warning in reshape(as.data.frame(rnet.list@E_matrix), dir
+  = "l", idvar = "Edge", ids = rownames(rnet.list@E_matrix), varying =
+  list(colnames(rnet.list@E_matrix)), v.name = "Edge_val", times =
+  colnames(rnet.list@E_matrix), timevar = "Stratum"): partial argument
+  match of 'v.name' to 'v.names'
+Rnet_Heatmap: warning in reshape(as.data.frame(rnet.list@E_matrix), dir
+  = "l", idvar = "Edge", ids = rownames(rnet.list@E_matrix), varying =
+  list(colnames(rnet.list@E_matrix)), v.name = "Edge_val", times =
+  colnames(rnet.list@E_matrix), timevar = "Stratum"): partial argument
+  match of 'dir' to 'direction'
+Rnet_Heatmap: warning in reshape(edge_list, idvar = "Edge", timevar =
+  "Stratum", drop = c("Edge_val", "Palette_code"), dir = "w"): partial
+  argument match of 'dir' to 'direction'
+Sq2L: warning in reshape(as.data.frame(x, stringsAsFactors = F), ids =
+  rownames(x), idvar = "i", dir = "long", varying = colnames(x),
+  v.names = "val_ij", times = colnames(x), timevar = "j"): partial
+  argument match of 'dir' to 'direction'
+.Gen_R,rnet.strata: no visible binding for global variable 'V1'
+.Gen_R,rnet.strata: no visible binding for global variable 'V2'
+.Gen_R,rnet.strata: no visible binding for global variable 'n'
+Rnet,ANY-ANY-ANY-ANY-ANY-ANY-ANY-ANY-character: no visible binding for
+  global variable 'V_set_orig'
+Undefined global functions or variables:
+  V1 V2 V_set_orig n
+
+checking Rd line widths ... NOTE
+Rd file 'Rnet_Heatmap.Rd':
+  \examples lines wider than 100 characters:
+                                                     V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
+
+These lines will be truncated in the PDF manual.

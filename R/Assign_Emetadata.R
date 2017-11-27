@@ -13,6 +13,7 @@
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
 #' @include Rnet_classes.R
+#' @rdname Assign_Emetadata
 #' @export
 
 setGeneric('Assign_Emetadata',
@@ -41,6 +42,8 @@ setGeneric('Assign_Emetadata',
 		return(network)
 	})
 
+#' @rdname Assign_Emetadata
+#' 
 setMethod('Assign_Emetadata',
 	signature(network = 'rnet.basic'),
 	function(network, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = T) 
@@ -59,7 +62,8 @@ setMethod('Assign_Emetadata',
 
 	})
 
-
+#' @rdname Assign_Emetadata
+#' 
 setMethod('Assign_Emetadata',
 	signature(network = 'rnet.strata.multi'),
 	function(network, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = TRUE) 

@@ -10,6 +10,7 @@
 #' @param vertex.match.attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(network)$name), which is typically assigned when the network is created with igraph functions.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
+#' @rdname Assign_Vmetadata
 #' @include Rnet_classes.R
 #' @export
 
@@ -46,6 +47,8 @@ setGeneric('Assign_Vmetadata',
 		return(network)
 	})
 
+#' @rdname Assign_Vmetadata
+#'
 setMethod('Assign_Vmetadata',
 	signature(network = 'rnet.basic'),
 	function(network, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
@@ -63,6 +66,8 @@ setMethod('Assign_Vmetadata',
 		return(network)
 	})
 
+#' @rdname Assign_Vmetadata
+#'
 setMethod('Assign_Vmetadata',
 	signature(network = 'rnet.strata'),
 	function(network, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
@@ -79,7 +84,9 @@ setMethod('Assign_Vmetadata',
 		}
 		return(network)
 	})
-	
+
+#' @rdname Assign_Vmetadata
+#'	
 setMethod('Assign_Vmetadata',
 	signature(network = 'rnet.strata.multi'),
 	function(network, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)

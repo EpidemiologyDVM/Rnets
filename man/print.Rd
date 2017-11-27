@@ -3,9 +3,15 @@
 \docType{methods}
 \name{print,rnet.basic-method}
 \alias{print,rnet.basic-method}
+\alias{print,rnet.strata-method}
+\alias{print,rnet.strata.multi-method}
 \title{Print methods of rnet objects.}
 \usage{
 \S4method{print}{rnet.basic}(x)
+
+\S4method{print}{rnet.strata}(x)
+
+\S4method{print}{rnet.strata.multi}(x)
 }
 \arguments{
 \item{x}{An rnet object}
