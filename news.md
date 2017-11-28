@@ -6,6 +6,6 @@
     + Initial 'open beta' relase
     + Added news.md
     + Added README.md
-    + 2 'notes' on check
+    + check() produces 2 'notes'
   
 

@@ -10,9 +10,10 @@ The process of estimating a network from raw MIC data can be broadly divided int
 2. Induction of sparsity using the graphical LASSO
 3. Visualization and interpretation
 
-The graphical LASSO is an L~1~ regularization method that applies a penalty $\lambda$ to the inverse precision matrix. Briefly, larger $\lambda$ values strongly tend to result in sparser networks with fewer, weaker edges. When a correlation matrix is provided to the `glasso` function as is done in this package, penalties are bounded by [0, 1]. However, when $\lambda$ is less the absolute value of the smallest element of the correlation matrix, the resultant network will be completely dense ( k*(k-1)/2 edges ), and when $\lambda$ exceeds the largest absolute value of correlation matrix's elements, the resultant network is empty ( 0 edges ). To derive a useful and informative network from the empirical data, an intermediate value of $\lambda$ should be applied. Several methods have been described to select L~1~; Here, we employ the Stability Approach to Regularization Selection (StARS) proposed by [CITATION NEEDED]. Generally, we have found $\lambda$ = 0.25 to be 
+Briefly, $\lambda$ is a penalty applied to the correlation matrix; Larger $\lambda$ values tend to reduce more parrtial correlations to 0, resulting in sparser networks with fewer edges. To produce informative networks, $\lambda$ should be between smallest and largest absolute values of the correlation matrix's elements. Several methods have been described to select L~1~. The `L1_selection` function employs the Stability Approach to Regularization Selection (StARS) proposed by [CITATION NEEDED]. We have found $\lambda$ = 0.25 is typically a reasonable penalty for estimating R-nets.
 
 ```
+L1
 ```
 
 # Installation
