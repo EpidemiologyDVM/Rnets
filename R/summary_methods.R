@@ -1,9 +1,10 @@
-#'Summary - rnet.basic.
+#'Summary - rnet.basic
 #'
 #'Gives more information than 'print'.
-#' @param object An rnet object
+#' @param object an rnet object of class 'rnet.basic'
 #' @param ... Additional arguments passed to 'summary' method
 #' @rdname summary-rnet.basic
+#' @aliases summary
 #' @export
 
 setMethod(f = 'summary',
@@ -23,8 +24,12 @@ setMethod(f = 'summary',
             if(length(object@V_omitted)>0) cat('\nOmitted Vertices:', paste(object@V_omitted, collapse = ', '), '\n')
             cat('\n')
           })	
+#'Summary - rnet.strata
+#'
+#'Gives more information than 'print'.
+#' @param object an rnet object of class 'rnet.strata'
 
-#' @rdname summary
+#' @rdname summary-Rnet.strata
 
 setMethod(f = 'summary',
           signature(object = 'rnet.strata'),

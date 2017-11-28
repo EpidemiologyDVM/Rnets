@@ -7,7 +7,7 @@
 #' @description For flexibility, x may be provided as any of the following formats: an edgelist (data.frame), a weighted adjacency matrix (square numeric matrix), an igraph object, or an rnet.* object (e.g., rnet.basic, rnet.strata.multi, etc.).
 #' @return a numeric value estimating the weighted, signed modularity of x, or a numeric vector containing respective modularity estimates if x contained multiple network.
 #' @import igraph
-
+#' @imp
 #' @export
 
 setGeneric('Modularity_Signed',

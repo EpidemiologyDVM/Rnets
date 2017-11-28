@@ -39,3 +39,6 @@ Collate:
     'data_ec_coords.R'
     'data_narms_ec.r'
     'data_v_attrs.R'
+    'plot_methods.R'
+    'print_methods.R'
+    'summary_methods.R'

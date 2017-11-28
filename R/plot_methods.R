@@ -1,8 +1,9 @@
 #' Plot methods for R-nets
 #'
 #' A plot method for R-nets, and incorporates vertex and edge metadata and layout, if assigns. Only vertex and edge metadata with names that match igraph decoration options (without 'vertex.' or 'edge.' appended to the attribute name; see plot.igraph). Layout is pulled from 'Layout_master' in the rnet object, if it exists. The layout frame can contain 3 columns, with the first column used to match the coordinates in the next two columns to graph vertices OR can contain 2 columns with the same number of vertices in the graph.
-#' @param x an rnet object (currently, objects of class 'rnet.basic', 'rnet.strata', 'rnet.multi.strata')
+#' @param x an rnet object of class 'rnet.basic'
 #' @rdname plot-Rnet.basic
+#' @aliases plot
 #' @export
 
 setMethod('plot',
@@ -31,6 +32,8 @@ setMethod('plot',
 		#return(plot.call)
 	})
 
+#' Plot method for Rnet.strata class
+#' @param x an rnet object of class 'rnet.strata'
 #' @rdname plot-rnet.strata
 #' 
 setMethod('plot',

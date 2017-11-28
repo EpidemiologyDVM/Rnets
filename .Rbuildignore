@@ -10,3 +10,4 @@
 ^data\*\.Rdata$
 ^data\\.*\.Rdata$
 ^Archive\$
+^\.todolist\.R$
