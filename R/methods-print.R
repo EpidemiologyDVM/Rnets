@@ -1,12 +1,12 @@
 #'Print methods of rnet objects.
 #'
-#'print methods for classes 'rnet.basic', 'rnet.strata', 'rnet.multi.strata'.
+#'print methods for classes 'rnetBasic', 'rnetStrata', 'rnet.multi.strata'.
 #' @param x An rnet object
 #' @rdname print
 #' @export
 #' 
 setMethod(f = 'print',
-          signature(x = 'rnet.basic'),
+          signature(x = 'rnetBasic'),
           function(x) {
             cat(  '\nVertex set:',	paste(x@V_set, collapse = ' '),
                   '\n',
@@ -22,16 +22,16 @@ setMethod(f = 'print',
 #' @rdname print
 #' 
 setMethod(f = 'print',
-          signature(x = 'rnet.strata'),
+          signature(x = 'rnetStrata'),
           function(x) {
             cat(	'\nRnet conditioned on', as.character(x@Strata_def), '\n')
-            print(as(x, 'rnet.basic'))
+            print(as(x, 'rnetBasic'))
           })
 
 #' @rdname print
 #' 
 setMethod(f = 'print',
-          signature(x = 'rnet.strata.multi'),
+          signature(x = 'rnetMultiStrata'),
           function(x) {
             cat(	"\nRnet stratified by ", x@Stratify_by, " (", length(x@R_Strata), " Strata)\n", sep = '')
             cat(  '\nVertex set:',	paste(unique(unlist(lapply(x@R_Strata, function(x) x@V_set ))), collapse = ' '), "\n")

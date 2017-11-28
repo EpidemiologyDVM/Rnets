@@ -7,7 +7,7 @@
 #' @export
 
 setMethod('plot',
-	signature(x = 'rnet.basic'),
+	signature(x = 'rnetBasic'),
 	function (x) {
 		VERT.PARAMS <- c('size','size2','color','frame.color','shape','label','label.family','label.font','label.cex','label.dist','label.degree','label.color')
 		EDGE.PARAMS <- c('color','width','lty','label','label.family','label.font','label.cex','label.color','label.x','label.y','curved')
@@ -25,19 +25,19 @@ setMethod('plot',
 
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
 
-		#browser()
+		#rnetBasic()
 
 		eval(parse(text = plot.call))
 		#plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
 		#return(plot.call)
 	})
 
-#' Plot method for Rnet.strata class
-#' @param x an rnet object of class 'rnet.strata'
-#' @rdname plot-rnet.strata
+#' Plot method for rnetStrata class
+#' @param x an rnet object of class 'rnetStrata'
+#' @rdname plot-rnetStrata
 #' 
 setMethod('plot',
-	signature(x = 'rnet.strata'),
+	signature(x = 'rnetStrata'),
 	function(x) {
 		VERT.PARAMS <- c('size','size2','color','frame.color','shape','label','label.family','label.font','label.cex','label.dist','label.degree','label.color')
 		EDGE.PARAMS <- c('color','width','lty','label','label.family','label.font','label.cex','label.color','label.x','label.y','curved')
@@ -55,7 +55,7 @@ setMethod('plot',
 		
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
 		
-		#browser()
+		#rnetBasic()
 		
 		eval(parse(text = plot.call))
 		#plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
@@ -64,6 +64,7 @@ setMethod('plot',
 
 #' Hidden function for assigning layout matrix
 #' @param x an Rnet object
+#' @rdname dot-Assign_Layout_Matrix
 .Assign_Layout_Matrix <- function(x){ 
   if(is.null(x@Layout_master)) return(layout_with_fr(x@R))
 	

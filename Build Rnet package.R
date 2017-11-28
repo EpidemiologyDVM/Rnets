@@ -16,7 +16,7 @@ use_data(NARMS_EC_DATA, V_ATTRS, E_ATTRS, EC_COORDS, overwrite = T)
 devtools::use_build_ignore("Build Rnet package.R")
 devtools::use_build_ignore("check.txt")
 devtools::use_build_ignore(".*.Rproj")
-devtools::use_build_ignore(".todolist.R")
+devtools::use_build_ignore(".*.R")
 
 document()
 build(path = '.')

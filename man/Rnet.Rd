@@ -36,7 +36,7 @@ Rnet(Data, L1, V_set = NULL, n_threshold = 0, cor_method = "s",
 
 \item{Plot_layout}{A dataframe of two or three columns. See plot methods for more information.}
 
-\item{Stratify}{Either a character variable of length one or expression. If a character value is supplied, it must match a column name in 'Data' and an object of type 'rnet.strata.multi' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnet.strata' will be returned with the network estimated from a subset of 'Data' defined by the expression. If no value is supplied, an object of 'rnet.basic' will be returned with the network estimated from all observations in 'Data'.}
+\item{Stratify}{Either a character variable of length one or expression. If a character value is supplied, it must match a column name in 'Data' and an object of type 'rnetMultiStrata' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnetStrata' will be returned with the network estimated from a subset of 'Data' defined by the expression. If no value is supplied, an object of 'rnetBasic' will be returned with the network estimated from all observations in 'Data'.}
 }
 \description{
 This method takes an dataset (typically containing MICs values, AMR phenotypes, and presence abscence of genes) and returns an rnet object. The specific object class that is returned varies by what is provided to the L1 and Stratify arguments. The networks are Markov random fields (MRFs), a type of undirected graph. The network structure/topology is estimated using the graphical least absolute shrinkage and selection operator (glasso) as implemented in the R package of the same name developed by Friedman, Hastie, & Tibshirani (maintained by the latter)
@@ -53,7 +53,7 @@ EC_Rnet_ALL <- Rnet(Data = NARMS_EC_DATA,
 						V_set = ABX_LIST, 
 						n_threshold = 20
 						)
-class(EC_Rnet_ALL)[1]	#EC_Rnet_ALL is a 'rnet.basic' object
+class(EC_Rnet_ALL)[1]	#EC_Rnet_ALL is a 'rnetBasic' object
 print(EC_Rnet_ALL)	#Basic Rnet information
 summary(EC_Rnet_ALL) 	#More detailed information
 
@@ -73,5 +73,5 @@ EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA,
 						n_threshold = 20,
 					Stratify = 'Year'
 						)
-class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
+class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnetMultiStrata' object
 }

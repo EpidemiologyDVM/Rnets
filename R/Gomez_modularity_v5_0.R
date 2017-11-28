@@ -1,12 +1,13 @@
 #' Robust Estimator of modularity (Gomez, et al 2009)
 #'
-#' Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, e.g. edges with both positive and negative. Gomez, et al, proposed a similar estimator of modularity estimated in two parts corresponding to positive (Q+) and negative (Q-) edges, and the latter is subtracted from the former. The 'Modularity_Signed' function implements this method of modularity estimation, and returns a scalar.
+#' Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, e.g. edges with both positive and negative. Gomez, et al, proposed a similar estimator of modularity estimated in two parts corresponding to positive (Q+) and negative (Q-) edges, and the latter is subtracted from the former. The 'signedModularity' function implements this method of modularity estimation, and returns a scalar.
 #' @param x A graph presented in of the forms discussed below.
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
 #' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
-#' @description For flexibility, x may be provided as any of the following formats: an edgelist (data.frame), a weighted adjacency matrix (square numeric matrix), an igraph object, or an rnet.* object (e.g., rnet.basic, rnet.strata.multi, etc.).
+#' @description For flexibility, x may be provided as any of the following formats: an edgelist (data.frame), a weighted adjacency matrix (square numeric matrix), an igraph object, or an rnet.* object (e.g., rnetBasic, rnetMultiStrata, etc.).
 #' @return a numeric value estimating the weighted, signed modularity of x, or a numeric vector containing respective modularity estimates if x contained multiple network.
 #' @import igraph
+#' @importFrom stats aggregate
 #' @export
 
 signedModularity <- function(x, membership, weight = NULL){
@@ -14,6 +15,7 @@ signedModularity <- function(x, membership, weight = NULL){
 }
 
 signedModularity.data.frame <- function(x,	membership, weight = NULL) {
+  browser()
 	if(is.null(weight)) {
 		x$w_ij <- rep(1, dim(x)[1])
 		wt_attr <- 'None'
@@ -24,7 +26,9 @@ signedModularity.data.frame <- function(x,	membership, weight = NULL) {
 	}
 	
 	if(!all(c('i', 'j')%in%names(x))) names(x)[c(1, 2)] <- c('i', 'j')
-
+	x$i <- as.character(x$i)
+	x$j <- as.character(x$j)
+	
 	if(length(membership) == 1 & sum(grepl(membership[1], names(x))) == 2) {
 		x[c('Attr_i', 'Attr_j')] <- x[which(grepl(membership, names(x)))]
 		attr(x, 'membership_factor') <- membership
@@ -34,7 +38,7 @@ signedModularity.data.frame <- function(x,	membership, weight = NULL) {
 	} else stop('Invalid "membership" argument; must partially match exactly 2 columns (if length(membership) = 1) OR must exactly match 2 columns (if length(membership) = 2).')
 	Q <- .sign.Q.internal(x)
 	attr(Q, 'weight') <- wt_attr
-	attr(Q, 'membership') <- membership_attr
+	attr(Q, 'membership') <- membership
 	return(Q)
 }
 
@@ -95,7 +99,7 @@ signedModularity.igraph <- function(x, membership, weight = NULL) {
 signedModularity.rnetBasic <- function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
 
 signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
-		Q <- sapply(x@R_Strata, Modularity_Signed, membership, weight)
+		Q <- sapply(x@R_Strata, signedModularity, membership, weight)
 		return(Q)
 }
 
@@ -105,8 +109,8 @@ signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
 	x$w_ij_neg <- sapply(-x$w_ij, max, 0)
 
 	w <- data.frame(i = c(x$i, x$j), w_ij_pos = x$w_ij_pos, w_ij_neg = x$w_ij_neg)
-	w_pos <- aggregate(w_ij_pos ~ i, data = w, FUN = sum)
-	w_neg <- aggregate(w_ij_neg ~ i, data = w, FUN = sum)
+	w_pos <- stats::aggregate(w_ij_pos ~ i, data = w, FUN = sum)
+	w_neg <- stats::aggregate(w_ij_neg ~ i, data = w, FUN = sum)
 
 	x$w_i_pos <- w_pos[match(x$i, w_pos$i),2]
 	x$w_j_pos <- w_pos[match(x$j, w_pos$i),2]
