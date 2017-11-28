@@ -34,6 +34,3 @@ EC08_edgeFrame$Class2 <- V_ATTRS$Class[match(EC08_edgeFrame$V2, V_ATTRS$Code)]
 signedModularity(EC08_edgeFrame, 'Class')
 signedModularity(EC08_edgeFrame, 'Class', weight = 'omega')
 
-EC08_edgeFrame['omega']
-
-signedModularity(EC08_edgeFrame)
