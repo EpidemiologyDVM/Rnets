@@ -57,11 +57,11 @@ Rnet_Heatmap <- function(rnet.list,
 	palette_set <- c(pos.colors, neg.colors, zero.color, NA.color)
 
 	edge_list <- reshape(as.data.frame(rnet.list@E_matrix),
-		dir = 'l',
+		direction = 'l',
 		idvar = 'Edge',
 		ids = rownames(rnet.list@E_matrix),
 		varying = list(colnames(rnet.list@E_matrix)),
-		v.name = 'Edge_val',
+		v.names = 'Edge_val',
 		times = colnames(rnet.list@E_matrix),
 		timevar = 'Stratum'
 		)
@@ -83,7 +83,7 @@ Rnet_Heatmap <- function(rnet.list,
 		idvar = 'Edge',
 		timevar = 'Stratum',
 		drop = c('Edge_val', 'Palette_code'),
-		dir = 'w'
+		direction =  'w'
 		)
 
 	color_mat <- t(as.matrix(color_frame[, -1]))

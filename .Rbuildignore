@@ -4,3 +4,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.*\.Rproj$
+^data\Source Data\*\.rdata$
+^data\SourceData\*\.rdata$
+^data\*\.rdata$
+^data\*\.Rdata$
+^data\\.*\.Rdata$
+^Archive\$

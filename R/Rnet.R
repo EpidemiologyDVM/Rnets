@@ -106,7 +106,7 @@ setMethod('Rnet',
 		return(.Gen_R(rnet.obj))
 	})
 
-#' @rdname Modularity_Signed
+#' @rdname Rnet
 #' 
 setMethod('Rnet',
 	signature(Stratify = 'character'),

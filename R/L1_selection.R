@@ -13,7 +13,7 @@
 #' @param Forced_zeros Edges to be omitted from the Rnet.
 #' @param Rand_seed Allows a random seed to be set subsampling results may be consistently regenerated.
 #' @import igraph 
-#' @import 'data.table'
+#' @import data.table
 #' @export
 
 setGeneric('L1Selection',

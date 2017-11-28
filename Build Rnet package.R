@@ -4,9 +4,10 @@ library(devtools)
 library(roxygen2)
 library(rmarkdown)
 
-load(file = 'data\\Narms_data.rdata')
-load(file = 'data\\Attributes.rdata')
-load(file = 'data\\EC_coords.rdata')
+for(file.name in list.files('data')) load(file = file.path('data', file.name))
+#load(file = 'data\\Narms_data.rdata')
+#load(file = 'data\\Attributes.rdata')
+#load(file = 'data\\EC_coords.rdata')
 
 NARMS_EC_DATA <- NARMS_EC_DATA[,c(1, 6,8, 10:34)]
 
@@ -15,10 +16,12 @@ use_data(NARMS_EC_DATA, V_ATTRS, E_ATTRS, EC_COORDS, overwrite = T)
 devtools::use_build_ignore("Build Rnet package.R")
 devtools::use_build_ignore("check.txt")
 devtools::use_build_ignore(".*.Rproj")
+devtools::use_build_ignore("Archive\\")
+
 
 
 document()
 build(path = '.')
-sink(file = 'check.txt')
+#sink(file = 'check.txt')
 check()
-sink()
+#sink()

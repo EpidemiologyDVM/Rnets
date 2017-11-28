@@ -1,11 +1,12 @@
 #'.Gen_R - internal methods for generating Rnets.
 #'
 #'Internal for the "Rnet" methods. .Gen_R should not be called directly.
-#' @import igraph
+#' @param rnet.obj an Rnet S4 object created by Rnet()
+#' @importFrom igraph graph_from_adjacency_matrix
 #' @import glasso
-#' @import igraph
-#' @import stats
-
+#' @importFrom stats reshape
+#' @rdname dot-Gen_R
+#' 
 setGeneric('.Gen_R', function(rnet.obj){
 
 	rnet.obj@Data <- rnet.obj@RawData[rnet.obj@V_set_orig]
@@ -63,8 +64,8 @@ setGeneric('.Gen_R', function(rnet.obj){
 
 #'Internal for the "Rnet" methods. .Gen_R should not be called directly.
 
-#' @rdname .Gen_R
-#' @name .Gen_R
+#' @rdname dot-Gen_R
+
 #' 
 setMethod('.Gen_R',
 	'rnet.strata',

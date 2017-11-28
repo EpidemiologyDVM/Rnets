@@ -4,6 +4,7 @@
 #' @param x Rhe data used to estimate the correlation matrix. Pairwise correlations between all columns are estimated.
 #' @param cor_method Method used to estimate correlations. Defaults to Spearman's method. See help file for 'cor' function.
 #' @param cor_pairing Method used to determine how NA entries are handled. See help file for 'cor' function.
+#' @importFrom stats cor
 #' @export
 
 Clean_Sigma <- function(x,
