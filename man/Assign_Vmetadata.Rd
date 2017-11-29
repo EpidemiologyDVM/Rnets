@@ -3,21 +3,21 @@
 \docType{methods}
 \name{Assign_Vmetadata}
 \alias{Assign_Vmetadata}
-\alias{Assign_Vmetadata,rnet.basic-method}
-\alias{Assign_Vmetadata,rnet.strata-method}
-\alias{Assign_Vmetadata,rnet.strata.multi-method}
+\alias{Assign_Vmetadata,rnetBasic-method}
+\alias{Assign_Vmetadata,rnetStrata-method}
+\alias{Assign_Vmetadata,rnetMultiStrata-method}
 \title{Assign_Vmetadata - Methods for assigning network vertex metadata}
 \usage{
 Assign_Vmetadata(network, V_metadata, match.attr = NULL,
   vertex.match.attr = "name", reassign = T)
 
-\S4method{Assign_Vmetadata}{rnet.basic}(network, V_metadata,
+\S4method{Assign_Vmetadata}{rnetBasic}(network, V_metadata, match.attr = NULL,
+  vertex.match.attr = "name", reassign = T)
+
+\S4method{Assign_Vmetadata}{rnetStrata}(network, V_metadata,
   match.attr = NULL, vertex.match.attr = "name", reassign = T)
 
-\S4method{Assign_Vmetadata}{rnet.strata}(network, V_metadata,
-  match.attr = NULL, vertex.match.attr = "name", reassign = T)
-
-\S4method{Assign_Vmetadata}{rnet.strata.multi}(network, V_metadata,
+\S4method{Assign_Vmetadata}{rnetMultiStrata}(network, V_metadata,
   match.attr = NULL, vertex.match.attr = "name", reassign = T)
 }
 \arguments{
@@ -35,5 +35,5 @@ Assign_Vmetadata(network, V_metadata, match.attr = NULL,
 This method assigns metadata to vertices in an igraph object based on an existing vertex attibute, typically vertex name, but can be done with other attributes including those assigned with previous calls with this method.
 }
 \details{
-This method also works with all rnet objects (currently class 'rnet.basic', 'rnet.strata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'V_metadata' slot.
+This method also works with all rnet objects (currently class 'rnetBasic', 'rnetStrata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'V_metadata' slot.
 }

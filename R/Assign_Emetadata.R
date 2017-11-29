@@ -45,7 +45,7 @@ setGeneric('Assign_Emetadata',
 #' @rdname Assign_Emetadata
 #' 
 setMethod('Assign_Emetadata',
-	signature(network = 'rnet.basic'),
+	signature(network = 'rnetBasic'),
 	function(network, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = T) 
 	{
 		network@R <- Assign_Emetadata(network@R, E_metadata, match.attr, e.cutpoints, sign.color, attr_abs_val, F)
@@ -65,7 +65,7 @@ setMethod('Assign_Emetadata',
 #' @rdname Assign_Emetadata
 #' 
 setMethod('Assign_Emetadata',
-	signature(network = 'rnet.strata.multi'),
+	signature(network = 'rnetMultiStrata'),
 	function(network, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = TRUE) 
 	{	
 		slot(network, "R_Strata") <- lapply(slot(network, "R_Strata"), Assign_Emetadata, E_metadata, match.attr, e.cutpoints, sign.color, attr_abs_val, FALSE)

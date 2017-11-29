@@ -1,14 +1,14 @@
-#'Summary - rnet.basic
+#'Summary - rnetBasic
 #'
 #'Gives more information than 'print'.
-#' @param object an rnet object of class 'rnet.basic'
+#' @param object an rnet object of class 'rnetBasic'
 #' @param ... Additional arguments passed to 'summary' method
-#' @rdname summary-rnet.basic
+#' @rdname summary-rnetBasic
 #' @aliases summary
 #' @export
 
 setMethod(f = 'summary',
-          signature(object = 'rnet.basic'),
+          signature(object = 'rnetBasic'),
           function(object) {
             cat(	'\nBasic R-net',
                  '\n',
@@ -24,15 +24,15 @@ setMethod(f = 'summary',
             if(length(object@V_omitted)>0) cat('\nOmitted Vertices:', paste(object@V_omitted, collapse = ', '), '\n')
             cat('\n')
           })	
-#'Summary - rnet.strata
+#'Summary - rnetStrata
 #'
 #'Gives more information than 'print'.
-#' @param object an rnet object of class 'rnet.strata'
+#' @param object an rnet object of class 'rnetStrata'
 
-#' @rdname summary-Rnet.strata
+#' @rdname summary-rnetStrata
 
 setMethod(f = 'summary',
-          signature(object = 'rnet.strata'),
+          signature(object = 'rnetStrata'),
           function(object) {
             cat(  '\nStratfied R-net (single level)',
                   '\n',

@@ -1,4 +1,4 @@
-#'.Gen_R - internal methods for generating Rnets.
+ #'.Gen_R - internal methods for generating Rnets.
 #'
 #'Internal for the "Rnet" methods. .Gen_R should not be called directly.
 #' @param rnet.obj an Rnet S4 object created by Rnet()
@@ -55,6 +55,8 @@ setGeneric('.Gen_R', function(rnet.obj){
 	                             by = c('V1', 'V2')
 	                             )$omega
 	
+	rnet.obj@E_metadata <- edge_attr_names(rnet.obj@R)
+	
   if(is.null(rnet.obj@Layout_master)) rnet.obj@Layout <- layout_with_fr(rnet.obj@R)
 	
 	rnet.obj@V_omitted <- rnet.obj@V_set_orig[!rnet.obj@V_set_orig%in%rnet.obj@V_set]
@@ -68,7 +70,7 @@ setGeneric('.Gen_R', function(rnet.obj){
 
 #' 
 setMethod('.Gen_R',
-	'rnet.strata',
+	'rnetStrata',
 	function (rnet.obj) {
 		rnet.obj@Data <- rnet.obj@RawData[eval(rnet.obj@Strata_def, rnet.obj@RawData),rnet.obj@V_set_orig]
 		rnet.obj@L1 <- rnet.obj@L1_orig
@@ -88,7 +90,11 @@ setMethod('.Gen_R',
 
 		rnet.obj@Zeros <- list(
 			Forced = if(dim(rnet.obj@Forced_zeros)[1]!=0) rnet.obj@Forced_zeros else matrix(nrow = 0, ncol = 2, dimnames = list(NULL, c('V1', 'V2'))),
-			Invalid = data.matrix(subset(n_list, select = c(V1, V2), n < rnet.obj@n_threshold))
+<<<<<<< HEAD
+			Invalid = data.matrix(subset(n_list, select = c('V1', 'V2'), n_list$n < rnet.obj@n_threshold))
+=======
+			Invalid = data.matrix(subset(n_list, select = c('V1', 'V2'), n_list$n < rnet.obj@n_threshold)) #ADDED 'n_list$' to end to resolve check note
+>>>>>>> 0a68ba5fc474fc0b6029cb345334a115e9515d33
 			)
 		zero_pairs <- unique(rbind(rnet.obj@Zeros$Forced, rnet.obj@Zeros$Invalid))
 		zero_indices <- data.matrix(data.frame(V1 = match(zero_pairs[,1], V_sorted), V2 = match(zero_pairs[,2], V_sorted)))
