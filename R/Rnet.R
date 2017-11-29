@@ -123,6 +123,7 @@ setMethod('Rnet',
 			)
 	{
 		if(!Stratify%in%names(Data)) stop(paste("Invalid stratification: '",  Stratify, "' does not appear in dataset"), sep = '')
+	  V_set_orig <- V_set
 		if(Stratify%in%V_set) {V_set <- V_set[-match(Stratify, V_set_orig)]; warning(paste("Stratification variable cannot appear in declared vertex set.", Stratify,"was removed from V_set"))}
 		rnet.obj <- new("rnetMultiStrata",
 			RawData = Data,

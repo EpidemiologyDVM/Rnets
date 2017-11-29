@@ -15,7 +15,6 @@ signedModularity <- function(x, membership, weight = NULL){
 }
 
 signedModularity.data.frame <- function(x,	membership, weight = NULL) {
-  browser()
 	if(is.null(weight)) {
 		x$w_ij <- rep(1, dim(x)[1])
 		wt_attr <- 'None'
