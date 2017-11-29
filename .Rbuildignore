@@ -4,3 +4,14 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.*\.Rproj$
+^data\Source Data\*\.rdata$
+^data\SourceData\*\.rdata$
+^data\*\.rdata$
+^data\*\.Rdata$
+^data\\.*\.Rdata$
+^Archive\$
+^\.todolist\.R$
+^\.*\.R$
+^\.test\.signedModularity\.R$
+^Archive$
+^vignettes\Rnets-vignette\.html$

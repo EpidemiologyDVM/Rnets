@@ -14,7 +14,8 @@
 #' #Example using EC_Rnets_byYear
 #' EC_Rnets_byYear <- Rnet(Data = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
-#' 						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
+#' 						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 
+#' 						  'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
 #' 						n_threshold = 20,
 #'						Stratify = 'Year'
 #' 						)
@@ -56,11 +57,11 @@ Rnet_Heatmap <- function(rnet.list,
 	palette_set <- c(pos.colors, neg.colors, zero.color, NA.color)
 
 	edge_list <- reshape(as.data.frame(rnet.list@E_matrix),
-		dir = 'l',
+		direction = 'l',
 		idvar = 'Edge',
 		ids = rownames(rnet.list@E_matrix),
 		varying = list(colnames(rnet.list@E_matrix)),
-		v.name = 'Edge_val',
+		v.names = 'Edge_val',
 		times = colnames(rnet.list@E_matrix),
 		timevar = 'Stratum'
 		)
@@ -82,7 +83,7 @@ Rnet_Heatmap <- function(rnet.list,
 		idvar = 'Edge',
 		timevar = 'Stratum',
 		drop = c('Edge_val', 'Palette_code'),
-		dir = 'w'
+		direction =  'w'
 		)
 
 	color_mat <- t(as.matrix(color_frame[, -1]))

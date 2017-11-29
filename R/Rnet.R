@@ -9,29 +9,31 @@
 #' @param cor_pairing The method used to determine how NAs are handled when determining which pairs are used to estimate correlations. See 'cor' function documentation for additional information.
 #' @param Forced_zeros The set of edges to be omitted from the Rnet. These partial correlations are forced to zero. Additional edges and vertices may be set to zero if n_threshold is employed.
 #' @param Plot_layout A dataframe of two or three columns. See plot methods for more information.
-#' @param Stratify Either a character variable of length one or expression. If a character value is supplied, it must match a column name in 'Data' and an object of type 'rnet.strata.multi' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnet.strata' will be returned with the network estimated from a subset of 'Data' defined by the expression. If no value is supplied, an object of 'rnet.basic' will be returned with the network estimated from all observations in 'Data'.
+#' @param Stratify Either a character variable of length one or expression. If a character value is supplied, it must match a column name in 'Data' and an object of type 'rnetMultiStrata' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnetStrata' will be returned with the network estimated from a subset of 'Data' defined by the expression. If no value is supplied, an object of 'rnetBasic' will be returned with the network estimated from all observations in 'Data'.
 #' @import methods
 #' @import data.table
 #' @import igraph
 #' @export
 #' @examples
 #' #Create a single R-net for all E. coli isolates in the provided dataset. 
+#' #Vertices to be used defined by 'ABX_LIST' below.
 #' #Edges require at least 20 observations to be valid.
+#' 
+#' ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
+#' 
 #' EC_Rnet_ALL <- Rnet(Data = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
-#' 						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
-#'							'GEN', 'COT', 'FIS'), 
+#' 						V_set = ABX_LIST, 
 #' 						n_threshold = 20
 #' 						)
-#' class(EC_Rnet_ALL)[1]	#EC_Rnet_ALL is a 'rnet.basic' object
+#' class(EC_Rnet_ALL)[1]	#EC_Rnet_ALL is a 'rnetBasic' object
 #' print(EC_Rnet_ALL)	#Basic Rnet information
 #' summary(EC_Rnet_ALL) 	#More detailed information
 #' 
 #' #Create a single R-net for only E. coli isolates collected during 2008
 #' EC_Rnet_2008 <- Rnet(Data = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
-#' 						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
-#'							'GEN', 'COT', 'FIS'), 
+#' 						V_set = ABX_LIST, 
 #' 						n_threshold = 20,
 #'						Stratify = expression(Year == 2008)
 #' 						)
@@ -40,13 +42,14 @@
 #' #Create a set of R-nets, one for each year of E.coli isolates.
 #' EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
-#' 						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 
-#'							'GEN', 'COT', 'FIS'), 
+#' 						V_set = ABX_LIST, 
 #' 						n_threshold = 20,
 #'						Stratify = 'Year'
 #' 						)
-#' class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnet.strata.multi' object
+#' class(EC_Rnet_byYear)[1]	#EC_Rnet_ALL is an 'rnetMultiStrata' object
 
+#' @rdname Rnet
+#' 
 setGeneric('Rnet',
 	function(								#Cornerstone Function to generate an Rnet from data
 			Data, #WAS MIC_data
@@ -60,7 +63,7 @@ setGeneric('Rnet',
 			Stratify = NULL		
 			)
 	{
-		rnet.obj <- new("rnet.basic",
+		rnet.obj <- new("rnetBasic",
 			RawData = Data,
 			cor_method = cor_method,
 			cor_pairing = cor_pairing,
@@ -73,6 +76,8 @@ setGeneric('Rnet',
 		return(.Gen_R(rnet.obj))
 	})
 
+#' @rdname Rnet
+#' 
 setMethod('Rnet',
 	signature(Stratify = 'expression'),
 	function(							
@@ -87,7 +92,7 @@ setMethod('Rnet',
 			Stratify		
 			)
 	{
-		rnet.obj <- new("rnet.strata",
+		rnet.obj <- new("rnetStrata",
 			RawData = Data,
 			cor_method = cor_method,
 			cor_pairing = cor_pairing,
@@ -101,6 +106,8 @@ setMethod('Rnet',
 		return(.Gen_R(rnet.obj))
 	})
 
+#' @rdname Rnet
+#' 
 setMethod('Rnet',
 	signature(Stratify = 'character'),
 	function(							
@@ -116,8 +123,9 @@ setMethod('Rnet',
 			)
 	{
 		if(!Stratify%in%names(Data)) stop(paste("Invalid stratification: '",  Stratify, "' does not appear in dataset"), sep = '')
+	  V_set_orig <- V_set
 		if(Stratify%in%V_set) {V_set <- V_set[-match(Stratify, V_set_orig)]; warning(paste("Stratification variable cannot appear in declared vertex set.", Stratify,"was removed from V_set"))}
-		rnet.obj <- new("rnet.strata.multi",
+		rnet.obj <- new("rnetMultiStrata",
 			RawData = Data,
 			cor_method = cor_method,
 			cor_pairing = cor_pairing,
@@ -130,7 +138,7 @@ setMethod('Rnet',
 			)
 
 		strata_vals <- unique(Data[[Stratify]])
-		strat.obj <- as(as(rnet.obj, 'rnet.input'), 'rnet.strata')
+		strat.obj <- as(as(rnet.obj, 'rnetInput'), 'rnetStrata')
 		rnet.obj@R_Strata <- lapply(strata_vals, function(x) {strat.obj@Strata_def <- parse(text = paste(Stratify, '==', x)); .Gen_R(strat.obj)})
 		rnet.obj@E_matrix <- .Assemble_Edge_Matrix(rnet.obj, 'omega')
 		return(rnet.obj)

@@ -16,4 +16,5 @@
 #'
 #' }
 #'@source \url{https://www.fda.gov/AnimalVeterinary/SafetyHealth/AntimicrobialResistance/NationalAntimicrobialResistanceMonitoringSystem/ucm416741.htm}
+#'
 NULL

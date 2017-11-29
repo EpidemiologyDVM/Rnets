@@ -9,6 +9,8 @@ L1Selection(Data, L1_set, B = 100, n_b = 0.5, V_set = NULL,
   Forced_zeros = NULL, Stratify = NULL, Rand_seed = NULL)
 }
 \arguments{
+\item{Data}{The dataset containing the MICs}
+
 \item{L1_set}{The set of candidate L1 penalties to be evaluated for creating a sparse precision matrix. Must be non-negative.}
 
 \item{B}{The number of subsamples to evaluate network stability. Defaults to 100 subsamples.}
@@ -19,15 +21,15 @@ L1Selection(Data, L1_set, B = 100, n_b = 0.5, V_set = NULL,
 
 \item{n_threshold}{The minimum number of observations required for an an estimated correlation to be valid. Defaults to 0, in which case any number of observations will be sufficient to estimate a valid correlation}
 
+\item{cor_method}{The method used to estimate the correlation matrix. Must be 'pearson', 'spearman', or 'kendall'. Partial matches allowed. Defaults to 'spearman'.}
+
+\item{cor_pairing}{The method used to determine how NAs are handled when determining which pairs are used to estimate correlations. See 'cor' function documentation for additional information.}
+
 \item{Forced_zeros}{Edges to be omitted from the Rnet.}
 
 \item{Stratify}{The rule for stratifying the data, if desired.}
 
 \item{Rand_seed}{Allows a random seed to be set subsampling results may be consistently regenerated.}
-
-\item{corr_type}{The method used to estimate the correlation matrix. Must be 'pearson', 'spearman', or 'kendall'. Partial matches allowed. Defaults to 'spearman'.}
-
-\item{corr_pairing}{The method used to determine how NAs are handled when determining which pairs are used to estimate correlations. See 'cor' function documentation for additional information.}
 }
 \description{
 An implementation of the Stability Approach to Regularization Selection (StARS) method for L1 penalty selection for use with Rnets method.
