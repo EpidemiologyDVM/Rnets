@@ -16,7 +16,11 @@ use_data(NARMS_EC_DATA, V_ATTRS, E_ATTRS, EC_COORDS, overwrite = T)
 devtools::use_build_ignore("Build Rnet package.R")
 devtools::use_build_ignore("check.txt")
 devtools::use_build_ignore(".*.Rproj")
-devtools::use_build_ignore(".todolist.R")
+devtools::use_build_ignore(".test.signedModularity.R")
+devtools::use_build_ignore("Archive")
+
+devtools::use_build_ignore("vignettes\\Rnets-vignette.html") #TEMPORARILY IGNORE INCOMPLETE VIGNETTES!!!
+
 
 document()
 build(path = '.')

@@ -1,6 +1,6 @@
 Package: Rnets
 Title: Generate Resistance Relationship Networks using Graphical LASSO
-Version: 0.9.5
+Version: 0.9.6
 Date: 2017-11-27
 Authors@R: person("William", "Love", email = "wjlove@ncsu.edu", role = c("aut", "cre"))
 Maintainer: William Love <wjlove@ncsu.edu>
@@ -30,7 +30,7 @@ Collate:
     'Clean_Sigma.R'
     'Estimate_pCorrs.R'
     'GenR.R'
-    'Gomez_modularity_v4_1.R'
+    'Gomez_modularity_v5_0.R'
     'L1_selection.R'
     'Rnet.R'
     'Rnet_heatmap.r'
@@ -39,6 +39,6 @@ Collate:
     'data_ec_coords.R'
     'data_narms_ec.r'
     'data_v_attrs.R'
-    'plot_methods.R'
-    'print_methods.R'
-    'summary_methods.R'
+    'methods-plot.R'
+    'methods-print.R'
+    'methods-summary.R'

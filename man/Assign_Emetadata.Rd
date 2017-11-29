@@ -3,18 +3,18 @@
 \docType{methods}
 \name{Assign_Emetadata}
 \alias{Assign_Emetadata}
-\alias{Assign_Emetadata,rnet.basic-method}
-\alias{Assign_Emetadata,rnet.strata.multi-method}
+\alias{Assign_Emetadata,rnetBasic-method}
+\alias{Assign_Emetadata,rnetMultiStrata-method}
 \title{Assign_Emetadata - Methods for assigning network edge metadata}
 \usage{
 Assign_Emetadata(network, E_metadata, match.attr, e.cutpoints = NULL,
   sign.color = c("black", "red"), attr_abs_val = T, reassign = T)
 
-\S4method{Assign_Emetadata}{rnet.basic}(network, E_metadata, match.attr,
+\S4method{Assign_Emetadata}{rnetBasic}(network, E_metadata, match.attr,
   e.cutpoints = NULL, sign.color = c("black", "red"), attr_abs_val = T,
   reassign = T)
 
-\S4method{Assign_Emetadata}{rnet.strata.multi}(network, E_metadata, match.attr,
+\S4method{Assign_Emetadata}{rnetMultiStrata}(network, E_metadata, match.attr,
   e.cutpoints = NULL, sign.color = c("black", "red"), attr_abs_val = T,
   reassign = TRUE)
 }
