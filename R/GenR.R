@@ -1,4 +1,4 @@
-#'.Gen_R - internal methods for generating Rnets.
+ #'.Gen_R - internal methods for generating Rnets.
 #'
 #'Internal for the "Rnet" methods. .Gen_R should not be called directly.
 #' @param rnet.obj an Rnet S4 object created by Rnet()
@@ -90,7 +90,7 @@ setMethod('.Gen_R',
 
 		rnet.obj@Zeros <- list(
 			Forced = if(dim(rnet.obj@Forced_zeros)[1]!=0) rnet.obj@Forced_zeros else matrix(nrow = 0, ncol = 2, dimnames = list(NULL, c('V1', 'V2'))),
-			Invalid = data.matrix(subset(n_list, select = c(V1, V2), n < rnet.obj@n_threshold))
+			Invalid = data.matrix(subset(n_list, select = c('V1', 'V2'), n_list$n < rnet.obj@n_threshold))
 			)
 		zero_pairs <- unique(rbind(rnet.obj@Zeros$Forced, rnet.obj@Zeros$Invalid))
 		zero_indices <- data.matrix(data.frame(V1 = match(zero_pairs[,1], V_sorted), V2 = match(zero_pairs[,2], V_sorted)))

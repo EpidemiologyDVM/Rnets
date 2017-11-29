@@ -12,7 +12,7 @@ The process of estimating a network from raw MIC data can be broadly divided int
 
 Briefly, $\lambda$ is a penalty applied to the correlation matrix; Larger $\lambda$ values tend to reduce more parrtial correlations to 0, resulting in sparser networks with fewer edges. To produce informative networks, $\lambda$ should be between smallest and largest absolute values of the correlation matrix's elements. Several methods have been described to select L~1~. The `L1_selection` function employs the Stability Approach to Regularization Selection (StARS) proposed by [CITATION NEEDED]. 
 
-The following code will use the _E. coli_ isolates' from 2008 in `NARMS_EC_DATA` MIC results for 15 antimicrobials. This function evaluates 100 subsets of size 1200 with $\lambda$ equal to 0.05, 0.10, 0.15, ..., 0.45, 0.50 for all E. coli s (takes ~ 5 minutes on an i7-6700 4.0 GHz with 16 Gb RAM)
+The following code will use the _E. coli_ isolates' from 2008 in `NARMS_EC_DATA` MIC results for 15 antimicrobials. This function evaluates 100 subsets of size 1200 with $\lambda$ equal to 0.05, 0.10, 0.15, ..., 0.45, 0.50 for all E. coli s (takes ~ 5 minutes on an i7-6700 4.0 GHz with 16 Gb RAM).
 
 ```
 EC.L1.results <- L1Selection(
@@ -40,7 +40,11 @@ EC08_Rnet <- Rnet(
                 )
 
 summary(EC08_Rnet)
+```
 
+The estimated network can be plotted with the plot method.
+```
+plot(EC08_Rnet)
 ```
 
 # Installation

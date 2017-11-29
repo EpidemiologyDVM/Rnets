@@ -12,3 +12,6 @@
 ^Archive\$
 ^\.todolist\.R$
 ^\.*\.R$
+^\.test\.signedModularity\.R$
+^Archive$
+^vignettes\Rnets-vignette\.html$

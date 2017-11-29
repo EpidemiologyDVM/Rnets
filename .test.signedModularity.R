@@ -25,6 +25,7 @@ EC08_Rnet <- Rnet(
 
 Assign_Vmetadata(EC08_Rnet, V_ATTRS)
 
+
 #DATA FRAME
 EC08_edgeFrame <- cbind(as.data.frame(as_edgelist(EC08_Rnet@R)), omega = E(EC08_Rnet@R)$omega)
 
@@ -34,3 +35,20 @@ EC08_edgeFrame$Class2 <- V_ATTRS$Class[match(EC08_edgeFrame$V2, V_ATTRS$Code)]
 signedModularity(EC08_edgeFrame, 'Class')
 signedModularity(EC08_edgeFrame, 'Class', weight = 'omega')
 
+
+#MATRIX
+EC08_A <- EC08_Rnet@A
+attr(EC08_A, 'Class') <- V(EC08_Rnet@R)$Class
+
+EC08_omega <- EC08_Rnet@Omega
+attr(EC08_omega, 'Class') <- V(EC08_Rnet@R)$Class
+
+
+signedModularity(EC08_A, 'Class')
+signedModularity(EC08_omega, 'Class')
+
+
+#IGRAPH
+signedModularity(EC08_Rnet@R, 'Class')
+
+signedModularity(EC08_Rnet@R, 'Class', 'omega')
