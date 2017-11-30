@@ -1,4 +1,6 @@
-#'Cartesian vertex coordinates for plotting networks
+#'Example Vertex coordinates
+#'
+#'A set of x-y coordinates for drawing an R-net for the example E. coli data.
 #'@name EC_COORDS
 #'
 #'@docType data
@@ -11,4 +13,4 @@
 #'  \item{x}{x-coordinate for positioning vertex in plot}
 #'  \item{y}{x-coordinate for positioning vertex in plot}
 #' }
-"EC_COORDS"
+NULL

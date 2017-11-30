@@ -2,7 +2,7 @@
 #'
 #' This method assigns metadata to vertices in an igraph object based on an existing vertex attibute, typically vertex name, but can be done with other attributes including those assigned with previous calls with this method. 
 #'
-#' This method also works with all rnet objects (currently class 'rnet.basic', 'rnet.strata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'V_metadata' slot.
+#' This method also works with all rnet objects (currently class 'rnetBasic', 'rnetStrata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'V_metadata' slot.
 #'
 #' @param network The network to which the vertex metadata will be applied.
 #' @param V_metadata A dataframe containing the vertex metadata to be assigned. A vertex attribute will be assigned for every column in the frame, except the column used to match V_metadata to existing vertex attribues.
@@ -10,6 +10,7 @@
 #' @param vertex.match.attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(network)$name), which is typically assigned when the network is created with igraph functions.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
+#' @rdname Assign_Vmetadata
 #' @include Rnet_classes.R
 #' @export
 
@@ -46,8 +47,10 @@ setGeneric('Assign_Vmetadata',
 		return(network)
 	})
 
+#' @rdname Assign_Vmetadata
+#'
 setMethod('Assign_Vmetadata',
-	signature(network = 'rnet.basic'),
+	signature(network = 'rnetBasic'),
 	function(network, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
 	{
 		network@R <- Assign_Vmetadata(network@R, V_metadata, match.attr, vertex.match.attr, F)
@@ -63,8 +66,10 @@ setMethod('Assign_Vmetadata',
 		return(network)
 	})
 
+#' @rdname Assign_Vmetadata
+#'
 setMethod('Assign_Vmetadata',
-	signature(network = 'rnet.strata'),
+	signature(network = 'rnetStrata'),
 	function(network, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
 	{
 		network@R <- Assign_Vmetadata(network@R, V_metadata, match.attr, vertex.match.attr, F)
@@ -79,9 +84,11 @@ setMethod('Assign_Vmetadata',
 		}
 		return(network)
 	})
-	
+
+#' @rdname Assign_Vmetadata
+#'	
 setMethod('Assign_Vmetadata',
-	signature(network = 'rnet.strata.multi'),
+	signature(network = 'rnetMultiStrata'),
 	function(network, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
 	{
 	

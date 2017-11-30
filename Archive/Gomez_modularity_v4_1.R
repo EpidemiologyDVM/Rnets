@@ -35,6 +35,8 @@ setGeneric('Modularity_Signed',
 	return(Q)
 })
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x = 'matrix'),
 	function(x, membership, weight = NULL) {
@@ -56,15 +58,17 @@ setMethod('Modularity_Signed',
 		return(Q)
 })
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
-	signature(x='list'),
+	signature(x='igraph'),
 	function(x, membership, weight = NULL) {
 
-		x.frame <- data.frame(as_edgelist(x, F))
+		x.frame <- data.frame(igraph::as_edgelist(x, F))
 		names(x.frame) <- c('i', 'j')
 
 		#ASSIGN ATTR_I & ATTR_J
-		if(length(membership) == 1) if(membership%in%vertex_attr_names(x)) {
+		if(length(membership) == 1) if(membership%in%igraph::vertex_attr_names(x)) {
 			membership_attr <- membership
 			membership <- vertex_attr(x, membership) 
 		} else stop(membership, 'is not a valid attribute of x.') 
@@ -80,10 +84,10 @@ setMethod('Modularity_Signed',
 			warning('No edge attribute declared; Unweighted signed modularity will be returned.')
 
 		} else if(is.character(weight)) {
-			if(!weight%in%edge_attr_names(x)|!is.numeric(edge_attr(x, weight))) stop('Edge attribute', weight, 'not found or is not numeric.') else x.frame$w_ij <- edge_attr(x, weight)
+			if(!weight%in%igraph::edge_attr_names(x)|!is.numeric(edge_attr(x, weight))) stop('Edge attribute', weight, 'not found or is not numeric.') else x.frame$w_ij <- edge_attr(x, weight)
 		
 		} else if(is.numeric(weight)) {
-			if(length(weight) == ecount(x)) x.frame$w_ij <- edge_attr(x, weight) else stop('Numeric weight argument length must ecount(x).')
+			if(length(weight) == igraph::ecount(x)) x.frame$w_ij <- edge_attr(x, weight) else stop('Numeric weight argument length must ecount(x).')
 			weight <- "Unspecified"
 		} else stop(weight, ' is not a valid weight argument.')
 
@@ -93,11 +97,15 @@ setMethod('Modularity_Signed',
 		return(Q)
 })
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x='rnet.basic'),
 	function(x, membership = NULL, weight = 'omega') Modularity_Signed(x@R, membership, weight)
 	)
 
+#' @rdname Modularity_Signed
+#' 
 setMethod('Modularity_Signed',
 	signature(x = 'rnet.strata.multi'),
 	function(x, membership, weight = 'omega') {

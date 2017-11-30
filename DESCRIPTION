@@ -1,20 +1,26 @@
 Package: Rnets
 Title: Generate Resistance Relationship Networks using Graphical LASSO
-Version: 0.9.2
-Date: 2017-07-12
+Version: 0.9.6
+Date: 2017-11-27
 Authors@R: person("William", "Love", email = "wjlove@ncsu.edu", role = c("aut", "cre"))
 Maintainer: William Love <wjlove@ncsu.edu>
-Description: This package creates resistance relationship networks, or 'Rnets'. These networks can be used to study relationships between antimicrobial resistances (typically measured using MICs) and genes. IN DEVELOPMENT! Please be patient as we clean up any errors during install and feel free to contact us if you find anything not working as advertised. We'd love to get your feedback!
+Description: This package creates resistance relationship networks, or 'Rnets'.
+    These networks can be used to study relationships between antimicrobial
+    resistances (typically measured using MICs) and genes. IN DEVELOPMENT! Please be
+    patient as we clean up any errors during install and feel free to contact us if
+    you find anything not working as advertised. We'd love to get your feedback!
 Depends:
-  R (>= 3.1.2),
-  glasso (>= 1.8),
-  igraph(>= 1.0),
-	data.table(>= 1.9.6)
-Imports: methods
+    R (>= 3.1.2),
+    glasso (>= 1.8),
+    igraph(>= 1.0),
+    data.table(>= 1.9.6)
+Imports:
+    methods
 License: GPL-3
 LazyData: true
-RoxygenNote: 6.0.1
-Suggests: knitr,
+RoxygenNote: 6.0.1.9000
+Suggests:
+    knitr,
     rmarkdown
 VignetteBuilder: knitr
 Collate: 
@@ -22,16 +28,17 @@ Collate:
     'Assign_Emetadata.R'
     'Assign_Vmetadata.R'
     'Clean_Sigma.R'
-    'EC_COORDS.R'
-    'E_ATTRS.R'
     'Estimate_pCorrs.R'
     'GenR.R'
-    'Gomez_modularity_v4_1.R'
+    'Gomez_modularity_v5_0.R'
     'L1_selection.R'
     'Rnet.R'
     'Rnet_heatmap.r'
-    'Rnet_methods.R'
     'Sq2L.R'
-    'V_ATTRS.R'
-    'data.r'
-    'summary_methods.r'
+    'data_e_attrs.R'
+    'data_ec_coords.R'
+    'data_narms_ec.r'
+    'data_v_attrs.R'
+    'methods-plot.R'
+    'methods-print.R'
+    'methods-summary.R'

@@ -8,9 +8,9 @@
 #' @slot v_set_orig The declared set of k variables to be included in the rnet as vertices
 #' @slot Forced_zeros A matrix with 2 columns containing pairs of vertices to force to be conditionally independent in the rnet
 #' @slot Layout_master A k x 2 matrix x & y coordinates of each vertex in the graph.
-#' @rdname rnet.input
+#' @rdname rnetInput
 
-rnet.input <- setClass(Class = "rnet.input",
+rnetInput <- setClass(Class = "rnetInput",
 	slots = c(
 		RawData = 'data.frame',
 		cor_method = 'character',
@@ -25,7 +25,7 @@ rnet.input <- setClass(Class = "rnet.input",
 
 #' An S4 class containg the information of a basic rnet. These objects are used to handle rnet objects and need not be called by the user.
 #' 
-#' Inherits from 'rnet.input'
+#' Inherits from 'rnetInput'
 #' @slot Data A dataframe containing the dataset.
 #' @slot L1 The L1 penalty
 #' @slot V_set The vertex set
@@ -40,9 +40,9 @@ rnet.input <- setClass(Class = "rnet.input",
 #' @slot A The adjacency matrix (omega_ij != 0)
 #' @slot R An igraph object derived from Omega
 #' @slot Layout A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed.
-#' @rdname rnet.basic
+#' @rdname rnetBasic
 #' 
-rnet.basic <- setClass(Class = "rnet.basic",
+rnetBasic <- setClass(Class = "rnetBasic",
 	slots = list(
 		Data = 'data.frame',
 		L1 = 'numeric',
@@ -60,33 +60,33 @@ rnet.basic <- setClass(Class = "rnet.basic",
 		R = 'ANY',
 		Layout = 'matrix'
 		),
-	contains = 'rnet.input'
+	contains = 'rnetInput'
 	)
 
 #' An S4 class containing the information of an rnet representing one stratum of data. These objects are used to handle rnet objects and need not be called by the user.
 #'
-#' Inheirits from 'rnet.basic'
+#' Inheirits from 'rnetBasic'
 #' @slot Strata_def The expression used to define the stratum of data represented by the rnet, e.g., if Statra_def = as.expression(Year == 2008), the rnet is estimated from the subset of data collected in the Year 2008.
-#' @@rdname rnet.strata
-rnet.strata <- setClass(Class = "rnet.strata",
+#' @rdname rnetStrata
+rnetStrata <- setClass(Class = "rnetStrata",
 	slots = list(Strata_def = 'expression'),
-	contains = 'rnet.basic'
+	contains = 'rnetBasic'
 	)
 #' An S4 class containing multiple Rnets, each the information of an rnet representing one stratum of data. These objects are used to handle rnet objects and need not be called by the user.
 #'
-#' Inheirits from 'rnet.input'
-#' @slot Stratify_by The name of the variable used to the original data, e.g. if Stratify_by = 'Year', the object contains 1 rnet.strata object for each unique value of the variable "year" in the dataset.
+#' Inheirits from 'rnetInput'
+#' @slot Stratify_by The name of the variable used to the original data, e.g. if Stratify_by = 'Year', the object contains 1 rnetStrata object for each unique value of the variable "year" in the dataset.
 #' @slot E_matrix A matrix containing every edge found in the entire set of rnets, and the stratum in which it was found.
-#' @slot R_strata A list of rnet.strata objects for each strata of the declared Stratify_by variable.
-#' @rdname rnet.strata.multi
+#' @slot R_strata A list of rnetStrata objects for each strata of the declared Stratify_by variable.
+#' @rdname rnetMultiStrata
 
-rnet.strata.multi <- setClass(Class = "rnet.strata.multi",
+rnetMultiStrata <- setClass(Class = "rnetMultiStrata",
 	slots = list(
 		Stratify_by = 'character',
 		E_matrix = 'matrix',
 		R_Strata = 'list'
 		),
-	contains = 'rnet.input'
+	contains = 'rnetInput'
 	)
 
 #' An S4 class for tracking multiple rnets created from one data set over multiple L1 penalties for comparison and selection.
@@ -105,7 +105,7 @@ rnet.strata.multi <- setClass(Class = "rnet.strata.multi",
 #' @slot M A dataframe with with graphical density data over the set of generated networks.
 #' @slot Edge_stability A dataframe showing edge stability over the set of generated networks.
 #' @slot StARS_D A vector of D_b values used for L1 selection.
-#' @rdname rnet.input
+#' @rdname rnetInput
 #' 
 rnet.L1.set <- setClass(Class = 'rnet.L1.set',
 	slots = list(
