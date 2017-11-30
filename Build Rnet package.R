@@ -1,4 +1,5 @@
 library(devtools)
+devtools::install(build_vignettes = T)
 #devtools::install_github('klutometis/roxygen')
 #Not sure if need to use previous line every time.
 library(roxygen2)

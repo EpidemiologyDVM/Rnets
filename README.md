@@ -12,7 +12,7 @@ The process of estimating a network from raw MIC data can be broadly divided int
 
 Briefly, $\lambda$ is a penalty applied to the correlation matrix; Larger $\lambda$ values tend to reduce more parrtial correlations to 0, resulting in sparser networks with fewer edges. To produce informative networks, $\lambda$ should be between smallest and largest absolute values of the correlation matrix's elements. Several methods have been described to select L~1~. The `L1_selection` function employs the Stability Approach to Regularization Selection (StARS) proposed by [CITATION NEEDED]. 
 
-The following code will use the _E. coli_ isolates' from 2008 in `NARMS_EC_DATA` MIC results for 15 antimicrobials. This function evaluates 100 subsets of size 1200 with $\lambda$ equal to 0.05, 0.10, 0.15, ..., 0.45, 0.50 for all E. coli s (takes ~ 5 minutes on an i7-6700 4.0 GHz with 16 Gb RAM).
+The following code will use the _E. coli_ isolates' from 2008 in `NARMS_EC_DATA` MIC results for 15 antimicrobials. This function evaluates 100 subsets of size 1200 with $\lambda$ equal to 0.05, 0.10,  ..., 0.45, 0.50 for all E. coli s (takes ~ 5 minutes on an i7-6700 4.0 GHz with 16 Gb RAM).
 
 ```
 EC.L1.results <- L1Selection(
@@ -51,13 +51,13 @@ plot(EC08_Rnet)
 The latest stable version of ```Rnets``` is available on the author's GitHub and can be installed using the following code:
 ```
 library(devtools)
-install-github('WJL-NCSU/Rnets')
+install-github('EpidemiologyDVM/Rnets')
 ```
 
 The latest development branch of the project, which is not guarunteed to be stable, can also be accessed from the author's GitHub using:
 ```
 library(devtools)
-install-github('WJL-NCSU/Rnets', branch = 'dev')
+install-github('EpidemiologyDVM/Rnets', branch = 'dev')
 ```
 
 The `Rnets` package has the following dependancies:
@@ -67,3 +67,6 @@ The `Rnets` package has the following dependancies:
 * Data aggregation over multiple strata is handled using the efficient `rbindlist` function in the `data.table` package maintained by Matt Dowle. 
 
 All three dependencies are available on CRAN as of 1.Dec.2017. 
+
+# Bug Reporting
+If you find parts of the package are not working as intended, please submit the issue on our project's GitHub site at: https://GitHub.com/EpidemiologyDVM/Rnets/issues or contact the author at wjlove@ncsu.edu
