@@ -12,3 +12,4 @@
     + Changed 'Modularity_Signed' to 'signedModularity'
     + Revised signedModularity
     + Changed S4 naming convention from 'rnet.basic' to 'rnetBasic'
+    + `check()` produces 0 errors/warnings/notes (other than UTF-8 warning)

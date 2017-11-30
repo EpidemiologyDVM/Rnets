@@ -15,3 +15,4 @@
 ^\.test\.signedModularity\.R$
 ^Archive$
 ^vignettes\Rnets-vignette\.html$
+^vignettes\Network-terminology.Rmd
