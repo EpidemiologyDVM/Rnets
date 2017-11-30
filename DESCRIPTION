@@ -6,7 +6,7 @@ Authors@R: person("William", "Love", email = "wjlove@ncsu.edu", role = c("aut", 
 Maintainer: William Love <wjlove@ncsu.edu>
 Description: This package creates resistance relationship networks, or 'Rnets'.
     These networks can be used to study relationships between antimicrobial
-    resistances (typically measured using MICs) and genes. IN DEVELOPMENT! Please be
+    resistances (typically measured using MICs) and genes. Please note the packages is still in in development! We appreciate your patience while we 
     patient as we clean up any errors during install and feel free to contact us if
     you find anything not working as advertised. We'd love to get your feedback!
 Depends:
