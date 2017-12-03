@@ -9,6 +9,24 @@
 #' @import igraph
 #' @importFrom stats aggregate
 #' @export
+#' @examples 
+#' 
+#' #Signed modularity in a random graph with 10 vertices
+#' 
+#' G_rand <- sample_gnp(10, 0.4)  #Creates a random graph with 10 vertices and density ~ 40%
+#' G_rand <- set_edge_attr(G_rand, 'weight', value = runif(gsize(G_rand), -0.5, 0.5))  #Randomly assign edge weights to edge attribute 'weight', both positive and negative
+#' G_rand <- set_vertex_attr(G_rand, name = 'group', value = sample(c('red', 'blue'), size = 10, replace = T))
+#' signedModularity(G_rand, membership = 'group', weight = 'weight')
+#'
+#'  #Compare to unsigned modularity calculation used by igraph::modularity, which does not accomod
+#'  modularity(G_rand, V(G_rand)$group, E(G_rand)$weight)
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' @rdname signedModularity
 
 signedModularity <- function(x, membership, weight = NULL){
   UseMethod("signedModularity", x)
@@ -48,7 +66,7 @@ signedModularity.matrix <- function(x, membership, weight = NULL) {
 		if(length(membership) == 1) if(membership%in%names(attributes(x))) {
 			membership_attr <- membership
 			membership <- attr(x, membership) 
-		} else stop(membership, 'is not a valid attribute of x.') 
+		} else stop(membership, ' is not a valid attribute of x.') 
 		if(length(membership)!=length(v.set)) stop("Length of 'membership' vector must match dimensions of 'x'.")
 		
 		x <- Sq2L(x, keep = c(T, F, F), output.col.names = c('i', 'j', 'w_ij'), drop.values = 0)
