@@ -14,5 +14,5 @@ Clean_Sigma(x, cor_method = "s", cor_pairing = "pair")
 \item{cor_pairing}{Method used to determine how NA entries are handled. See help file for 'cor' function.}
 }
 \description{
-Primarily a convenience function, Clean_Sigma estimates a correlation (Sigma) matrix that may contain substantial amounts of missing data and returns it in an easily usable form for the glasso function. Not intended for use by end users.
+Primarily a convenience function, Clean_Sigma estimates a correlation (Sigma) matrix that may contain substantial amounts of missing data and returns it in an easily usable form for the glasso function.
 }

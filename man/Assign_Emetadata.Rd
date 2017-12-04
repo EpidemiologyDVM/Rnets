@@ -33,9 +33,6 @@ Assign_Emetadata(network, E_metadata, match.attr, e.cutpoints = NULL,
 
 \item{reassign}{A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.}
 }
-\value{
-An object of the respective class (igraph, or various rnet objects) with edge attributes assigned. If no new object is assigned, the original object with the newly assigned edge attributes is returned to the environment, and the edge attributes are printed as a table.
-}
 \description{
 This method assigns metadata to edges in an igraph object based on a continuous edge attribute already present in object, typically called with E(graph)$attr. This method is designed to be a convenient alternative to repeated calls to 'E(graph)$attr <-  value' or 'set_edge_attr' to apply multiple attributes that vary on a single edge attribute. The attribute used to assign the other metadata attributes is typically assumed to be the value used to define the edge to begin with, so when the attribute is 0, it is typically assumed the edge doesn't exist and is omitted from the edge set.
 }
@@ -44,9 +41,8 @@ This method also works with all rnet objects (currently class 'rnet.basic', 'rne
 }
 \examples{
 
-#'E_ATTRS' is a data.frame included in the package containing line type and weight
-#      ('lty' & 'width', respectively) for plotting. Attribute 'omega' which contains 
-#      partial correlation results should be used to classify edges.
+#'E_ATTRS' is a data.frame included in the package containing line type and weight  ('lty' & 'width', respectively).
+# for plotting. Attribute 'omega' which contains partial correlation results should be used to classify edges.
 
 ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
 
@@ -68,9 +64,8 @@ Assign_Emetadata(EC08_rnet,
                  e.cutpoints = OMEGA_CUTS
                  )
 
-#NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame
-#     of assigned data. Reassignment can be performed, if desired. data.frame 
-#     not returned in such a case.
+#NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
+#      Reassignment can be performed, if desired. data.frame not returned in such a case.
 
 EC08_withAttrs <- Assign_Emetadata(EC08_rnet, 
                  E_metadata = E_ATTRS,

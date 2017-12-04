@@ -11,16 +11,14 @@
 #' @param sign.color By default, a two-element vector containing colors for edges representing positive and negative attribute values(black and red, respectively). This behavior will be overriden if this argument is set to FALSE, NA, or NULL. Note, edge_attr('color') will ALWAYS be assinged to network edges when this method is called.
 #' @param attr_abs_val A logical argument determining if the absolute value of match.attr is used when binning values.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
-#' @return An object of the respective class (igraph, or various rnet objects) with edge attributes assigned. If no new object is assigned, the original object with the newly assigned edge attributes is returned to the environment, and the edge attributes are printed as a table.
 #' @import igraph
 #' @include Rnet_classes.R
 
 #' @export
 #' @examples
 #'
-#' #'E_ATTRS' is a data.frame included in the package containing line type and weight
-#' #      ('lty' & 'width', respectively) for plotting. Attribute 'omega' which contains 
-#' #      partial correlation results should be used to classify edges.
+#' #'E_ATTRS' is a data.frame included in the package containing line type and weight  ('lty' & 'width', respectively).
+#' # for plotting. Attribute 'omega' which contains partial correlation results should be used to classify edges.
 #' 
 #' ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
 #' 
@@ -42,9 +40,8 @@
 #'                  e.cutpoints = OMEGA_CUTS
 #'                  )
 #' 
-#' #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame
-#' #     of assigned data. Reassignment can be performed, if desired. data.frame 
-#' #     not returned in such a case.
+#' #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
+#' #      Reassignment can be performed, if desired. data.frame not returned in such a case.
 #' 
 #' EC08_withAttrs <- Assign_Emetadata(EC08_rnet, 
 #'                  E_metadata = E_ATTRS,

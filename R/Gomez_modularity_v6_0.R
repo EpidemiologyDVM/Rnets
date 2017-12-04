@@ -10,24 +10,23 @@
 #' @importFrom stats aggregate
 #' @export
 #' @examples 
-#' \donttest{
 #' 
 #' #Signed modularity in a random graph with 10 vertices
 #' 
-#' x <- sample_gnp(5, 0.4)
-#'      #Creates a random graph with 10 vertices and density ~ 40%
-#' x <- set_edge_attr(x, 'weight', value = runif(gsize(x), -0.5, 0.5))  
-#'      #Randomly assign edge weights to edge attribute 'weight', both positive and negative
+#' x <- sample_gnp(5, 0.4)  #Creates a random graph with 10 vertices and density ~ 40%
+#' x <- set_edge_attr(x, 'weight', value = runif(gsize(x), -0.5, 0.5))  #Randomly assign edge weights to edge attribute 'weight', both positive and negative
 #' x <- set_vertex_attr(x, name = 'group', value = sample(c('red', 'blue'), size = 5, replace = TRUE))
 #' signedModularity(x, membership = 'group', weight = 'weight')
 #' signedModularity(x, membership = 'group')
-#' }
+#' 
+#' 
 #' @rdname signedModularity
 
 signedModularity <- function(x, membership, weight = NULL){
   UseMethod("signedModularity", x)
 }
 
+#' @rdname signedModularity.matrix
 signedModularity.matrix <- function(x, membership, weight = NULL) {
 		if(!is.null(dimnames(x))) {
       if(!all(dimnames(x)[[1]] == dimnames(x)[[2]])) stop('Adjacency matrix row & columnn names must be symmetric.')
@@ -48,6 +47,8 @@ signedModularity.matrix <- function(x, membership, weight = NULL) {
 		return(Q)
 }
 
+
+#' @rdname signedModularity.igraph
 signedModularity.igraph <- function(x, membership, weight = NULL) {
 
 		if(length(membership) == 1) if(membership%in%igraph::vertex_attr_names(x)) {
@@ -59,14 +60,18 @@ signedModularity.igraph <- function(x, membership, weight = NULL) {
 
 		x.igraph <- as_adjacency_matrix(x, attr = weight, sparse = FALSE)
 	
-		Q <- .sign.Q.internal(x.igraph, membership)
+		Q <- .sign.Q.internal(x, membership)
 		attr(Q, 'weight') <- weight
 		attr(Q, 'membership') <- membership_attr
 		return(Q)
 }
 
+
+#' @rdname signedModularity.rnetBasic
 signedModularity.rnetBasic <- function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
 
+
+#' @rdname signedModularity.rnetBasic
 signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
 		Q <- sapply(x@R_Strata, signedModularity, membership, weight)
 		return(Q)
@@ -88,4 +93,27 @@ signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
   }
 
   return(sum(w_pos)*Q_pos/(sum(w_pos) + sum(w_neg)) - sum(w_neg)*Q_neg/(sum(w_pos) + sum(w_neg)))
+  
 }
+
+#.sign.Q.internal <- function(x) {
+#	x$K_delta <- x$Attr_i == x$Attr_j
+#	x$w_ij_pos <- sapply(x$w_ij, max, 0)
+#	x$w_ij_neg <- sapply(-x$w_ij, max, 0)
+#
+#	w <- data.frame(i = c(x$i, x$j), w_ij_pos = x$w_ij_pos, w_ij_neg = x$w_ij_neg)
+#	w_pos <- stats::aggregate(w_ij_pos ~ i, data = w, FUN = sum)
+#	w_neg <- stats::aggregate(w_ij_neg ~ i, data = w, FUN = sum)
+#
+#	x$w_i_pos <- w_pos[match(x$i, w_pos$i),2]
+#	x$w_j_pos <- w_pos[match(x$j, w_pos$i),2]
+#	W_pos <- sum(w_pos$w_ij_pos)/2
+#	Q_pos <- if(W_pos ==0) 0 else sum((x$w_ij_pos - (x$w_i_pos * x$w_j_pos)/(2*W_pos))*x$K_delta)/(2*W_pos)
+#
+#	x$w_i_neg <- w_neg[match(x$i, w_neg$i),2]
+#	x$w_j_neg <- w_neg[match(x$j, w_neg$i),2]
+#	W_neg <- sum(w_neg$w_ij_neg)/2
+#	Q_neg <- if(W_neg ==0) 0 else sum((x$w_ij_neg - (x$w_i_neg * x$w_j_neg)/(2*W_neg))*x$K_delta)/(2*W_neg)
+#
+#	return(Q_pos * 2*W_pos /(2*W_pos + 2*W_neg) -  Q_neg * 2*W_neg /(2*W_pos + 2*W_neg))	
+#}
