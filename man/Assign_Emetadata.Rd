@@ -39,3 +39,42 @@ This method assigns metadata to edges in an igraph object based on a continuous 
 \details{
 This method also works with all rnet objects (currently class 'rnet.basic', 'rnet.strata', and 'rnet.multi.strata'), and also adds the names of the metadata attributes to the 'E_metadata' slot.
 }
+\examples{
+
+#'E_ATTRS' is a data.frame included in the package containing line type and weight  ('lty' & 'width', respectively).
+# for plotting. Attribute 'omega' which contains partial correlation results should be used to classify edges.
+
+ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
+
+EC08_rnet <- Rnet(NARMS_EC_DATA, 
+  L1 = 0.25, 
+  V_set = ABX_LIST, 
+  Stratify = NARMS_EC_DATA$Year == 2008
+  )
+
+#Attributes prior to additions
+edge_attr_names(EC08_rnet@R)
+edge_attr(EC08_rnet@R)
+
+OMEGA_CUTS <- c(0, 0.05, 0.10, 0.20, 1) #Cutpoints to sort abs(omega) into 4 bins
+
+Assign_Emetadata(EC08_rnet, 
+                 E_metadata = E_ATTRS,
+                 match.attr = 'omega',
+                 e.cutpoints = OMEGA_CUTS
+                 )
+
+#NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
+#      Reassignment can be performed, if desired. data.frame not returned in such a case.
+
+EC08_withAttrs <- Assign_Emetadata(EC08_rnet, 
+                 E_metadata = E_ATTRS,
+                 match.attr = 'omega',
+                 e.cutpoints = OMEGA_CUTS
+                 )
+
+#Atrributes after edges assigned.
+edge_attr(EC08_rnet@R)
+
+#NOTE: color assigned as per default behavior.
+}

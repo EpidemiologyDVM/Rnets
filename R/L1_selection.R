@@ -15,6 +15,17 @@
 #' @import igraph 
 #' @import data.table
 #' @export
+#' @examples 
+#' \donttest{
+#'  EC_all_L1Selection <- L1Selection(
+#'                              Data = NARMS_EC_DATA, 
+#'                              L1_set = seq(0.05, 0.50, 0.05),
+#'                              n_b = 1500,
+#'                              V_set = ABX_LIST
+#'                              )
+
+#' round(EC_all_L1Selection@StARS_D, 4)
+#' }
 
 setGeneric('L1Selection',
 	function(
