@@ -13,3 +13,8 @@
     + Revised signedModularity
     + Changed S4 naming convention from 'rnet.basic' to 'rnetBasic'
     + `check()` produces 0 errors/warnings/notes (other than UTF-8 warning)
+
+* 0.9.7
+    + Removed signedModularity.data.frame due to flawed algorithm
+    + Revised signedModularity to matrix-based algorith instead of list-based
+    
