@@ -22,3 +22,22 @@ For flexibility, x may be provided as any of the following formats: an edgelist 
 \details{
 Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, e.g. edges with both positive and negative. Gomez, et al, proposed a similar estimator of modularity estimated in two parts corresponding to positive (Q+) and negative (Q-) edges, and the latter is subtracted from the former. The 'signedModularity' function implements this method of modularity estimation, and returns a scalar.
 }
+\examples{
+
+#Signed modularity in a random graph with 10 vertices
+
+G_rand <- sample_gnp(10, 0.4)  #Creates a random graph with 10 vertices and density ~ 40\%
+G_rand <- set_edge_attr(G_rand, 'weight', value = runif(gsize(G_rand), -0.5, 0.5))  #Randomly assign edge weights to edge attribute 'weight', both positive and negative
+G_rand <- set_vertex_attr(G_rand, name = 'group', value = sample(c('red', 'blue'), size = 10, replace = TRUE))
+signedModularity(G_rand, membership = 'group', weight = 'weight')
+
+#igraph::modularity(G_rand,  membership = 'group', weight = 'weight') will throw errors due to negative weights
+#igraph::modularity & signedModularity will produce equal results when 
+ 
+
+
+
+
+
+
+}

@@ -13,18 +13,11 @@
 #' 
 #' #Signed modularity in a random graph with 10 vertices
 #' 
-#' G_rand <- sample_gnp(10, 0.4)  #Creates a random graph with 10 vertices and density ~ 40%
-#' G_rand <- set_edge_attr(G_rand, 'weight', value = runif(gsize(G_rand), -0.5, 0.5))  #Randomly assign edge weights to edge attribute 'weight', both positive and negative
-#' G_rand <- set_vertex_attr(G_rand, name = 'group', value = sample(c('red', 'blue'), size = 10, replace = TRUE))
-#' signedModularity(G_rand, membership = 'group', weight = 'weight')
-#'
-#' #igraph::modularity(G_rand,  membership = 'group', weight = 'weight') will throw errors due to negative weights
-#' #igraph::modularity & signedModularity will produce equal results when 
-#'  
-#' 
-#' 
-#' 
-#' 
+#' x <- sample_gnp(5, 0.4)  #Creates a random graph with 10 vertices and density ~ 40%
+#' x <- set_edge_attr(x, 'weight', value = runif(gsize(x), -0.5, 0.5))  #Randomly assign edge weights to edge attribute 'weight', both positive and negative
+#' x <- set_vertex_attr(x, name = 'group', value = sample(c('red', 'blue'), size = 5, replace = TRUE))
+#' signedModularity(x, membership = 'group', weight = 'weight')
+#' signedModularity(x, membership = 'group')
 #' 
 #' 
 #' @rdname signedModularity
