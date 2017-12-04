@@ -12,6 +12,7 @@
 #' @param Stratify The rule for stratifying the data, if desired. 
 #' @param Forced_zeros Edges to be omitted from the Rnet.
 #' @param Rand_seed Allows a random seed to be set subsampling results may be consistently regenerated.
+#' @return A vector of D statistics, corresponding the tested L1 values.
 #' @import igraph 
 #' @import data.table
 #' @export

@@ -33,6 +33,9 @@ Assign_Emetadata(network, E_metadata, match.attr, e.cutpoints = NULL,
 
 \item{reassign}{A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.}
 }
+\value{
+An object of the same type as x, with the new edge attributes assigned by binning the 'match.attr' in the igraph and assigning the matching rows in 'e.metadata'.
+}
 \description{
 This method assigns metadata to edges in an igraph object based on a continuous edge attribute already present in object, typically called with E(graph)$attr. This method is designed to be a convenient alternative to repeated calls to 'E(graph)$attr <-  value' or 'set_edge_attr' to apply multiple attributes that vary on a single edge attribute. The attribute used to assign the other metadata attributes is typically assumed to be the value used to define the edge to begin with, so when the attribute is 0, it is typically assumed the edge doesn't exist and is omitted from the edge set.
 }
@@ -41,8 +44,9 @@ This method also works with all rnet objects (currently class 'rnet.basic', 'rne
 }
 \examples{
 
-#'E_ATTRS' is a data.frame included in the package containing line type and weight  ('lty' & 'width', respectively).
-# for plotting. Attribute 'omega' which contains partial correlation results should be used to classify edges.
+#'E_ATTRS' is a data.frame included in the package containing line type and weight  
+#     for plotting edges ('lty' & 'width', respectively) that represent partial
+#     correlation magnitude and sign held in attribute 'omega'. 
 
 ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
 
@@ -76,5 +80,5 @@ EC08_withAttrs <- Assign_Emetadata(EC08_rnet,
 #Atrributes after edges assigned.
 edge_attr(EC08_rnet@R)
 
-#NOTE: color assigned as per default behavior.
+#NOTE: Edge color assigned as per default behavior.
 }

@@ -6,6 +6,7 @@
 #' @param keep A logical vector of length 3 indicating which of the three respective elements to keep: upper triangle, main diagonal, and lower triangle.
 #' @param drop.values A vector of values to remove from the output.
 #' @param drop.NA Logical value indicating if NAs should be removed.
+#' @return a data.frame with three columns. Columns 1 & 2 contain the row & column names, and third contains corresponding matrix values.
 #' @export
 #' @examples
 #' demo_mat <- matrix(c(1, 5, 2, 5, 1, 0, 2, 0, NA), nrow = 3)

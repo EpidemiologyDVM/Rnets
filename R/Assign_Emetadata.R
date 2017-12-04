@@ -13,6 +13,7 @@
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
 #' @include Rnet_classes.R
+#' @return An object of the same type as x, with the new edge attributes assigned by binning the 'match.attr' in the igraph and assigning the matching rows in 'e.metadata'.
 
 #' @export
 #' @examples

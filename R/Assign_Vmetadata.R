@@ -10,7 +10,7 @@
 #' @param vertex.match.attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(network)$name), which is typically assigned when the network is created with igraph functions.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
-#' @returns An object of the same typ as x, with the new vertex attributes assigned by matching 'match.attr' to 'vertex.match.attr'.
+#' @return An object of the same type as x, with the new vertex attributes assigned by matching 'match.attr' to 'vertex.match.attr'.
 #' @rdname Assign_Vmetadata
 #' @include Rnet_classes.R
 #' @examples 
@@ -30,7 +30,7 @@
 #' vertex_attr_names(EC08_rnet@R)
 #' vertex_attr(EC08_rnet@R)
 #' 
-#' Assign_Emetadata(EC08_rnet, 
+#' Assign_Vmetadata(EC08_rnet, 
 #'                  V_metadata = V_ATTRS,
 #'                  match.attr = 'Code',
 #'                  vertex.match.attr = 'name'
@@ -39,7 +39,7 @@
 #' #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
 #' #      Reassignment can be performed, if desired. data.frame not returned in such a case.
 #' 
-#' EC08_withAttrs <- Assign_Emetadata(EC08_rnet, 
+#' EC08_withAttrs <- Assign_Vmetadata(EC08_rnet, 
 #'                  V_metadata = V_ATTRS,
 #'                  match.attr = 'Code',
 #'                  vertex.match.attr = 'name'

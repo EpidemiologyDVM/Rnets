@@ -26,7 +26,6 @@ signedModularity <- function(x, membership, weight = NULL){
   UseMethod("signedModularity", x)
 }
 
-#' @rdname signedModularity.matrix
 signedModularity.matrix <- function(x, membership, weight = NULL) {
 		if(!is.null(dimnames(x))) {
       if(!all(dimnames(x)[[1]] == dimnames(x)[[2]])) stop('Adjacency matrix row & columnn names must be symmetric.')
@@ -47,8 +46,6 @@ signedModularity.matrix <- function(x, membership, weight = NULL) {
 		return(Q)
 }
 
-
-#' @rdname signedModularity.igraph
 signedModularity.igraph <- function(x, membership, weight = NULL) {
 
 		if(length(membership) == 1) if(membership%in%igraph::vertex_attr_names(x)) {
@@ -66,17 +63,12 @@ signedModularity.igraph <- function(x, membership, weight = NULL) {
 		return(Q)
 }
 
-
-#' @rdname signedModularity.rnetBasic
 signedModularity.rnetBasic <- function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
 
-
-#' @rdname signedModularity.rnetBasic
 signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
 		Q <- sapply(x@R_Strata, signedModularity, membership, weight)
 		return(Q)
 }
-
 
 .sign.Q.internal <- function(x, membership) {
   w_pos <- apply(x, c(1, 2), max, 0)

@@ -10,6 +10,7 @@
 #' @param NA.color A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
 #' The length of pos.colors and neg.colors must be the same and must be of length 1 greater than e.cutpoints.
 #' @export
+#' @return The code used to produce the plot.
 #' @examples
 #' #Example using EC_Rnets_byYear
 #' EC_Rnets_byYear <- Rnet(Data = NARMS_EC_DATA, 
