@@ -95,25 +95,3 @@ signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
   return(sum(w_pos)*Q_pos/(sum(w_pos) + sum(w_neg)) - sum(w_neg)*Q_neg/(sum(w_pos) + sum(w_neg)))
   
 }
-
-#.sign.Q.internal <- function(x) {
-#	x$K_delta <- x$Attr_i == x$Attr_j
-#	x$w_ij_pos <- sapply(x$w_ij, max, 0)
-#	x$w_ij_neg <- sapply(-x$w_ij, max, 0)
-#
-#	w <- data.frame(i = c(x$i, x$j), w_ij_pos = x$w_ij_pos, w_ij_neg = x$w_ij_neg)
-#	w_pos <- stats::aggregate(w_ij_pos ~ i, data = w, FUN = sum)
-#	w_neg <- stats::aggregate(w_ij_neg ~ i, data = w, FUN = sum)
-#
-#	x$w_i_pos <- w_pos[match(x$i, w_pos$i),2]
-#	x$w_j_pos <- w_pos[match(x$j, w_pos$i),2]
-#	W_pos <- sum(w_pos$w_ij_pos)/2
-#	Q_pos <- if(W_pos ==0) 0 else sum((x$w_ij_pos - (x$w_i_pos * x$w_j_pos)/(2*W_pos))*x$K_delta)/(2*W_pos)
-#
-#	x$w_i_neg <- w_neg[match(x$i, w_neg$i),2]
-#	x$w_j_neg <- w_neg[match(x$j, w_neg$i),2]
-#	W_neg <- sum(w_neg$w_ij_neg)/2
-#	Q_neg <- if(W_neg ==0) 0 else sum((x$w_ij_neg - (x$w_i_neg * x$w_j_neg)/(2*W_neg))*x$K_delta)/(2*W_neg)
-#
-#	return(Q_pos * 2*W_pos /(2*W_pos + 2*W_neg) -  Q_neg * 2*W_neg /(2*W_pos + 2*W_neg))	
-#}
