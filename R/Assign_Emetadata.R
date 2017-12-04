@@ -17,8 +17,9 @@
 #' @export
 #' @examples
 #'
-#' #'E_ATTRS' is a data.frame included in the package containing line type and weight  ('lty' & 'width', respectively).
-#' # for plotting. Attribute 'omega' which contains partial correlation results should be used to classify edges.
+#' #'E_ATTRS' is a data.frame included in the package containing line type and weight  
+#' #     for plotting edges ('lty' & 'width', respectively) that represent partial
+#' #     correlation magnitude and sign held in attribute 'omega'. 
 #' 
 #' ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
 #' 
@@ -52,7 +53,7 @@
 #' #Atrributes after edges assigned.
 #' edge_attr(EC08_rnet@R)
 #' 
-#' #NOTE: color assigned as per default behavior.
+#' #NOTE: Edge color assigned as per default behavior.
 #' @rdname Assign_Emetadata
 setGeneric('Assign_Emetadata',
 	function(network, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = T)

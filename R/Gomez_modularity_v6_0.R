@@ -10,7 +10,7 @@
 #' @importFrom stats aggregate
 #' @export
 #' @examples 
-#' 
+#' \donttest{
 #' #Signed modularity in a random graph with 10 vertices
 #' 
 #' x <- sample_gnp(5, 0.4)  #Creates a random graph with 10 vertices and density ~ 40%
@@ -19,7 +19,7 @@
 #' signedModularity(x, membership = 'group', weight = 'weight')
 #' signedModularity(x, membership = 'group')
 #' 
-#' 
+#' }
 #' @rdname signedModularity
 
 signedModularity <- function(x, membership, weight = NULL){
@@ -60,7 +60,7 @@ signedModularity.igraph <- function(x, membership, weight = NULL) {
 
 		x.igraph <- as_adjacency_matrix(x, attr = weight, sparse = FALSE)
 	
-		Q <- .sign.Q.internal(x, membership)
+		Q <- .sign.Q.internal(x.igraph, membership)
 		attr(Q, 'weight') <- weight
 		attr(Q, 'membership') <- membership_attr
 		return(Q)

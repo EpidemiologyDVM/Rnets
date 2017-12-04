@@ -26,7 +26,6 @@ Collate:
     'Clean_Sigma.R'
     'Estimate_pCorrs.R'
     'GenR.R'
-    'Gomez_modularity_v5_0.R'
     'Gomez_modularity_v6_0.R'
     'L1_selection.R'
     'Rnet.R'
