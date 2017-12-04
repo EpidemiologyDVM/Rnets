@@ -17,6 +17,7 @@
 #' @export
 #' @examples 
 #' \donttest{
+#' #Estimates D statistics for L1 values from 0.05 to 0.50 in 0.05 increments.
 #'  EC_all_L1Selection <- L1Selection(
 #'                              Data = NARMS_EC_DATA, 
 #'                              L1_set = seq(0.05, 0.50, 0.05),

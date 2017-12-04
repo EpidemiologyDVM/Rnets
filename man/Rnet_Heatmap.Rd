@@ -22,6 +22,9 @@ Rnet_Heatmap(rnet.list, e.cutpoints, pos.colors = c("#FFBBBB", "#FF8888",
 \item{NA.color}{A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
 The length of pos.colors and neg.colors must be the same and must be of length 1 greater than e.cutpoints.}
 }
+\value{
+A string containing the command used to produce the plot.
+}
 \description{
 Bitmaps can be used to show how edges in a network change over time or other criteria. This function takes an object of the 'rnet.multi.strata' class, specifically the E_matrix, and returns a numerical matrix used to visualize E_matrix. The numerical matrix can be visualized with a call to the 'image' function; The assinged colors are stored in the 'palette' attribute attached to the matrix. This matrix can then be used to plot the bitmap in which each horizontal row in the bitmap represents a unique edge found in the set of networks in rnet.multi.strata object and each vertical column is a network stratum (see the 'Rnet' method for more information). The colors represent the binned values in the E_matrix.
 }

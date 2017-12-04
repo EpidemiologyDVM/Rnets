@@ -20,9 +20,6 @@ devtools::use_build_ignore(".*.Rproj")
 devtools::use_build_ignore(".test.signedModularity.R")
 devtools::use_build_ignore("Archive")
 
-devtools::use_build_ignore("vignettes\\Rnets-vignette.html") #TEMPORARILY IGNORE INCOMPLETE VIGNETTES!!!
-
-
 document()
 build(path = '.')
 #sink(file = 'check.txt')
