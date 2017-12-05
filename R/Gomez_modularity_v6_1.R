@@ -22,7 +22,6 @@
 #' signedModularity(x, membership = 'group')
 #' 
 #' }
-#' @rdname signedModularity
 
 setGeneric('signedModularity',
   function(x, membership, weight = NULL)
@@ -32,6 +31,10 @@ setGeneric('signedModularity',
 
 #' @title signedModularity for class(x) = 'matrix'
 #' @rdname signedModularity-matrix
+#' @param x A weighed adjacency matrix
+#' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
+#' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
+#' 
 setMethod('signedModularity',
   signature(x = 'matrix'),
   function(x, membership, weight = NULL) 
@@ -57,6 +60,10 @@ setMethod('signedModularity',
 
 #' @title signedModularity for class(x) = 'igraph'
 #' @rdname signedModularity-igraph
+#' @param x An igraph object
+#' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
+#' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
+#' 
 setMethod('signedModularity',
   signature(x = 'igraph'),
   function(x, membership, weight = NULL) 
@@ -78,6 +85,10 @@ setMethod('signedModularity',
 
 #' @title signedModularity for class(x) = 'rnetBasic'
 #' @rdname signedModularity-rnetBasic
+#' @param x An object of class 'rnetBasic'
+#' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
+#' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
+#' 
 setMethod('signedModularity',
   signature(x = 'rnetBasic'), 
   function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
@@ -85,6 +96,10 @@ setMethod('signedModularity',
 
 #' @title signedModularity for class(x) = 'rnetMultiStrata'
 #' @rdname signedModularity-rnetMultiStrata
+#' @param x An object of class 'rnetMultiStrata'
+#' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
+#' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
+#' 
 setMethod('signedModularity',
   signature(x='rnetMultiStrata'),
   function(x, membership, weight = 'omega')  sapply(x@R_Strata, signedModularity, membership, weight)
