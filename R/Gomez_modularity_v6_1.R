@@ -14,61 +14,81 @@
 #' #Signed modularity in a random graph with 10 vertices
 #' 
 #' x <- sample_gnp(5, 0.4)  #Creates a random graph with 10 vertices and density ~ 40%
-#' x <- set_edge_attr(x, 'weight', value = runif(gsize(x), -0.5, 0.5))  #Randomly assign edge weights to edge attribute 'weight', both positive and negative
+#' x <- set_edge_attr(x, 'weight', value = runif(gsize(x), -0.5, 0.5))  
+#'      #Randomly assign edge weights to edge attribute 'weight', both positive and negative
 #' x <- set_vertex_attr(x, name = 'group', value = sample(c('red', 'blue'), size = 5, replace = TRUE))
+#' 
 #' signedModularity(x, membership = 'group', weight = 'weight')
 #' signedModularity(x, membership = 'group')
 #' 
 #' }
 #' @rdname signedModularity
 
-signedModularity <- function(x, membership, weight = NULL){
+setGeneric('signedModularity',
+  function(x, membership, weight = NULL)
+  {
   UseMethod("signedModularity", x)
-}
+})
 
-signedModularity.matrix <- function(x, membership, weight = NULL) {
-		if(!is.null(dimnames(x))) {
-      if(!all(dimnames(x)[[1]] == dimnames(x)[[2]])) stop('Adjacency matrix row & columnn names must be symmetric.')
-		  v.set <- dimnames(x)[[1]]
-		} else v.set <- 1:dim(x)[[1]]
-	  membership_attr <- 'Undeclared'
-		if(length(membership) == 1) {
-		  if(membership%in%names(attributes(x))) {
-			  membership_attr <- membership
-			  membership <- attr(x, membership) 
-		  } else stop(membership, ' is not a valid attribute of x.') 
-		} else if(length(membership)!=length(v.set)) stop("Length of 'membership' vector must match dimensions of 'x'.")
+#' @title signedModularity for class(x) = 'matrix'
+#' @rdname signedModularity-matrix
+setMethod('signedModularity',
+  signature(x = 'matrix'),
+  function(x, membership, weight = NULL) 
+    {
+		  if(!is.null(dimnames(x))) {
+        if(!all(dimnames(x)[[1]] == dimnames(x)[[2]])) stop('Adjacency matrix row & columnn names must be symmetric.')
+		    v.set <- dimnames(x)[[1]]
+		  } else v.set <- 1:dim(x)[[1]]
+	    membership_attr <- 'Undeclared'
+		  if(length(membership) == 1) {
+		    if(membership%in%names(attributes(x))) {
+			    membership_attr <- membership
+			    membership <- attr(x, membership) 
+		    } else stop(membership, ' is not a valid attribute of x.') 
+		  } else if(length(membership)!=length(v.set)) stop("Length of 'membership' vector must match dimensions of 'x'.")
 
-	  Q <- .sign.Q.internal(x, membership)
+	    Q <- .sign.Q.internal(x, membership)
     
-		attr(Q, 'weight') <- weight
-		attr(Q, 'membership') <- membership_attr
-		return(Q)
-}
+		  attr(Q, 'weight') <- weight
+		  attr(Q, 'membership') <- membership_attr
+		  return(Q)
+  })
 
-signedModularity.igraph <- function(x, membership, weight = NULL) {
+#' @title signedModularity for class(x) = 'igraph'
+#' @rdname signedModularity-igraph
+setMethod('signedModularity',
+  signature(x = 'igraph'),
+  function(x, membership, weight = NULL) 
+    {
+		  if(length(membership) == 1) if(membership%in%igraph::vertex_attr_names(x)) {
+			  membership_attr <- membership
+			  membership <- vertex_attr(x, membership) 
+		  } else stop(membership, 'is not a valid attribute of x.') 
 
-		if(length(membership) == 1) if(membership%in%igraph::vertex_attr_names(x)) {
-			membership_attr <- membership
-			membership <- vertex_attr(x, membership) 
-		} else stop(membership, 'is not a valid attribute of x.') 
+		  if(length(membership)!=length(V(x))) stop("Length of 'membership' vector must match dimensions of 'x'.")
 
-		if(length(membership)!=length(V(x))) stop("Length of 'membership' vector must match dimensions of 'x'.")
-
-		x.igraph <- as_adjacency_matrix(x, attr = weight, sparse = FALSE)
+		  x.igraph <- as_adjacency_matrix(x, attr = weight, sparse = FALSE)
 	
-		Q <- .sign.Q.internal(x.igraph, membership)
-		attr(Q, 'weight') <- weight
-		attr(Q, 'membership') <- membership_attr
-		return(Q)
-}
+		  Q <- .sign.Q.internal(x.igraph, membership)
+		  attr(Q, 'weight') <- weight
+		  attr(Q, 'membership') <- membership_attr
+		  return(Q)
+    })
 
-signedModularity.rnetBasic <- function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
+#' @title signedModularity for class(x) = 'rnetBasic'
+#' @rdname signedModularity-rnetBasic
+setMethod('signedModularity',
+  signature(x = 'rnetBasic'), 
+  function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
+  )
 
-signedModularity.rnetMultiStrata <- function(x, membership, weight = 'omega') {
-		Q <- sapply(x@R_Strata, signedModularity, membership, weight)
-		return(Q)
-}
+#' @title signedModularity for class(x) = 'rnetMultiStrata'
+#' @rdname signedModularity-rnetMultiStrata
+setMethod('signedModularity',
+  signature(x='rnetMultiStrata'),
+  function(x, membership, weight = 'omega')  sapply(x@R_Strata, signedModularity, membership, weight)
+  )
 
 .sign.Q.internal <- function(x, membership) {
   w_pos <- apply(x, c(1, 2), max, 0)

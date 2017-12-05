@@ -57,7 +57,7 @@ EC08_rnet <- Rnet(NARMS_EC_DATA,
 vertex_attr_names(EC08_rnet@R)
 vertex_attr(EC08_rnet@R)
 
-Assign_Emetadata(EC08_rnet, 
+Assign_Vmetadata(EC08_rnet, 
                  V_metadata = V_ATTRS,
                  match.attr = 'Code',
                  vertex.match.attr = 'name'
@@ -66,7 +66,7 @@ Assign_Emetadata(EC08_rnet,
 #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
 #      Reassignment can be performed, if desired. data.frame not returned in such a case.
 
-EC08_withAttrs <- Assign_Emetadata(EC08_rnet, 
+EC08_withAttrs <- Assign_Vmetadata(EC08_rnet, 
                  V_metadata = V_ATTRS,
                  match.attr = 'Code',
                  vertex.match.attr = 'name'
