@@ -3,7 +3,7 @@
 \docType{methods}
 \name{signedModularity,rnetBasic-method}
 \alias{signedModularity,rnetBasic-method}
-\title{signedModularity-rnetBasic}
+\title{signedModularity for class(x) = 'rnetBasic'}
 \usage{
 \S4method{signedModularity}{rnetBasic}(x, membership = NULL,
   weight = "omega")
@@ -16,5 +16,5 @@
 \item{weight}{Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.}
 }
 \description{
-signedModularity method for class(x) = 'matrix'
+signedModularity for class(x) = 'rnetBasic'
 }

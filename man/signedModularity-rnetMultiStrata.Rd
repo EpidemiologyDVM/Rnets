@@ -3,7 +3,7 @@
 \docType{methods}
 \name{signedModularity,rnetMultiStrata-method}
 \alias{signedModularity,rnetMultiStrata-method}
-\title{signedModularity-MultiStrata}
+\title{signedModularity for class(x) = 'rnetMultiStrata'}
 \usage{
 \S4method{signedModularity}{rnetMultiStrata}(x, membership, weight = "omega")
 }

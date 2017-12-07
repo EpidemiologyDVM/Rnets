@@ -20,7 +20,7 @@ a numeric value estimating the weighted, signed modularity of x, or a numeric ve
 For flexibility, x may be provided as any of the following formats: an edgelist (data.frame), a weighted adjacency matrix (square numeric matrix), an igraph object, or an rnet.* object (e.g., rnetBasic, rnetMultiStrata, etc.).
 }
 \details{
-Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, i.e. edges with both positive and negative weights. In Gomez, et al (2009), a similar estimator of modularity was proposed that is estimated as the diffrence between the modularity attributed to the positive (Q+) and negative (Q-) edges. The 'signedModularity' methods implement this method of modularity estimation, and returns a scalar.
+Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, e.g. edges with both positive and negative. Gomez, et al, proposed a similar estimator of modularity estimated in two parts corresponding to positive (Q+) and negative (Q-) edges, and the latter is subtracted from the former. The 'signedModularity' function implements this method of modularity estimation, and returns a scalar.
 }
 \examples{
 \donttest{

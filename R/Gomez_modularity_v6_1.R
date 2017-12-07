@@ -1,6 +1,6 @@
 #' Robust Estimator of modularity (Gomez, et al 2009)
 #'
-#' Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, i.e. edges with both positive and negative weights. In Gomez, et al (2009), a similar estimator of modularity was proposed that is estimated as the diffrence between the modularity attributed to the positive (Q+) and negative (Q-) edges. The 'signedModularity' methods implement this method of modularity estimation, and returns a scalar.
+#' Newman's method of estimating graphical modularity based on vertex can accomodate edge weights, but cannot incorporate signed edges, e.g. edges with both positive and negative. Gomez, et al, proposed a similar estimator of modularity estimated in two parts corresponding to positive (Q+) and negative (Q-) edges, and the latter is subtracted from the former. The 'signedModularity' function implements this method of modularity estimation, and returns a scalar.
 #' @param x A graph presented in of the forms discussed below.
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
 #' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
@@ -29,9 +29,7 @@ setGeneric('signedModularity',
   UseMethod("signedModularity", x)
 })
 
-#' @title signedModularity-matrix
-#' 
-#' @description signedModularity method for class(x) = 'matrix'
+#' @title signedModularity for class(x) = 'matrix'
 #' @rdname signedModularity-matrix
 #' @param x A weighed adjacency matrix
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
@@ -60,9 +58,7 @@ setMethod('signedModularity',
 		  return(Q)
   })
 
-#' @title signedModularity-igraph'
-#' @description signedModularity method for class(x) = 'igraph'
-
+#' @title signedModularity for class(x) = 'igraph'
 #' @rdname signedModularity-igraph
 #' @param x An igraph object
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
@@ -87,8 +83,7 @@ setMethod('signedModularity',
 		  return(Q)
     })
 
-#' @title signedModularity-rnetBasic
-#' @description signedModularity method for class(x) = 'matrix'
+#' @title signedModularity for class(x) = 'rnetBasic'
 #' @rdname signedModularity-rnetBasic
 #' @param x An object of class 'rnetBasic'
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
@@ -99,8 +94,7 @@ setMethod('signedModularity',
   function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
   )
 
-#' @title signedModularity-MultiStrata
-#' @description signedModularity for class(x) = 'rnetMultiStrata'
+#' @title signedModularity for class(x) = 'rnetMultiStrata'
 #' @rdname signedModularity-rnetMultiStrata
 #' @param x An object of class 'rnetMultiStrata'
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
