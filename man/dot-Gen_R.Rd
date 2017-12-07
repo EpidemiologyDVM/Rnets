@@ -15,4 +15,6 @@
 }
 \description{
 Internal for the "Rnet" methods. .Gen_R should not be called directly.
+
+Internal for the "Rnet" methods. .Gen_R should not be called directly.
 }
