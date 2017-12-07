@@ -3,7 +3,7 @@
 \docType{methods}
 \name{signedModularity,igraph-method}
 \alias{signedModularity,igraph-method}
-\title{signedModularity for class(x) = 'igraph'}
+\title{signedModularity-igraph'}
 \usage{
 \S4method{signedModularity}{igraph}(x, membership, weight = NULL)
 }
@@ -15,5 +15,5 @@
 \item{weight}{Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.}
 }
 \description{
-signedModularity for class(x) = 'igraph'
+signedModularity method for class(x) = 'igraph'
 }
