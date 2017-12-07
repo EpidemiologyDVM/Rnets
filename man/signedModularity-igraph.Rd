@@ -3,7 +3,7 @@
 \docType{methods}
 \name{signedModularity,igraph-method}
 \alias{signedModularity,igraph-method}
-\title{signedModularity for class(x) = 'igraph'}
+\title{signedModularity-igraph}
 \usage{
 \S4method{signedModularity}{igraph}(x, membership, weight = NULL)
 }

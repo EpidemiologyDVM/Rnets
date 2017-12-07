@@ -3,7 +3,7 @@
 \docType{methods}
 \name{signedModularity,rnetBasic-method}
 \alias{signedModularity,rnetBasic-method}
-\title{signedModularity for class(x) = 'rnetBasic'}
+\title{signedModularity-rnetBasic}
 \usage{
 \S4method{signedModularity}{rnetBasic}(x, membership = NULL,
   weight = "omega")

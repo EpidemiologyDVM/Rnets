@@ -29,7 +29,9 @@ setGeneric('signedModularity',
   UseMethod("signedModularity", x)
 })
 
-#' @title signedModularity for class(x) = 'matrix'
+
+#' @title signedModularity-matrix
+#' @description signedModularity for class(x) = 'matrix'
 #' @rdname signedModularity-matrix
 #' @param x A weighed adjacency matrix
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
@@ -58,7 +60,9 @@ setMethod('signedModularity',
 		  return(Q)
   })
 
-#' @title signedModularity for class(x) = 'igraph'
+
+#' @title signedModularity-igraph
+#' @description signedModularity for class(x) = 'igraph'
 #' @rdname signedModularity-igraph
 #' @param x An igraph object
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
@@ -83,7 +87,9 @@ setMethod('signedModularity',
 		  return(Q)
     })
 
-#' @title signedModularity for class(x) = 'rnetBasic'
+
+#' @title signedModularity-rnetBasic
+#' @description signedModularity for class(x) = 'rnetBasic'
 #' @rdname signedModularity-rnetBasic
 #' @param x An object of class 'rnetBasic'
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
@@ -94,7 +100,9 @@ setMethod('signedModularity',
   function(x, membership = NULL, weight = 'omega') signedModularity(x@R, membership, weight)
   )
 
-#' @title signedModularity for class(x) = 'rnetMultiStrata'
+
+#' @title signedModularity-rnetMultiStrata
+#' @description signedModularity for class(x) = 'rnetMultiStrata'
 #' @rdname signedModularity-rnetMultiStrata
 #' @param x An object of class 'rnetMultiStrata'
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
