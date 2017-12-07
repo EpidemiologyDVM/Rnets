@@ -18,6 +18,9 @@ Sq2L(x, output.col.names = NULL, keep = c(T, T, T), drop.values = 0,
 
 \item{drop.NA}{Logical value indicating if NAs should be removed.}
 }
+\value{
+a data.frame with three columns. Columns 1 & 2 contain the row & column names, and third contains corresponding matrix values.
+}
 \description{
 This function resphapes all or parts of a square matrix into a 3 column table.
 }

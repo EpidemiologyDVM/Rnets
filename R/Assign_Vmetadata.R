@@ -10,8 +10,44 @@
 #' @param vertex.match.attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(network)$name), which is typically assigned when the network is created with igraph functions.
 #' @param reassign A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.
 #' @import igraph
+#' @return An object of the same type as x, with the new vertex attributes assigned by matching 'match.attr' to 'vertex.match.attr'.
 #' @rdname Assign_Vmetadata
 #' @include Rnet_classes.R
+#' @examples 
+#' # V_ATTRS' is a data.frame included in the package containing vertex metadata
+#' #     regarding antimicrobial class and a color scheme for the vertices. These 
+#' #     attributes are useful for plotting and determining modularity.
+#' 
+#' ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
+#' 
+#' EC08_rnet <- Rnet(NARMS_EC_DATA, 
+#'   L1 = 0.25, 
+#'   V_set = ABX_LIST, 
+#'   Stratify = NARMS_EC_DATA$Year == 2008
+#'   )
+#' 
+#' #Attributes prior to additions
+#' vertex_attr_names(EC08_rnet@R)
+#' vertex_attr(EC08_rnet@R)
+#' 
+#' Assign_Vmetadata(EC08_rnet, 
+#'                  V_metadata = V_ATTRS,
+#'                  match.attr = 'Code',
+#'                  vertex.match.attr = 'name'
+#'                  )
+#' 
+#' #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
+#' #      Reassignment can be performed, if desired. data.frame not returned in such a case.
+#' 
+#' EC08_withAttrs <- Assign_Vmetadata(EC08_rnet, 
+#'                  V_metadata = V_ATTRS,
+#'                  match.attr = 'Code',
+#'                  vertex.match.attr = 'name'
+#'                  )
+#' 
+#' #Atrributes after edges assigned.
+#' vertex_attr(EC08_rnet@R)
+
 #' @export
 
 setGeneric('Assign_Vmetadata',

@@ -12,9 +12,21 @@
 #' @param Stratify The rule for stratifying the data, if desired. 
 #' @param Forced_zeros Edges to be omitted from the Rnet.
 #' @param Rand_seed Allows a random seed to be set subsampling results may be consistently regenerated.
+#' @return A vector of D statistics, corresponding the tested L1 values.
 #' @import igraph 
 #' @import data.table
 #' @export
+#' @examples 
+#' \donttest{
+#'  EC_all_L1Selection <- L1Selection(
+#'                              Data = NARMS_EC_DATA, 
+#'                              L1_set = seq(0.05, 0.50, 0.05),
+#'                              n_b = 1500,
+#'                              V_set = ABX_LIST
+#'                              )
+
+#' round(EC_all_L1Selection@StARS_D, 4)
+#' }
 
 setGeneric('L1Selection',
 	function(
