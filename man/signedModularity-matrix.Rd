@@ -3,7 +3,7 @@
 \docType{methods}
 \name{signedModularity,matrix-method}
 \alias{signedModularity,matrix-method}
-\title{signedModularity for class(x) = 'matrix'}
+\title{signedModularity-matrix}
 \usage{
 \S4method{signedModularity}{matrix}(x, membership, weight = NULL)
 }
