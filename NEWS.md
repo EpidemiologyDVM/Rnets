@@ -18,3 +18,7 @@
     + Removed signedModularity.data.frame 
     + Revised signedModularity to matrix-based algorithm instead of list-based
     
+* 0.9.8
+    + 'L1Selection' no longer has .random.seed option
+    + 
+    

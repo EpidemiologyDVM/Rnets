@@ -39,8 +39,7 @@ setGeneric('L1Selection',
 		cor_method = 's',
 		cor_pairing = 'pair',
 		Forced_zeros = NULL,
-		Stratify = NULL,
-		Rand_seed = NULL
+		Stratify = NULL
 		)
 	{
 		if(n_b < 1) {
@@ -63,7 +62,7 @@ setGeneric('L1Selection',
 		B_sets <- sapply(rep(n_b, B), sample, x = 1:dim(Data)[1])
 		Data_b <- array(0, dim = c(n_b, k, B),  dimnames = list(1:n_b, V_set, 1:B))
 		W_aggr <- array(0, dim = c(k, k, B, length(L1_set)), dimnames = list(V_set, V_set, 1:B, as.character(L1_set)))
-		if(!is.null(Rand_seed)) set.seed(Rand_seed)
+
 		iter <- 1
 		for(b in 1:B) {
 			t_0 <- proc.time()[3]
