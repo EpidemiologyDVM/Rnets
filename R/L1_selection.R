@@ -59,7 +59,8 @@ setGeneric('L1Selection',
 		if(is.null(V_set)) V_set <- names(Data)
 		k <- length(V_set)
 		M <- data.frame(b = numeric(0), L1 = numeric(0), t = numeric(0), m = numeric(0))
-		B_sets <- t(sapply(rep(B, n_b), sample, x = 1:dim(Data)[1]))
+
+		B_sets <- sapply(rep(n_b, B), sample, x = 1:dim(Data)[1])
 		Data_b <- array(0, dim = c(n_b, k, B),  dimnames = list(1:n_b, V_set, 1:B))
 		W_aggr <- array(0, dim = c(k, k, B, length(L1_set)), dimnames = list(V_set, V_set, 1:B, as.character(L1_set)))
 		if(!is.null(Rand_seed)) set.seed(Rand_seed)
