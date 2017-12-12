@@ -11,7 +11,6 @@
 #' @param cor_pairing The method used to determine how NAs are handled when determining which pairs are used to estimate correlations. See 'cor' function documentation for additional information.
 #' @param Stratify The rule for stratifying the data, if desired. 
 #' @param Forced_zeros Edges to be omitted from the Rnet.
-#' @param Rand_seed Allows a random seed to be set subsampling results may be consistently regenerated.
 #' @return A vector of D statistics, corresponding the tested L1 values.
 #' @import igraph 
 #' @import data.table

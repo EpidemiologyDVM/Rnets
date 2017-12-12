@@ -6,7 +6,7 @@
 \usage{
 L1Selection(Data, L1_set, B = 100, n_b = 0.5, V_set = NULL,
   n_threshold = 0, cor_method = "s", cor_pairing = "pair",
-  Forced_zeros = NULL, Stratify = NULL, Rand_seed = NULL)
+  Forced_zeros = NULL, Stratify = NULL)
 }
 \arguments{
 \item{Data}{The dataset containing the MICs}
@@ -28,8 +28,6 @@ L1Selection(Data, L1_set, B = 100, n_b = 0.5, V_set = NULL,
 \item{Forced_zeros}{Edges to be omitted from the Rnet.}
 
 \item{Stratify}{The rule for stratifying the data, if desired.}
-
-\item{Rand_seed}{Allows a random seed to be set subsampling results may be consistently regenerated.}
 }
 \value{
 A vector of D statistics, corresponding the tested L1 values.

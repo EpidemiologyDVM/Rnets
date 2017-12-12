@@ -14,11 +14,10 @@
     + `check()` produces 0 errors/warnings/notes (other than UTF-8 warning)
 
 * 0.9.7
-    + Initial 'open beta' relase
     + Removed signedModularity.data.frame 
     + Revised signedModularity to matrix-based algorithm instead of list-based
     
 * 0.9.8
+    + Initial 'open beta' relase
     + 'L1Selection' no longer has .random.seed option
-    + 
     
