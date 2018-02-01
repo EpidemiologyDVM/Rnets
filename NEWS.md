@@ -21,3 +21,7 @@
     + Initial 'open beta' relase
     + 'L1Selection' no longer has .random.seed option
     
+* 0.9.9
+    + Resolved bug with 'plot' method. Was calling hidden function as external, now called as internal.
+    + Added graph.layout argument to plot method to allow manual definition of graph layout.
+    

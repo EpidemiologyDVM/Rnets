@@ -6,7 +6,7 @@
 \alias{plot}
 \title{Plot methods for R-nets}
 \usage{
-\S4method{plot}{rnetBasic}(x)
+\S4method{plot}{rnetBasic}(x, graph.layout = NULL)
 }
 \arguments{
 \item{x}{an rnet object of class 'rnet.basic'}
