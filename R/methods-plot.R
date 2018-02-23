@@ -20,7 +20,7 @@ setMethod('plot',
 		edge.attribs <- intersect(x@E_metadata, EDGE.PARAMS)
 		if(length(edge.attribs) > 0) for(attrib.name in edge.attribs) edge.attrib.lines <- c(edge.attrib.lines, paste('edge.', attrib.name, '= E(x@R)$', attrib.name, sep = ''))
 
-		x@Layout <- Rnets::.Assign_Layout_Matrix(x)
+		x@Layout <- Rnets:::.Assign_Layout_Matrix(x)
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
 
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
