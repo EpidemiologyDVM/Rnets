@@ -23,7 +23,7 @@ setMethod('plot',
 
 		if(!is.null(graph.layout)) x@Layout_master <- graph.layout
 		x@Layout <- Rnets:::.Assign_Layout_Matrix(x)
-		
+
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
 
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')
