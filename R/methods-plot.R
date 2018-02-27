@@ -21,7 +21,7 @@ setMethod('plot',
 		edge.attribs <- intersect(x@E_metadata, EDGE.PARAMS)
 		if(length(edge.attribs) > 0) for(attrib.name in edge.attribs) edge.attrib.lines <- c(edge.attrib.lines, paste('edge.', attrib.name, '= E(x@R)$', attrib.name, sep = ''))
 
-		if(!is.null(graph.layout)) x@Layout <- graph.layout
+		if(!is.null(graph.layout)) x@Layout_master <- graph.layout
 		x@Layout <- Rnets:::.Assign_Layout_Matrix(x)
 		
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
