@@ -1,4 +1,4 @@
-#Rnets v 0.9.7
+#Rnets v 0.9.9
 
 ## Major Changes
 
@@ -24,4 +24,5 @@
 * 0.9.9
     + Resolved bug with 'plot' method. Was calling hidden function as external, now called as internal.
     + Added graph.layout argument to plot method to allow manual definition of graph layout.
+    + Added summary method for Rnet objects with multiple strata
     
