@@ -1,7 +1,6 @@
 Package: Rnets
 Title: Resistance Relationship Networks using Graphical LASSO
 Version: 0.9.9
-
 Date: 2017-11-27
 Authors@R: person("William", "Love", email = "wjlove@ncsu.edu", role = c("aut", "cre"))
 Maintainer: William Love <wjlove@ncsu.edu>
@@ -11,7 +10,7 @@ Depends:
     glasso (>= 1.8),
     igraph(>= 1.0),
     data.table(>= 1.9.6),
-    stringr(>=1.2.0)
+    stringr(>= 1.2.0)
 Imports:
     methods
 License: GPL-3

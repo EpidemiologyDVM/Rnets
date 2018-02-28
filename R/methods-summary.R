@@ -4,6 +4,7 @@
 #' @param object an rnet object of class 'rnetBasic'
 #' @param ... Additional arguments passed to 'summary' method
 #' @rdname summary-rnetBasic
+#' @importFrom stringr str_pad
 #' @aliases summary
 #' @export
 
@@ -36,10 +37,10 @@ setMethod(f = 'summary',
 setMethod(f = 'summary',
           signature(object = 'rnetMultiStrata'),
           function(object) {
-           Edges <- ifelse(object@E_matrix == 0, '', str_pad(abs(object@E_matrix), width = 5, side = 'right', pad = '0'))
+           Edges <- ifelse(object@E_matrix == 0, '', stringr::str_pad(abs(object@E_matrix), width = 5, side = 'right', pad = '0'))
            Edges <- ifelse(object@E_matrix < 0, 
-                          str_pad(Edges, width = 6, side = 'left', pad = '-'),
-                            str_pad(Edges, width = 6, side = 'left', pad = ' ')
+                           stringr::str_pad(Edges, width = 6, side = 'left', pad = '-'),
+                           stringr::str_pad(Edges, width = 6, side = 'left', pad = ' ')
                             )
             colnames(Edges) <- paste(' ', gsub(paste(object@Stratify_by, '.', sep = ''), '', colnames(Edges)), sep = '')
             summary_table <- rbind(
