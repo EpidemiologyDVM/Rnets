@@ -2,13 +2,14 @@
 #'
 #' A plot method for R-nets, and incorporates vertex and edge metadata and layout, if assigns. Only vertex and edge metadata with names that match igraph decoration options (without 'vertex.' or 'edge.' appended to the attribute name; see plot.igraph). Layout is pulled from 'Layout_master' in the rnet object, if it exists. The layout frame can contain 3 columns, with the first column used to match the coordinates in the next two columns to graph vertices OR can contain 2 columns with the same number of vertices in the graph.
 #' @param x an rnet object of class 'rnet.basic'
+#' @param graph.layout a matrix or dataframe containing coordinates for laying out graph. If declared, it will override coordinates stored in 'Layout' and 'Layout_master' slots, which are used by default
 #' @rdname plot-Rnet.basic
 #' @aliases plot
 #' @export
 
 setMethod('plot',
 	signature(x = 'rnetBasic'),
-	function (x) {
+	function (x, graph.layout = NULL) {
 		VERT.PARAMS <- c('size','size2','color','frame.color','shape','label','label.family','label.font','label.cex','label.dist','label.degree','label.color')
 		EDGE.PARAMS <- c('color','width','lty','label','label.family','label.font','label.cex','label.color','label.x','label.y','curved')
 
@@ -20,7 +21,9 @@ setMethod('plot',
 		edge.attribs <- intersect(x@E_metadata, EDGE.PARAMS)
 		if(length(edge.attribs) > 0) for(attrib.name in edge.attribs) edge.attrib.lines <- c(edge.attrib.lines, paste('edge.', attrib.name, '= E(x@R)$', attrib.name, sep = ''))
 
-		x@Layout <- Rnets::.Assign_Layout_Matrix(x)
+		if(!is.null(graph.layout)) x@Layout_master <- graph.layout
+		x@Layout <- Rnets:::.Assign_Layout_Matrix(x)
+
 		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
 
 		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@Layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@Layout)', sep = ',')

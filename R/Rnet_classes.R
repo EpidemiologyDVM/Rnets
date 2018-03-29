@@ -23,6 +23,8 @@ rnetInput <- setClass(Class = "rnetInput",
 		)
 	)
 
+
+
 #' An S4 class containg the information of a basic rnet. These objects are used to handle rnet objects and need not be called by the user.
 #' 
 #' Inherits from 'rnetInput'
@@ -72,6 +74,9 @@ rnetStrata <- setClass(Class = "rnetStrata",
 	slots = list(Strata_def = 'expression'),
 	contains = 'rnetBasic'
 	)
+
+
+
 #' An S4 class containing multiple Rnets, each the information of an rnet representing one stratum of data. These objects are used to handle rnet objects and need not be called by the user.
 #'
 #' Inheirits from 'rnetInput'
@@ -88,6 +93,8 @@ rnetMultiStrata <- setClass(Class = "rnetMultiStrata",
 		),
 	contains = 'rnetInput'
 	)
+
+
 
 #' An S4 class for tracking multiple rnets created from one data set over multiple L1 penalties for comparison and selection.
 #' 

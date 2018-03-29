@@ -1,4 +1,4 @@
-#Rnets v 0.9.7
+#Rnets v 0.9.9
 
 ## Major Changes
 
@@ -14,7 +14,15 @@
     + `check()` produces 0 errors/warnings/notes (other than UTF-8 warning)
 
 * 0.9.7
-    + Initial 'open beta' relase
     + Removed signedModularity.data.frame 
     + Revised signedModularity to matrix-based algorithm instead of list-based
+    
+* 0.9.8
+    + Initial 'open beta' relase
+    + 'L1Selection' no longer has .random.seed option
+    
+* 0.9.9
+    + Resolved bug with 'plot' method. Was calling hidden function as external, now called as internal.
+    + Added graph.layout argument to plot method to allow manual definition of graph layout.
+    + Added summary method for Rnet objects with multiple strata
     
