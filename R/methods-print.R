@@ -39,3 +39,12 @@ setMethod(f = 'print',
             print(.Assemble_Edge_Matrix(x, 'omega'))
             
           })
+#' @rdname print
+#' 
+setMethod(f = 'print',
+          signature(x = 'rnet.L1.set'),
+          function(x) {
+            cat('\nStARS_D by L1\n')
+            output <- round(x@StARS_D, 4)
+            print(output)
+          })
