@@ -68,6 +68,7 @@ setMethod('signedModularity',
 #' @param membership Defines vertex membership to determine if vertices are similar. May be provided as a string that matches an attribute of x or a vector of length equal to the number of vertices in the graph.
 #' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
 #' 
+setOldClass('igraph')
 setMethod('signedModularity',
   signature(x = 'igraph'),
   function(x, membership, weight = NULL) 
