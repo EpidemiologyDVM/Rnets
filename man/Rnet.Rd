@@ -12,12 +12,14 @@ Rnet(Data, L1, V_set = NULL, n_threshold = 0, cor_method = "s",
   Stratify = NULL)
 
 \S4method{Rnet}{ANY,ANY,ANY,ANY,ANY,ANY,ANY,ANY,expression}(Data, L1,
-  V_set = NULL, n_threshold = 0, cor_method = "s", cor_pairing = "pair",
-  Forced_zeros = NULL, Plot_layout = NULL, Stratify = NULL)
+  V_set = NULL, n_threshold = 0, cor_method = "s",
+  cor_pairing = "pair", Forced_zeros = NULL, Plot_layout = NULL,
+  Stratify = NULL)
 
 \S4method{Rnet}{ANY,ANY,ANY,ANY,ANY,ANY,ANY,ANY,character}(Data, L1,
-  V_set = NULL, n_threshold = 0, cor_method = "s", cor_pairing = "pair",
-  Forced_zeros = NULL, Plot_layout = NULL, Stratify = NULL)
+  V_set = NULL, n_threshold = 0, cor_method = "s",
+  cor_pairing = "pair", Forced_zeros = NULL, Plot_layout = NULL,
+  Stratify = NULL)
 }
 \arguments{
 \item{Data}{The dataset used to estimate the structure of the Rnet.}

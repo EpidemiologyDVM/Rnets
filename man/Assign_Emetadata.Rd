@@ -11,12 +11,12 @@ Assign_Emetadata(network, E_metadata, match.attr, e.cutpoints = NULL,
   sign.color = c("black", "red"), attr_abs_val = T, reassign = T)
 
 \S4method{Assign_Emetadata}{rnetBasic}(network, E_metadata, match.attr,
-  e.cutpoints = NULL, sign.color = c("black", "red"), attr_abs_val = T,
-  reassign = T)
+  e.cutpoints = NULL, sign.color = c("black", "red"),
+  attr_abs_val = T, reassign = T)
 
-\S4method{Assign_Emetadata}{rnetMultiStrata}(network, E_metadata, match.attr,
-  e.cutpoints = NULL, sign.color = c("black", "red"), attr_abs_val = T,
-  reassign = TRUE)
+\S4method{Assign_Emetadata}{rnetMultiStrata}(network, E_metadata,
+  match.attr, e.cutpoints = NULL, sign.color = c("black", "red"),
+  attr_abs_val = T, reassign = TRUE)
 }
 \arguments{
 \item{network}{The network to which the edge metadata will be applied.}

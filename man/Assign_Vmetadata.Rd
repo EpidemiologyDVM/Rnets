@@ -11,8 +11,8 @@
 Assign_Vmetadata(network, V_metadata, match.attr = NULL,
   vertex.match.attr = "name", reassign = T)
 
-\S4method{Assign_Vmetadata}{rnetBasic}(network, V_metadata, match.attr = NULL,
-  vertex.match.attr = "name", reassign = T)
+\S4method{Assign_Vmetadata}{rnetBasic}(network, V_metadata,
+  match.attr = NULL, vertex.match.attr = "name", reassign = T)
 
 \S4method{Assign_Vmetadata}{rnetStrata}(network, V_metadata,
   match.attr = NULL, vertex.match.attr = "name", reassign = T)
