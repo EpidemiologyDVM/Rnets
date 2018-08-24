@@ -15,7 +15,7 @@ Imports:
     methods
 License: GPL-3
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.0.9000
 Suggests:
     knitr,
     rmarkdown
