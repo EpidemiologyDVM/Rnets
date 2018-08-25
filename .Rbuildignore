@@ -16,3 +16,4 @@
 ^Archive$
 ^vignettes\Rnets-vignette\.html$
 ^vignettes\Network-terminology.Rmd
+^\.install_newRnetVersion\.R$
