@@ -44,7 +44,7 @@ setMethod(f = 'print',
 setMethod(f = 'print',
           signature(x = 'rnet.L1.set'),
           function(x) {
-            cat('\nStARS_D by L1\n')
+            cat('\nStability Approach for Regularization Selection (StARS) results\n\nD_b by L1\n')
             output <- round(x@StARS_D, 4)
             print(output)
           })

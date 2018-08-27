@@ -91,3 +91,60 @@ setMethod(f = 'summary',
             if(length(object@V_omitted)>0) cat('\nOmitted Vertices:', paste(object@V_omitted, collapse = ', '), '\n')
             cat('\n')
           })
+
+#'Summary - L1 selection object
+#'
+#'In addition to 'print', this method also shows a table of component D_b values for each edge.
+#' @param object an object of class 'rnet.L1.set'
+
+#' @rdname summary-L1selection
+
+setMethod(f = 'summary',
+          signature(object = 'rnet.L1.set'),
+          function(object) {
+            E.long <- object@Edge_stability
+            E.long$Percent <- paste('  ',as.character(E.long$Pr * 100), "%", sep = '')
+            E.table <- reshape(
+              E.long,
+              dir = 'w',
+              idvar = 'E', 
+              timevar = 'L1',
+              v.names = 'Percent',
+              drop = c('Eta', 'Count', 'Pr'),
+              new.row.names = 1:length(unique(E.long$E))
+            )
+          
+            names(E.table)<- gsub('Percent.', '', names(E.table))
+            for(i in 2:dim(E.table)[2])  E.table[[i]][is.na(E.table[[i]])] <- ''
+
+            table.col.width <- max(max(str_length(names(E.table))[-1]), 6)
+            E.max.str <- paste('\n  Max(|E|)\n  ', strrep(' ', max(str_length(E.table$E))))
+            for(i in 2:dim(E.table)[2]) {
+              E.max.i <- sum(E.table[[i]]!= '')
+              val <- switch(trunc(log10(E.max.i)) + 1,
+                          paste('     ', as.character(E.max.i), sep = ''),
+                          paste('    ', as.character(E.max.i), sep = ''),
+                          paste('   ', as.character(E.max.i), sep = ''),
+                          paste(' ',sprintf("%.1f", round(E.max.i/1000, 1)), ' k', sep = ''),
+                          paste(as.character(round(E.max.i/1000, 1)), ' k', sep = ''),
+                          paste(' ',as.character(round(E.max.i/1000, 0)), ' k', sep = ''),
+                          ' > 1 M'
+              )
+              if(is.null(val)) val <- ' > 1 M'
+              E.max.str <- paste(
+                E.max.str, 
+                strrep(' ', table.col.width - 5),
+                val,
+                sep = ''
+              )
+            }
+          
+          max.loc <- which(object@StARS_D == max(object@StARS_D))
+          under.crit.loc <- which(object@StARS_D < 0.005)
+          suggest.L1 <- names(under.crit.loc[min(which(under.crit.loc > max.loc))] )  
+          
+          print(object)
+          cat('\nSuggested Penalty:', suggest.L1, '\n(Minimum penalty that produced D < 0.05 for penalties > L1_max(D) )\n\nPresences of Edges\n')
+          print(E.table)
+          cat(E.max.str, '\n')
+          })
