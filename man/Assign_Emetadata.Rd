@@ -4,26 +4,26 @@
 \name{Assign_Emetadata}
 \alias{Assign_Emetadata}
 \alias{Assign_Emetadata,rnetBasic-method}
-\alias{Assign_Emetadata,rnetMultiStrata-method}
+\alias{Assign_Emetadata,rnetStrata-method}
 \title{Assign_Emetadata - Methods for assigning network edge metadata}
 \usage{
-Assign_Emetadata(network, E_metadata, match.attr, e.cutpoints = NULL,
+Assign_Emetadata(x, E_metadata, match.attr, e.cutpoints = NULL,
   sign.color = c("black", "red"), attr_abs_val = T, reassign = T)
 
-\S4method{Assign_Emetadata}{rnetBasic}(network, E_metadata, match.attr,
+\S4method{Assign_Emetadata}{rnetBasic}(x, E_metadata, match.attr,
   e.cutpoints = NULL, sign.color = c("black", "red"),
   attr_abs_val = T, reassign = T)
 
-\S4method{Assign_Emetadata}{rnetMultiStrata}(network, E_metadata,
-  match.attr, e.cutpoints = NULL, sign.color = c("black", "red"),
+\S4method{Assign_Emetadata}{rnetStrata}(x, E_metadata, match.attr,
+  e.cutpoints = NULL, sign.color = c("black", "red"),
   attr_abs_val = T, reassign = TRUE)
 }
 \arguments{
-\item{network}{The network to which the edge metadata will be applied.}
+\item{x}{The network to which the edge metadata will be applied.}
 
 \item{E_metadata}{A dataframe containing one column for each attribute to be assigned to the network edges.}
 
-\item{match.attr}{The continuous attribute assigned to the network's edges (typically by E(network)$attr or set_edge_attr(network, attr)) that will be used to categorize edges. Values in match.attr will be binned using cut(value, E_ctpts), and matched to the rows in E_metadata, i.e. edges binned into the first category will be assigned attribute values from the first row in the data set, those binned into the second category will be assigned the second row values, etc.}
+\item{match.attr}{The continuous attribute assigned to the network's edges (typically by E(x)$attr or set_edge_attr(x, attr)) that will be used to categorize edges. Values in match.attr will be binned using cut(value, E_ctpts), and matched to the rows in E_metadata, i.e. edges binned into the first category will be assigned attribute values from the first row in the data set, those binned into the second category will be assigned the second row values, etc.}
 
 \item{e.cutpoints}{A vector of values used to define how the values of match.attr will be binned. See 'cut' for more information.}
 
@@ -31,7 +31,7 @@ Assign_Emetadata(network, E_metadata, match.attr, e.cutpoints = NULL,
 
 \item{attr_abs_val}{A logical argument determining if the absolute value of match.attr is used when binning values.}
 
-\item{reassign}{A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.}
+\item{reassign}{A logical argument controling if the function should overwrite x in the parent environment. Defaults to TRUE for brevity.}
 }
 \value{
 An object of the same type as x, with the new edge attributes assigned by binning the 'match.attr' in the igraph and assigning the matching rows in 'e.metadata'.
@@ -52,8 +52,8 @@ ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FI
 
 EC08_rnet <- Rnet(NARMS_EC_DATA, 
   L1 = 0.25, 
-  V_set = ABX_LIST, 
-  Stratify = NARMS_EC_DATA$Year == 2008
+  vert = ABX_LIST, 
+  subset = NARMS_EC_DATA$Year == 2008
   )
 
 #Attributes prior to additions

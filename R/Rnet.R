@@ -3,13 +3,13 @@
 #' This method takes an dataset (typically containing MICs values, AMR phenotypes, and presence abscence of genes) and returns an rnet object. The specific object class that is returned varies by what is provided to the L1 and subset arguments. The networks are Markov random fields (MRFs), a type of undirected graph. The network structure/topology is estimated using the graphical least absolute shrinkage and selection operator (glasso) as implemented in the R package of the same name developed by Friedman, Hastie, & Tibshirani (maintained by the latter) 
 #' @param x The dataset used to estimate the structure of the Rnet. 
 #' @param L1 The L1 penalty used by the graphical LASSO to create a sparse precision matrix, also referred to as 'rho'. Must be non-negative.
-#' @param vertices A character vector corresponding to the names of the antibiotics to include in the Rnet. Defaults to an empty list, in which case one vertex will be included for each column in 'Data'. If declared, only variables declared in 'vertices' will be represented with vertices in the MRF. 
+#' @param vertices A character vector corresponding to the names of the antibiotics to include in the Rnet. Defaults to an empty list, in which case one vertex will be included for each column in x. If declared, only variables declared in 'vertices' will be represented with vertices in the MRF. 
 #' @param n_min The minimum number of observations required for an an estimated correlation to be valid. Defaults to 0, in which case any number of observations will be sufficient to estimate a valid correlation. If a vertex/variable has fewer valid observations than n_min, the vertex will be fully omitted from the network.
 #' @param cor_method The method used to estimate the correlation matrix. Must be 'pearson', 'spearman', or 'kendall'. Partial matches allowed. Defaults to 'spearman'.
 #' @param cor_pairing The method used to determine how NAs are handled when determining which pairs are used to estimate correlations. See 'cor' function documentation for additional information.
 #' @param forced_zeros The set of edges to be omitted from the Rnet. These partial correlations are forced to zero. Additional edges and vertices may be set to zero if n_min is employed.
 #' @param plot_layout A dataframe of two or three columns. See plot methods for more information.
-#' @param subset Either a character variable of length one or expression. If a character value is supplied, it must match a column name in 'Data' and an object of type 'rnetMultiStrata' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnetStrata' will be returned with the network estimated from a subset of 'Data' defined by the expression. If no value is supplied, an object of 'rnetBasic' will be returned with the network estimated from all observations in 'Data'.
+#' @param subset Either a character variable of length one or expression. If a character value is supplied, it must match a column name in x and an object of type 'rnetMultiStrata' with a network for each level of the declared variable. If an expression is supplied, an object of 'rnetStrata' will be returned with the network estimated from a subset of x defined by the expression. If no value is supplied, an object of 'rnetBasic' will be returned with the network estimated from all observations in x.
 #' @return An rnet object containing the graphical LASSO results. The specific type of object is determined by the 'subset' argument.
 #' @import methods
 #' @import data.table
@@ -22,7 +22,7 @@
 #' 
 #' ABX_LIST <- c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 'CIP', 'STR', 'GEN', 'COT', 'FIS')
 #' 
-#' EC_Rnet_ALL <- Rnet(Data = NARMS_EC_DATA, 
+#' EC_Rnet_ALL <- Rnet(x = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
 #' 						vertices = ABX_LIST, 
 #' 						n_min = 20
@@ -32,7 +32,7 @@
 #' summary(EC_Rnet_ALL) 	#More detailed information
 #' 
 #' #Create a single R-net for only E. coli isolates collected during 2008
-#' EC_Rnet_2008 <- Rnet(Data = NARMS_EC_DATA, 
+#' EC_Rnet_2008 <- Rnet(x = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
 #' 						vertices = ABX_LIST, 
 #' 						n_min = 20,
@@ -41,7 +41,7 @@
 #' class(EC_Rnet_2008)[1]	#EC_Rnet_ALL is an 'rnet.stratum' object
 #'
 #' #Create a set of R-nets, one for each year of E.coli isolates.
-#' EC_Rnet_byYear <- Rnet(Data = NARMS_EC_DATA, 
+#' EC_Rnet_byYear <- Rnet(x = NARMS_EC_DATA, 
 #' 						L1 = 0.3, 
 #' 						vertices = ABX_LIST, 
 #' 						n_min = 20,
@@ -56,7 +56,7 @@ setGeneric('Rnet',
 			x, #WAS MIC_data
 			L1,
 			vertices = NULL,
-			n_min = 0,
+			n_min = 1,
 			cor_method = 's',
 			cor_pairing = 'pair',
 			forced_zeros = NULL,				
@@ -70,7 +70,7 @@ setGeneric('Rnet',
 			cor_pairing = cor_pairing,
 			n_min = n_min,
 			L1_orig = L1,
-			V_orig = if(is.null(vertices)) vertices = names(Data) else vertices,
+			V_orig = if(is.null(vertices)) vertices = names(x) else vertices,
 			forced_zeros = if(is.null(forced_zeros)) matrix(nrow = 0, ncol = 2, dimnames = list(NULL, c("V1", "V2"))) else forced_zeros,
 			layout_master = plot_layout
 			)
@@ -85,7 +85,7 @@ setMethod('Rnet',
 			x,
 			L1,
 			vertices = NULL,
-			n_min = 0,
+			n_min = 1,
 			cor_method = 's',
 			cor_pairing = 'pair',
 			forced_zeros = NULL,				
@@ -99,7 +99,7 @@ setMethod('Rnet',
 			cor_pairing = cor_pairing,
 			n_min = n_min,
 			L1_orig = L1,
-			V_orig = if(is.null(vertices)) vertices = names(Data) else vertices,
+			V_orig = if(is.null(vertices)) vertices = names(x) else vertices,
 			forced_zeros = if(is.null(forced_zeros)) matrix(nrow = 0, ncol = 2, dimnames = list(NULL, c("V1", "V2"))) else forced_zeros,
 			layout_master = plot_layout,
 			subset = subset
@@ -115,7 +115,7 @@ setMethod('Rnet',
 			x,
 			L1,
 			vertices = NULL,
-			n_min = 0,
+			n_min = 1,
 			cor_method = 's',
 			cor_pairing = 'pair',
 			forced_zeros = NULL,				
@@ -125,7 +125,7 @@ setMethod('Rnet',
 	{
 	  if(!subset%in%names(x)) stop(paste("Invalid stratification: '",  subset, "' does not appear in dataset"), sep = '')
 	  V_orig <- vertices
-		if(subset%in%vertices) {vertices <- vertices[-match(subset, vertices_orig)]; warning(paste("Stratification variable cannot appear in declared vertex set.", subset,"was removed from vertices"))}
+		if(subset%in%vertices) {vertices <- vertices[-match(subset, V_orig)]; warning(paste("Stratification variable cannot appear in declared vertex set.", subset,"was removed from vertices"))}
 		rnet.obj <- new("rnetStrata",
 			raw_data = x,
 			cor_method = cor_method,

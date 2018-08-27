@@ -6,7 +6,7 @@
 #' @param B The number of subsamples to evaluate network stability. Defaults to 100 subsamples.
 #' @param n_b The size of the subsample to be drawn from the data. If 0 < n_b < 1, this is interpreted as a proportion of the data set; if n_b > 1, it is interpreted as a set sample size. Defaults to 50\% of sample size.
 #' @param vertices A character vector corresponding to the names of the antibiotics to include in the Rnet. Defaults to an empty list, in which case all columns in 'MIC_data' will be included in the Rnet
-#' @param min_n The minimum number of observations required for an an estimated correlation to be valid. Defaults to 0, in which case any number of observations will be sufficient to estimate a valid correlation
+#' @param n_min The minimum number of observations required for an an estimated correlation to be valid. Defaults to 0, in which case any number of observations will be sufficient to estimate a valid correlation
 #' @param cor_method The method used to estimate the correlation matrix. Must be 'pearson', 'spearman', or 'kendall'. Partial matches allowed. Defaults to 'spearman'.
 #' @param cor_pairing The method used to determine how NAs are handled when determining which pairs are used to estimate correlations. See 'cor' function documentation for additional information.
 #' @param subset The rule for stratifying the data, if desired. 
@@ -25,7 +25,7 @@
 #'                              v = ABX_LIST
 #'                              )
 
-#' round(EC_all_L1Selection@StARS_D, 4)
+#' print(EC_all_L1Selection)
 #' }
 
 setGeneric('L1Selection',
@@ -35,7 +35,7 @@ setGeneric('L1Selection',
 		B = 100,
 		n_b = 0.5,
 		vertices = NULL,
-		min_n = 1,
+		n_min = 1,
 		cor_method = 's',
 		cor_pairing = 'pair',
 		forced_zeros = NULL,
@@ -82,8 +82,8 @@ setGeneric('L1Selection',
 					L1 = L1_values[L1_n], 
 					cor_method = cor_method, 
 					cor_pairing = cor_pairing,
-					n_threshold = n_threshold,  
-					Forced_zeros = Forced_zeros,
+					n_min = n_min,  
+					forced_zeros = forced_zeros,
 					subset = subset
 					)
 				m_i <- ecount(R_i@R)
