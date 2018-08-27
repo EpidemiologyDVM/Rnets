@@ -1,7 +1,7 @@
 #' L1 Selection for Rnets
 #'
 #' An implementation of the Stability Approach to Regularization Selection (StARS) method for L1 penalty selection for use with Rnets method.
-#' @param Data The dataset containing the MICs
+#' @param x The dataset containing the MICs
 #' @param L1_set The set of candidate L1 penalties to be evaluated for creating a sparse precision matrix. Must be non-negative.
 #' @param B The number of subsamples to evaluate network stability. Defaults to 100 subsamples.
 #' @param n_b The size of the subsample to be drawn from the data. If 0 < n_b < 1, this is interpreted as a proportion of the data set; if n_b > 1, it is interpreted as a set sample size. Defaults to 50\% of sample size.
@@ -18,7 +18,7 @@
 #' @examples 
 #' \donttest{
 #'  EC_all_L1Selection <- L1Selection(
-#'                              Data = NARMS_EC_DATA, 
+#'                              x = NARMS_EC_DATA, 
 #'                              L1_set = seq(0.05, 0.50, 0.05),
 #'                              n_b = 1500,
 #'                              V_set = ABX_LIST
@@ -29,7 +29,7 @@
 
 setGeneric('L1Selection',
 	function(
-		Data,
+		x,
 		L1_set,
 		B = 100,
 		n_b = 0.5,
@@ -38,58 +38,70 @@ setGeneric('L1Selection',
 		cor_method = 's',
 		cor_pairing = 'pair',
 		Forced_zeros = NULL,
-		Stratify = NULL
+		Stratify = NULL,
+		verbose = TRUE
 		)
 	{
+	  L1_set <- sort(L1_set)
+	  
 		if(n_b < 1) {
 			B_method <- 'Proportion'
 			pr_b <- n_b
-			n_b <- round(dim(Data)[1] * pr_b, 0)
+			n_b <- round(dim(x)[1] * pr_b, 0)
 			if(!n_b) stop('Subsample proportion of data size too small! Must exceed 1/n')
 		} else {
 			if(n_b%%1!=0) stop('If n_b > 1, n_b must be a whole number.')
-			pr_b <- n_b/dim(Data)[1]
+			pr_b <- n_b/dim(x)[1]
 			B_method <- 'Static Count'
 		}
 		
-		if(n_b > dim(Data)[1]) stop('Subsample size exceeds the number of records!')
+		if(n_b > dim(x)[1]) stop('Subsample size exceeds the number of records!')
 		E_aggr <- list(NA)
-		if(is.null(V_set)) V_set <- names(Data)
+		if(is.null(V_set)) V_set <- names(x)
 		k <- length(V_set)
 		M <- data.frame(b = numeric(0), L1 = numeric(0), t = numeric(0), m = numeric(0))
 
-		B_sets <- sapply(rep(n_b, B), sample, x = 1:dim(Data)[1])
-		Data_b <- array(0, dim = c(n_b, k, B),  dimnames = list(1:n_b, V_set, 1:B))
+		B_sets <- sapply(rep(n_b, B), sample, x = 1:dim(x)[1])
+		x_b <- array(0, dim = c(n_b, k, B),  dimnames = list(1:n_b, V_set, 1:B))
 		W_aggr <- array(0, dim = c(k, k, B, length(L1_set)), dimnames = list(V_set, V_set, 1:B, as.character(L1_set)))
 
 		iter <- 1
+		L1_N <- length(L1_set)
+		t_0 <- proc.time()[3]
+
 		for(b in 1:B) {
-			t_0 <- proc.time()[3]
-			Data_b[,,b] <- as.matrix(Data[B_sets[,b],V_set])
-			for(L1 in L1_set){
+			x_b[,,b] <- as.matrix(x[B_sets[,b],V_set])
+			L1_n <- 1
+			m_i <- 1
+      if(!b%%10) cat(b, 'simulations completed,', proc.time()[3] - t_0, 'seconds elapsed.\n')
+			while(m_i > 0 & L1_n <= L1_N) {
+			  ti_0 <- proc.time()[3]
 				R_i <- Rnet(
-					as.data.frame(Data_b[,,b]), 
-					L1, 
+					as.data.frame(x_b[,,b]), 
+					L1 = L1_set[L1_n], 
 					cor_method = cor_method, 
 					cor_pairing = cor_pairing,
 					n_threshold = n_threshold,  
 					Forced_zeros = Forced_zeros,
 					Stratify = Stratify
 					)
-				if(ecount(R_i@R) > 0 ) {
+				m_i <- ecount(R_i@R)
+				
+				if(m_i > 0) {
 					E_i <- as_edgelist(R_i@R)
 					E_aggr[[iter]] <- data.frame(
 						b = b, 
-						L1 = L1, 
+						L1 = L1_set[L1_n], 
 						V1 = E_i[,1], 
 						V2 = E_i[,2], 
 						E = paste(E_i[,1], E_i[,2], sep = '--'),
 						omega = E(R_i@R)$omega
 						)
-					M[iter,] <- c(b, L1, proc.time()[3] - t_0, ecount(R_i@R))
-					W_aggr[,,b, as.character(L1)] <- R_i@Omega
+					M[iter,] <- c(b, L1_set[L1_n], proc.time()[3] - ti_0, ecount(R_i@R))
+					W_aggr[,,b, as.character(L1_set[L1_n])] <- R_i@Omega
 					iter <- iter + 1
-				} else break()
+					L1_n <- L1_n + 1
+				}
 			}
 		}
 		E_aggr <- as.data.frame(rbindlist(E_aggr))
@@ -99,15 +111,15 @@ setGeneric('L1Selection',
 		StARS <- aggregate(Eta ~ L1, Comp_Stab, FUN = sum)
 		StARS.vec <- StARS$Eta
 		names(StARS.vec) <- StARS$L1
-		print(paste('L1Selection completed', iter, 'loops over', B, 'subsets in', round(sum(M$t), 2), 'seconds'))
-				
+		cat('\nL1Selection completed ', iter - 1, ' loops over ', B,  ' subsets. (', round(sum(M$t), 0), 's elapsed).\n', sep = '')
+		
 		return(new('rnet.L1.set',
-			Data = Data,
+			Data = x,
 			L1_set = L1_set,
 			B = B,
 			B_method = B_method,
 			B_sets = B_sets,
-			Data_b = Data_b,
+			Data_b = x_b,
 			pr_b = pr_b,
 			n_b = n_b,
 			W_aggr = W_aggr,

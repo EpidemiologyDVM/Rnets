@@ -117,8 +117,8 @@ setMethod(f = 'summary',
             names(E.table)<- gsub('Percent.', '', names(E.table))
             for(i in 2:dim(E.table)[2])  E.table[[i]][is.na(E.table[[i]])] <- ''
 
-            table.col.width <- max(max(str_length(names(E.table))[-1]), 6)
-            E.max.str <- paste('\n  Max(|E|)\n  ', strrep(' ', max(str_length(E.table$E))))
+            table.col.width <- max(max(nchar(names(E.table))[-1]), 6)
+            E.max.str <- paste('\n  Max(|E|)\n  ', strrep(' ', max(nchar(as.character(E.table$E)))))
             for(i in 2:dim(E.table)[2]) {
               E.max.i <- sum(E.table[[i]]!= '')
               val <- switch(trunc(log10(E.max.i)) + 1,
@@ -140,11 +140,11 @@ setMethod(f = 'summary',
             }
           
           max.loc <- which(object@StARS_D == max(object@StARS_D))
-          under.crit.loc <- which(object@StARS_D < 0.005)
-          suggest.L1 <- names(under.crit.loc[min(which(under.crit.loc > max.loc))] )  
+          under.crit.loc <- which(object@StARS_D < 0.05)
+          suggest.L1 <- names(under.crit.loc[min(which(under.crit.loc >= max.loc))] )  
           
           print(object)
-          cat('\nSuggested Penalty:', suggest.L1, '\n(Minimum penalty that produced D < 0.05 for penalties > L1_max(D) )\n\nPresences of Edges\n')
+          cat('\nSuggested Penalty:', suggest.L1, '\n(Minimum penalty that produced D < 0.05 for penalties > L1_max(D) )\n\n\nPresences of Edges\n')
           print(E.table)
           cat(E.max.str, '\n')
           })
