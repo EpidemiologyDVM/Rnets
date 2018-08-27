@@ -109,7 +109,7 @@ setMethod('signedModularity',
 #' @param weight Edge weights. Like 'membership', this argument can be defined as a string matching an edge attribute of 'x' or a vector of length equal to the number of edges, but may also be left as NULL which will return an unweighted modularity estimate.
 #' 
 setMethod('signedModularity',
-  signature(x='rnetMultiStrata'),
+  signature(x='rnetStrata'),
   function(x, membership, weight = 'omega')  sapply(x@R_Strata, signedModularity, membership, weight)
   )
 

@@ -11,11 +11,11 @@ Inherits from 'rnetInput'
 \section{Slots}{
 
 \describe{
-\item{\code{Data}}{A dataframe containing the dataset.}
+\item{\code{x}}{A dataframe containing the dataset.}
 
 \item{\code{L1}}{The L1 penalty}
 
-\item{\code{V_set}}{The vertex set}
+\item{\code{vertices}}{The vertex set}
 
 \item{\code{n}}{A square matrix of n_ij, the number of valid pairs used to estimate the edge between i and j.}
 
@@ -25,7 +25,7 @@ Inherits from 'rnetInput'
 
 \item{\code{E_metadata}}{A vector containing the attribute names assinged to the rnet's edges.}
 
-\item{\code{Zeros}}{A list of edges forced to zero due to small sample size or declared by user.}
+\item{\code{zeros}}{A list of edges forced to zero due to small sample size or declared by user.}
 
 \item{\code{Sigma}}{The empirical correlation matrix}
 
@@ -37,6 +37,6 @@ Inherits from 'rnetInput'
 
 \item{\code{R}}{An igraph object derived from Omega}
 
-\item{\code{Layout}}{A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed.}
+\item{\code{layout}}{A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed.}
 }}
 

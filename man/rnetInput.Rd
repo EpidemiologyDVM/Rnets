@@ -13,7 +13,7 @@ See "L1_selection" documentation for more information.
 \section{Slots}{
 
 \describe{
-\item{\code{RawData}}{A dataframe containing the original dataset.}
+\item{\code{raw_data}}{A dataframe containing the original dataset.}
 
 \item{\code{cor_method}}{The type of correlation matrix to use. Must be a partial match to one of the following strings: 'pearson', 'spearman', 'kendall'.}
 
@@ -23,13 +23,13 @@ See "L1_selection" documentation for more information.
 
 \item{\code{L1_orig}}{The declared L1 penalty to be used when estimating rnet topology}
 
-\item{\code{v_set_orig}}{The declared set of k variables to be included in the rnet as vertices}
+\item{\code{V_orig}}{The declared set of k variables to be included in the rnet as vertices}
 
-\item{\code{Forced_zeros}}{A matrix with 2 columns containing pairs of vertices to force to be conditionally independent in the rnet}
+\item{\code{forced_zeros}}{A matrix with 2 columns containing pairs of vertices to force to be conditionally independent in the rnet}
 
-\item{\code{Layout_master}}{A k x 2 matrix x & y coordinates of each vertex in the graph.}
+\item{\code{layout_master}}{A k x 2 matrix x & y coordinates of each vertex in the graph.}
 
-\item{\code{Data}}{A dataframe containing the dataset}
+\item{\code{x}}{A dataframe containing the dataset}
 
 \item{\code{L1_set}}{a numeric vector containing the candidate L1 penalties}
 

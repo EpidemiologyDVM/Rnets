@@ -1,7 +1,7 @@
 library(devtools)
-devtools::install(build_vignettes = T)
+devtools::install(build_vignettes = F)
 #devtools::install_github('klutometis/roxygen')
-devtools::install_github('gustavdelius/roxygen')
+#devtools::install_github('gustavdelius/roxygen') #8.24.2018 - klutometis version of roxygen currently broken. Use gustavdelius' fix.
 #Not sure if need to use previous line every time.
 library(roxygen2)
 library(rmarkdown)
@@ -23,6 +23,7 @@ devtools::use_build_ignore(".install_newRnetVersion.R")
 devtools::use_build_ignore("Archive")
 
 devtools::use_build_ignore("vignettes\\Rnets-vignette.html") #TEMPORARILY IGNORE INCOMPLETE VIGNETTES!!!
+devtools::use_build_ignore("vignettes\\Rnets-vignette.rmd") #TEMPORARILY IGNORE INCOMPLETE VIGNETTES!!!
 
 
 document() #IGNORE warning about no defined signature for igraph?

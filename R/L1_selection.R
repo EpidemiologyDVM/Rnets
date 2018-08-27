@@ -82,8 +82,8 @@ setGeneric('L1Selection',
 					L1 = L1_values[L1_n], 
 					cor_method = cor_method, 
 					cor_pairing = cor_pairing,
-					n_threshold = n_threshold,  
-					Forced_zeros = Forced_zeros,
+					min_n = min_n,  
+					forced_zeros = forced_zeros,
 					subset = subset
 					)
 				m_i <- ecount(R_i@R)

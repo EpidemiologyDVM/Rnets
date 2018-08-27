@@ -4,32 +4,32 @@
 \name{Assign_Vmetadata}
 \alias{Assign_Vmetadata}
 \alias{Assign_Vmetadata,rnetBasic-method}
+\alias{Assign_Vmetadata,rnetSubset-method}
 \alias{Assign_Vmetadata,rnetStrata-method}
-\alias{Assign_Vmetadata,rnetMultiStrata-method}
 \title{Assign_Vmetadata - Methods for assigning network vertex metadata}
 \usage{
-Assign_Vmetadata(network, V_metadata, match.attr = NULL,
+Assign_Vmetadata(x, V_metadata, match.attr = NULL,
   vertex.match.attr = "name", reassign = T)
 
-\S4method{Assign_Vmetadata}{rnetBasic}(network, V_metadata,
-  match.attr = NULL, vertex.match.attr = "name", reassign = T)
+\S4method{Assign_Vmetadata}{rnetBasic}(x, V_metadata, match.attr = NULL,
+  vertex.match.attr = "name", reassign = T)
 
-\S4method{Assign_Vmetadata}{rnetStrata}(network, V_metadata,
-  match.attr = NULL, vertex.match.attr = "name", reassign = T)
+\S4method{Assign_Vmetadata}{rnetSubset}(x, V_metadata, match.attr = NULL,
+  vertex.match.attr = "name", reassign = T)
 
-\S4method{Assign_Vmetadata}{rnetMultiStrata}(network, V_metadata,
-  match.attr = NULL, vertex.match.attr = "name", reassign = T)
+\S4method{Assign_Vmetadata}{rnetStrata}(x, V_metadata, match.attr = NULL,
+  vertex.match.attr = "name", reassign = T)
 }
 \arguments{
-\item{network}{The network to which the vertex metadata will be applied.}
+\item{x}{The network to which the vertex metadata will be applied.}
 
 \item{V_metadata}{A dataframe containing the vertex metadata to be assigned. A vertex attribute will be assigned for every column in the frame, except the column used to match V_metadata to existing vertex attribues.}
 
 \item{match.attr}{The name of the column in V_metadata used to match metadata to vertices. Defaults to the first column of V_metadata.}
 
-\item{vertex.match.attr}{the name of the vertex attribute used to match metadata. Defaults to 'name' (V(network)$name), which is typically assigned when the network is created with igraph functions.}
+\item{vertex.match.attr}{the name of the vertex attribute used to match metadata. Defaults to 'name' (V(x)$name), which is typically assigned when the network is created with igraph functions.}
 
-\item{reassign}{A logical argument controling if the function should overwrite the called network argument. Defaults to 'True' for brevity.}
+\item{reassign}{A logical argument controling if the function should overwrite x in the parent environment. Defaults to 'True' for brevity.}
 }
 \value{
 An object of the same type as x, with the new vertex attributes assigned by matching 'match.attr' to 'vertex.match.attr'.
