@@ -13,7 +13,7 @@ setMethod(f = 'summary',
           function(object) {
             cat(	'\nBasic R-net',
                  '\n',
-                 '\n Sample:', dim(object@Data)[1], 'isolates,', length(object@V_set), 'vertices ')
+                 '\n Sample:', dim(object@x)[1], 'isolates,', length(object@vertices), 'vertices ')
             if(length(object@V_omitted)==1) cat('(', length(object@V_omitted), ' vertex omitted)', sep = '') 		
             if(length(object@V_omitted) > 1) cat('(', length(object@V_omitted), ' vertices omitted)', sep = '') 		
             cat(	'\n',
@@ -35,7 +35,7 @@ setMethod(f = 'summary',
 #' @rdname summary-rnetMultiStrata
 
 setMethod(f = 'summary',
-          signature(object = 'rnetMultiStrata'),
+          signature(object = 'rnetStrata'),
           function(object) {
            Edges <- ifelse(object@E_matrix == 0, '', stringr::str_pad(abs(object@E_matrix), width = 5, side = 'right', pad = '0'))
            Edges <- ifelse(object@E_matrix < 0, 
@@ -44,7 +44,7 @@ setMethod(f = 'summary',
                             )
             colnames(Edges) <- paste(' ', gsub(paste(object@Stratify_by, '.', sep = ''), '', colnames(Edges)), sep = '')
             summary_table <- rbind(
-                  sapply(object@R_Strata, function(x) dim(x@Data)[1]),
+                  sapply(object@R_Strata, function(x) dim(x@x)[1]),
                   sapply(object@R_Strata, function(x) vcount(x@R)),
                   sapply(object@R_Strata, function(x) ecount(x@R))
                   )
@@ -75,11 +75,11 @@ setMethod(f = 'summary',
 #' @rdname summary-rnetStrata
 
 setMethod(f = 'summary',
-          signature(object = 'rnetStrata'),
+          signature(object = 'rnetSubset'),
           function(object) {
-            cat(  '\nStratfied R-net (single level)',
+            cat(  '\nR-net (subset data)',
                   '\n',
-                  '\n Sample:', dim(object@Data)[1], 'isolates,', length(object@V_set), 'vertices ')
+                  '\n Sample:', dim(object@x)[1], 'isolates,', length(object@vertices), 'vertices ')
             if(length(object@V_omitted)==1) cat('(', length(object@V_omitted), ' vertex omitted)', sep = '') 		
             if(length(object@V_omitted) > 1) cat('(', length(object@V_omitted), ' vertices omitted)', sep = '') 		
             cat(	'\n',

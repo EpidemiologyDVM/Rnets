@@ -8,9 +8,9 @@
 setMethod(f = 'print',
           signature(x = 'rnetBasic'),
           function(x) {
-            cat(  '\nVertex set:',	paste(x@V_set, collapse = ' '),
+            cat(  '\nVertex set:',	paste(x@vertices, collapse = ' '),
                   '\n',
-                  '\n  Edge Set:',
+                  '\n  Edge set:',
                   '\n')
             edge.frame <- data.frame(V1 = as_edgelist(x@R)[,1],
                                      V2 = as_edgelist(x@R)[,2],
@@ -22,7 +22,7 @@ setMethod(f = 'print',
 #' @rdname print
 #' 
 setMethod(f = 'print',
-          signature(x = 'rnetStrata'),
+          signature(x = 'rnetSubset'),
           function(x) {
             cat(	'\nRnet conditioned on', as.character(x@Strata_def), '\n')
             print(as(x, 'rnetBasic'))
@@ -31,7 +31,7 @@ setMethod(f = 'print',
 #' @rdname print
 #' 
 setMethod(f = 'print',
-          signature(x = 'rnetMultiStrata'),
+          signature(x = 'rnetStrata'),
           function(x) {
             cat(	"\nRnet stratified by ", x@Stratify_by, " (", length(x@R_Strata), " Strata)\n", sep = '')
             cat(  '\nVertex set:',	paste(unique(unlist(lapply(x@R_Strata, function(x) x@V_set ))), collapse = ' '), "\n")
