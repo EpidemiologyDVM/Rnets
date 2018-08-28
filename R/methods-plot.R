@@ -38,8 +38,9 @@ setMethod('plot',
 #' Hidden function for assigning layout matrix
 #' @param x an Rnet object
 #' @rdname dot-Assign_Layout_Matrix
+#' 
 .Assign_Layout_Matrix <- function(x){ 
-  if(is.null(x@layout_master)) return(layout_with_fr(x@R))
+  if(is.null(x@layout_master)| dim(x@layout_master)[1]==0) return(layout_with_fr(x@R))
 	
   if(dim(x@layout_master)[2] == 3) {
     coord_ref.vec <- x@layout_master[,1]
@@ -55,7 +56,7 @@ setMethod('plot',
   
   if(is.factor(coord_ref.vec)) coord_ref.vec <- as.character(coord_ref.vec)
   if(is.null(coord_ref.vec)) {
-    if(length(x@V_set)!= length(coord_x.vec)) stop('x@layout_master not valid: Number of rows in layout frame must match number of vertices in graph OR a column for vertex matching must be provided.')
+    if(length(x@vertices)!= length(coord_x.vec)) stop('x@layout_master not valid: Number of rows in layout frame must match number of vertices in graph OR a column for vertex matching must be provided.')
     layout.mat <- cbind(coord_x.vec, coord_y.vec)
 
     dimnames(layout.mat) <- list(V(x@R)$name,c('x', 'y'))
