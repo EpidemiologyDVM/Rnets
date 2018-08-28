@@ -51,6 +51,7 @@
 #' @export
 
 setGeneric('Assign_Vmetadata',
+
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
 		if(is.null(match_attr)) {
@@ -71,7 +72,6 @@ setGeneric('Assign_Vmetadata',
 			x <- set_vertex_attr(x, attrib, value = V_metadata[match.vec, attrib])
 			attr.frame[[attrib]] <- V_metadata[match.vec, attrib]
 		}
-#		browser()
 
 		if(reassign) {
 			assign(as.character(as.list(sys.call())[[2]]),
@@ -87,6 +87,7 @@ setGeneric('Assign_Vmetadata',
 #'
 setMethod('Assign_Vmetadata',
 	signature(x = 'rnetBasic'),
+
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
 		x@R <- Assign_Vmetadata(x@R, V_metadata, match_attr, V_match_attr, F)
@@ -106,6 +107,7 @@ setMethod('Assign_Vmetadata',
 #'
 setMethod('Assign_Vmetadata',
 	signature(x = 'rnetSubset'),
+
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
 		x@R <- Assign_Vmetadata(x@R, V_metadata, match_attr, V_match_attr, F)
@@ -125,11 +127,11 @@ setMethod('Assign_Vmetadata',
 #'	
 setMethod('Assign_Vmetadata',
 	signature(x = 'rnetStrata'),
+
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
 	
 		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Vmetadata, V_metadata, match_attr, V_match_attr, reassign = F)
-		
 		if(reassign) {
 			assign(as.character(as.list(sys.call())[[2]]),
 				x,

@@ -64,10 +64,10 @@ setGeneric('Assign_Emetadata',
 		if(attr_abs_val) match_attr_vals <- abs(edge_attr(x, match_attr)) else match_attr_vals <- edge_attr(x, match_attr)
 		if(is.null(e_cuts)) e_cuts <- seq(min(0, min(match_attr_vals)), max(match_attr_vals), max(match_attr_vals)/dim(E_metadata)[1])
 		E_cat <- cut(match_attr_vals, e_cuts)
-
 		for(attr in names(E_metadata)) x <- set_edge_attr(x, attr, value = E_metadata[E_cat,attr])
 		if(!'color'%in%names(E_metadata)) if(sign_col[1] == FALSE|is.null(sign_col)[1]|is.na(sign_col)[1]) E(x)$color <- 'black' else {
 			E(x)$color <- sign_col[1]; E(x)$color[sign(edge_attr(x, match_attr))==-1] <- sign_col[2]
+
 			}
 
 		if(reassign){
@@ -109,7 +109,6 @@ setMethod('Assign_Emetadata',
 	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = TRUE) 
 	{	
 		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Emetadata, E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, FALSE)
-
 		if(reassign){
 			assign(as.character(as.list(sys.call())[[2]]),
 				x,
