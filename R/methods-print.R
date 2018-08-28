@@ -36,7 +36,7 @@ setMethod(f = 'print',
             cat(	"\nRnet stratified by ", x@Stratify_by, " (", length(x@R_Strata), " Strata)\n", sep = '')
             cat(  '\nVertex set:',	paste(unique(unlist(lapply(x@R_Strata, function(x) x@V_set ))), collapse = ' '), "\n")
             cat(  '\nEdge set:\n')
-            print(.Assemble_Edge_Matrix(x, 'omega'))
+            print(.Aggregate_Edges(x, 'omega'))
             
           })
 #' @rdname print

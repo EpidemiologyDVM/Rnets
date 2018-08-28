@@ -19,7 +19,7 @@ Inherits from 'rnetInput'
 
 \item{\code{n}}{A square matrix of n_ij, the number of valid pairs used to estimate the edge between i and j.}
 
-\item{\code{V_ommitted}}{The names of vertices removed from the rnet due to low sample size or forced to 0.}
+\item{\code{V_omitted}}{The names of vertices removed from the rnet due to low sample size or forced to 0.}
 
 \item{\code{V_metadata}}{A Vector containing the attribute names assigned to the rnet's vertices.}
 

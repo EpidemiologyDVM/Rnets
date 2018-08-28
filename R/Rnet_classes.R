@@ -32,7 +32,7 @@ rnetInput <- setClass(Class = "rnetInput",
 #' @slot L1 The L1 penalty
 #' @slot vertices The vertex set
 #' @slot n A square matrix of n_ij, the number of valid pairs used to estimate the edge between i and j.
-#' @slot V_ommitted The names of vertices removed from the rnet due to low sample size or forced to 0.
+#' @slot V_omitted The names of vertices removed from the rnet due to low sample size or forced to 0.
 #' @slot V_metadata A Vector containing the attribute names assigned to the rnet's vertices.
 #' @slot E_metadata A vector containing the attribute names assinged to the rnet's edges.
 #' @slot zeros A list of edges forced to zero due to small sample size or declared by user.
@@ -81,7 +81,7 @@ rnetSubset <- setClass(Class = "rnetSubset",
 #'
 #' Inheirits from 'rnetInput'
 #' @slot stratify_by The name of the variable used to the original data, e.g. if Stratify_by = 'Year', the object contains 1 rnetSubset object for each unique value of the variable "year" in the dataset.
-#' @slot E_matrix A matrix containing every edge found in the entire set of rnets, and the stratum in which it was found.
+#' @slot E_aggr A matrix containing every edge found in the entire set of rnets, and the stratum in which it was found.
 #' @slot R_set A list of rnetStrata objects for each strata of the declared Stratify_by variable.
 #' @rdname rnetStrata
 

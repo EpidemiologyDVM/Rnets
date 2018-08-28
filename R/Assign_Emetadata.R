@@ -6,14 +6,14 @@
 
 #' @param x The network to which the edge metadata will be applied.
 #' @param E_metadata A dataframe containing one column for each attribute to be assigned to the network edges.
-#' @param match.attr The continuous attribute assigned to the network's edges (typically by E(x)$attr or set_edge_attr(x, attr)) that will be used to categorize edges. Values in match.attr will be binned using cut(value, E_ctpts), and matched to the rows in E_metadata, i.e. edges binned into the first category will be assigned attribute values from the first row in the data set, those binned into the second category will be assigned the second row values, etc.
-#' @param e.cutpoints A vector of values used to define how the values of match.attr will be binned. See 'cut' for more information.
-#' @param sign.color By default, a two-element vector containing colors for edges representing positive and negative attribute values(black and red, respectively). This behavior will be overriden if this argument is set to FALSE, NA, or NULL. Note, edge_attr('color') will ALWAYS be assinged to network edges when this method is called.
-#' @param attr_abs_val A logical argument determining if the absolute value of match.attr is used when binning values.
+#' @param match_attr The continuous attribute assigned to the network's edges (typically by E(x)$attr or set_edge_attr(x, attr)) that will be used to categorize edges. Values in match_attr will be binned using cut(value, E_ctpts), and matched to the rows in E_metadata, i.e. edges binned into the first category will be assigned attribute values from the first row in the data set, those binned into the second category will be assigned the second row values, etc.
+#' @param e_cuts A vector of values used to define how the values of match_attr will be binned. See 'cut' for more information.
+#' @param sign_col By default, a two-element vector containing colors for edges representing positive and negative attribute values(black and red, respectively). This behavior will be overriden if this argument is set to FALSE, NA, or NULL. Note, edge_attr('color') will ALWAYS be assinged to network edges when this method is called.
+#' @param attr_abs_val A logical argument determining if the absolute value of match_attr is used when binning values.
 #' @param reassign A logical argument controling if the function should overwrite x in the parent environment. Defaults to TRUE for brevity.
 #' @import igraph
 #' @include Rnet_classes.R
-#' @return An object of the same type as x, with the new edge attributes assigned by binning the 'match.attr' in the igraph and assigning the matching rows in 'e.metadata'.
+#' @return An object of the same type as x, with the new edge attributes assigned by binning the 'match_attr' in the igraph and assigning the matching rows in 'e.metadata'.
 
 #' @export
 #' @examples
@@ -38,8 +38,8 @@
 #' 
 #' Assign_Emetadata(EC08_rnet, 
 #'                  E_metadata = E_ATTRS,
-#'                  match.attr = 'omega',
-#'                  e.cutpoints = OMEGA_CUTS
+#'                  match_attr = 'omega',
+#'                  e_cuts = OMEGA_CUTS
 #'                  )
 #' 
 #' #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
@@ -47,8 +47,8 @@
 #' 
 #' EC08_withAttrs <- Assign_Emetadata(EC08_rnet, 
 #'                  E_metadata = E_ATTRS,
-#'                  match.attr = 'omega',
-#'                  e.cutpoints = OMEGA_CUTS
+#'                  match_attr = 'omega',
+#'                  e_cuts = OMEGA_CUTS
 #'                  )
 #' 
 #' #Atrributes after edges assigned.
@@ -57,17 +57,17 @@
 #' #NOTE: Edge color assigned as per default behavior.
 #' @rdname Assign_Emetadata
 setGeneric('Assign_Emetadata',
-	function(x, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = T)
+	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = T)
 	{
-		if(!match.attr%in%edge_attr_names(x)) stop(paste("Edge attribute '", match.attr, "' not found in x", sep = ''))
-		if(!is.numeric(edge_attr(x, match.attr))) stop("match.attr is not numeric")
-		if(attr_abs_val) match.attr_vals <- abs(edge_attr(x, match.attr)) else match.attr_vals <- edge_attr(x, match.attr)
-		if(is.null(e.cutpoints)) e.cutpoints <- seq(min(0, min(match.attr_vals)), max(match.attr_vals), max(match.attr_vals)/dim(E_metadata)[1])
-		E_cat <- cut(match.attr_vals, e.cutpoints)
+		if(!match_attr%in%edge_attr_names(x)) stop(paste("Edge attribute '", match_attr, "' not found in x", sep = ''))
+		if(!is.numeric(edge_attr(x, match_attr))) stop("match_attr is not numeric")
+		if(attr_abs_val) match_attr_vals <- abs(edge_attr(x, match_attr)) else match_attr_vals <- edge_attr(x, match_attr)
+		if(is.null(e_cuts)) e_cuts <- seq(min(0, min(match_attr_vals)), max(match_attr_vals), max(match_attr_vals)/dim(E_metadata)[1])
+		E_cat <- cut(match_attr_vals, e_cuts)
 
 		for(attr in names(E_metadata)) x <- set_edge_attr(x, attr, value = E_metadata[E_cat,attr])
-		if(!'color'%in%names(E_metadata)) if(sign.color[1] == FALSE|is.null(sign.color)[1]|is.na(sign.color)[1]) E(x)$color <- 'black' else {
-			E(x)$color <- sign.color[1]; E(x)$color[sign(edge_attr(x, match.attr))==-1] <- sign.color[2]
+		if(!'color'%in%names(E_metadata)) if(sign_col[1] == FALSE|is.null(sign_col)[1]|is.na(sign_col)[1]) E(x)$color <- 'black' else {
+			E(x)$color <- sign_col[1]; E(x)$color[sign(edge_attr(x, match_attr))==-1] <- sign_col[2]
 			}
 
 		if(reassign){
@@ -86,9 +86,9 @@ setGeneric('Assign_Emetadata',
 #' 
 setMethod('Assign_Emetadata',
 	signature(x = 'rnetBasic'),
-	function(x, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = T) 
+	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = T) 
 	{
-		x@R <- Assign_Emetadata(x@R, E_metadata, match.attr, e.cutpoints, sign.color, attr_abs_val, F)
+		x@R <- Assign_Emetadata(x@R, E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, F)
 		x@E_metadata <- names(E_metadata)
 
 		if(reassign){
@@ -106,9 +106,9 @@ setMethod('Assign_Emetadata',
 #' 
 setMethod('Assign_Emetadata',
 	signature(x = 'rnetStrata'),
-	function(x, E_metadata, match.attr, e.cutpoints = NULL, sign.color = c('black', 'red'), attr_abs_val = T, reassign = TRUE) 
+	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = TRUE) 
 	{	
-		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Emetadata, E_metadata, match.attr, e.cutpoints, sign.color, attr_abs_val, FALSE)
+		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Emetadata, E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, FALSE)
 
 		if(reassign){
 			assign(as.character(as.list(sys.call())[[2]]),

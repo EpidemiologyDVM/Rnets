@@ -13,7 +13,7 @@ Inheirits from 'rnetInput'
 \describe{
 \item{\code{stratify_by}}{The name of the variable used to the original data, e.g. if Stratify_by = 'Year', the object contains 1 rnetSubset object for each unique value of the variable "year" in the dataset.}
 
-\item{\code{E_matrix}}{A matrix containing every edge found in the entire set of rnets, and the stratum in which it was found.}
+\item{\code{E_aggr}}{A matrix containing every edge found in the entire set of rnets, and the stratum in which it was found.}
 
 \item{\code{R_set}}{A list of rnetStrata objects for each strata of the declared Stratify_by variable.}
 }}

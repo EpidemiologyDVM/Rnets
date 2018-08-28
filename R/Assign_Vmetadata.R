@@ -6,11 +6,11 @@
 #'
 #' @param x The network to which the vertex metadata will be applied.
 #' @param V_metadata A dataframe containing the vertex metadata to be assigned. A vertex attribute will be assigned for every column in the frame, except the column used to match V_metadata to existing vertex attribues.
-#' @param match.attr The name of the column in V_metadata used to match metadata to vertices. Defaults to the first column of V_metadata.
-#' @param vertex.match.attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(x)$name), which is typically assigned when the network is created with igraph functions.
+#' @param match_attr The name of the column in V_metadata used to match metadata to vertices. Defaults to the first column of V_metadata.
+#' @param V_match_attr the name of the vertex attribute used to match metadata. Defaults to 'name' (V(x)$name), which is typically assigned when the network is created with igraph functions.
 #' @param reassign A logical argument controling if the function should overwrite x in the parent environment. Defaults to 'True' for brevity.
 #' @import igraph
-#' @return An object of the same type as x, with the new vertex attributes assigned by matching 'match.attr' to 'vertex.match.attr'.
+#' @return An object of the same type as x, with the new vertex attributes assigned by matching 'match_attr' to 'V_match_attr'.
 #' @rdname Assign_Vmetadata
 #' @include Rnet_classes.R
 #' @examples 
@@ -32,8 +32,8 @@
 #' 
 #' Assign_Vmetadata(EC08_rnet, 
 #'                  V_metadata = V_ATTRS,
-#'                  match.attr = 'Code',
-#'                  vertex.match.attr = 'name'
+#'                  match_attr = 'Code',
+#'                  V_match_attr = 'name'
 #'                  )
 #' 
 #' #NOTE: EC08_rnet does not need to be reassigned for brevity. Returns data.frame of assigned data.
@@ -41,8 +41,8 @@
 #' 
 #' EC08_withAttrs <- Assign_Vmetadata(EC08_rnet, 
 #'                  V_metadata = V_ATTRS,
-#'                  match.attr = 'Code',
-#'                  vertex.match.attr = 'name'
+#'                  match_attr = 'Code',
+#'                  V_match_attr = 'name'
 #'                  )
 #' 
 #' #Atrributes after edges assigned.
@@ -51,23 +51,23 @@
 #' @export
 
 setGeneric('Assign_Vmetadata',
-	function(x, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
+	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
-		if(is.null(match.attr)) {
-			match.attr <- names(V_metadata)[1]
+		if(is.null(match_attr)) {
+			match_attr <- names(V_metadata)[1]
 			warning("No column containing vertex names declared, first column of V_metadata is assumed to contain vertex names")
 		}								#Assigns first column of metadata table as matching column if none defined and returns warning. 
-		if(any(duplicated(V_metadata[match.attr]))) stop("Elements of matching column 'match.attr' in must be unique")
-		if(!match.attr%in%names(V_metadata)) stop(paste('Column', match.attr, 'not found in V_metadata'))
+		if(any(duplicated(V_metadata[match_attr]))) stop("Elements of matching column 'match_attr' in must be unique")
+		if(!match_attr%in%names(V_metadata)) stop(paste('Column', match_attr, 'not found in V_metadata'))
 										#Returns error if assigned matching column in met
 
-		if(!all(vertex_attr(x, vertex.match.attr)%in%unlist(V_metadata[match.attr]))) stop('Not all vertices appear in V_metadata$', match.attr, sep = '')
-		match.vec <- match(vertex_attr(x, vertex.match.attr), V_metadata[[match.attr]])
+		if(!all(vertex_attr(x, V_match_attr)%in%unlist(V_metadata[match_attr]))) stop('Not all vertices appear in V_metadata$', match_attr, sep = '')
+		match.vec <- match(vertex_attr(x, V_match_attr), V_metadata[[match_attr]])
 		source.env <- parent.frame()
 
 		attr.frame <- data.frame(V = vertex_attr(x, 'name'))
 
-		for(attrib in names(V_metadata)[!names(V_metadata)%in%match.attr]) {
+		for(attrib in names(V_metadata)[!names(V_metadata)%in%match_attr]) {
 			x <- set_vertex_attr(x, attrib, value = V_metadata[match.vec, attrib])
 			attr.frame[[attrib]] <- V_metadata[match.vec, attrib]
 		}
@@ -87,9 +87,9 @@ setGeneric('Assign_Vmetadata',
 #'
 setMethod('Assign_Vmetadata',
 	signature(x = 'rnetBasic'),
-	function(x, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
+	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
-		x@R <- Assign_Vmetadata(x@R, V_metadata, match.attr, vertex.match.attr, F)
+		x@R <- Assign_Vmetadata(x@R, V_metadata, match_attr, V_match_attr, F)
 		x@V_metadata <- names(V_metadata)
 
 		if(reassign) {
@@ -106,9 +106,9 @@ setMethod('Assign_Vmetadata',
 #'
 setMethod('Assign_Vmetadata',
 	signature(x = 'rnetSubset'),
-	function(x, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
+	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
-		x@R <- Assign_Vmetadata(x@R, V_metadata, match.attr, vertex.match.attr, F)
+		x@R <- Assign_Vmetadata(x@R, V_metadata, match_attr, V_match_attr, F)
 		x@V_metadata <- names(V_metadata)
 
 		if(reassign) {
@@ -125,10 +125,10 @@ setMethod('Assign_Vmetadata',
 #'	
 setMethod('Assign_Vmetadata',
 	signature(x = 'rnetStrata'),
-	function(x, V_metadata, match.attr = NULL, vertex.match.attr = 'name', reassign = T)
+	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
 	
-		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Vmetadata, V_metadata, match.attr, vertex.match.attr, reassign = F)
+		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Vmetadata, V_metadata, match_attr, V_match_attr, reassign = F)
 		
 		if(reassign) {
 			assign(as.character(as.list(sys.call())[[2]]),

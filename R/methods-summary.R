@@ -106,7 +106,7 @@ setMethod(f = 'summary',
             E.long$Percent <- paste('  ',as.character(E.long$Pr * 100), "%", sep = '')
             E.table <- reshape(
               E.long,
-              dir = 'w',
+              direction = 'w',
               idvar = 'E', 
               timevar = 'L1',
               v.names = 'Percent',

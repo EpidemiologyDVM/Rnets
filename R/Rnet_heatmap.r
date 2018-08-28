@@ -2,26 +2,26 @@
 #' 
 #'Bitmaps can be used to show how edges in a network change over time or other criteria. This function takes an object of the 'rnet.multi.strata' class, specifically the E_matrix, and returns a numerical matrix used to visualize E_matrix. The numerical matrix can be visualized with a call to the 'image' function; The assinged colors are stored in the 'palette' attribute attached to the matrix. This matrix can then be used to plot the bitmap in which each horizontal row in the bitmap represents a unique edge found in the set of networks in rnet.multi.strata object and each vertical column is a network stratum (see the 'Rnet' method for more information). The colors represent the binned values in the E_matrix.
 #'
-#' @param rnet.list An object of class 'rnet.multi.strata'
-#' @param e.cutpoints A vector of numeric values used to cut the edge attribute values in rnet.list@E_matrix. Note binning of negative values is based on absolute value, making the categories symmetric around 0. 
-#' @param pos.colors A vector of colors corresponding to the binned positive rnet.list@E_matrix values. Defaults to 4 shades of red.
-#' @param neg.colors A vector of colors corresponding to the binned negative rnet.list@E_matrix values. Defaults to 4 shades of green.
-#' @param zero.color A single value for coloring edges with value = 0 (typically corresponds to an absent edge).
-#' @param NA.color A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
-#' The length of pos.colors and neg.colors must be the same and must be of length 1 greater than e.cutpoints.
+#' @param x An object of class 'rnetStrata'
+#' @param e_cuts A vector of numeric values used to cut the edge attribute values in x@E_aggr. Note binning of negative values is based on absolute value, making the categories symmetric around 0. 
+#' @param pos_colors A vector of colors corresponding to the binned positive x@E_aggr values. Defaults to 4 shades of red.
+#' @param neg_colors A vector of colors corresponding to the binned negative x@E_aggr values. Defaults to 4 shades of green.
+#' @param zero_color A single value for coloring edges with value = 0 (typically corresponds to an absent edge).
+#' @param NA_color A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
+#' The length of pos_colors and neg_colors must be the same and must be of length 1 greater than e_cuts.
 #' @export
 #' @return The code used to produce the plot.
 #' @examples
 #' #Example using EC_Rnets_byYear
-#' EC_Rnets_byYear <- Rnet(Data = NARMS_EC_DATA, 
-#' 						L1 = 0.3, 
-#' 						V_set = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 
+#' EC_Rnets_byYear <- Rnet(x = NARMS_EC_DATA, 
+#' 						L1 = 0.25, 
+#' 						vert = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 
 #' 						  'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
-#' 						n_threshold = 20,
-#'						Stratify = 'Year'
+#' 						n_min = 20,
+#'						subset = 'Year'
 #' 						)
 #'
-#' EC_Heatmap <- Rnet_Heatmap(EC_Rnets_byYear, e.cutpoints = c(0, 0.05, 0.1, 0.2, 1))
+#' EC_Heatmap <- Rnet_Heatmap(EC_Rnets_byYear, e_cuts = c(0, 0.05, 0.1, 0.2, 1))
 #'
 #'par(mar = c(4, 5, 1, 1)+0.1)
 #'image(EC_Heatmap, col = attr(EC_Heatmap, 'palette'),
@@ -42,39 +42,39 @@
 #'	)
 
 
-Rnet_Heatmap <- function(rnet.list,
-			e.cutpoints,
-			pos.colors = c('#FFBBBB', '#FF8888', '#FF4444', '#FF0000'),
-			neg.colors = c('#BBFFBB', '#88FF88', '#44FF44', '#00FF00'),
-			zero.color = '#FFFFFF',
-			NA.color = '#CCCCCC'
+Rnet_Heatmap <- function(x,
+			e_cuts,
+			pos_colors = c('#FFBBBB', '#FF8888', '#FF4444', '#FF0000'),
+			neg_colors = c('#BBFFBB', '#88FF88', '#44FF44', '#00FF00'),
+			zero_color = '#FFFFFF',
+			NA_color = '#CCCCCC'
 			)
 {	
-	if(length(pos.colors)!= length(e.cutpoints)-1 | length(neg.colors)!= length(e.cutpoints)-1) stop("vectors pos.colors and neg.colors must be 1 shorter than e.cutpoints")
-	names(pos.colors) <- paste('pos', 1:(length(e.cutpoints)-1), sep = '.')
-	names(neg.colors) <- paste('neg', 1:(length(e.cutpoints)-1), sep = '.')
-	names(zero.color) <- 'zero'
-	names(NA.color) <- 'NA'
-	palette_set <- c(pos.colors, neg.colors, zero.color, NA.color)
+	if(length(pos_colors)!= length(e_cuts)-1 | length(neg_colors)!= length(e_cuts)-1) stop("vectors pos_colors and neg_colors must be 1 shorter than e_cuts")
+	names(pos_colors) <- paste('pos', 1:(length(e_cuts)-1), sep = '.')
+	names(neg_colors) <- paste('neg', 1:(length(e_cuts)-1), sep = '.')
+	names(zero_color) <- 'zero'
+	names(NA_color) <- 'NA'
+	palette_set <- c(pos_colors, neg_colors, zero_color, NA_color)
 
-	edge_list <- reshape(as.data.frame(rnet.list@E_matrix),
+	edge_list <- reshape(as.data.frame(x@E_aggr),
 		direction = 'l',
 		idvar = 'Edge',
-		ids = rownames(rnet.list@E_matrix),
-		varying = list(colnames(rnet.list@E_matrix)),
+		ids = rownames(x@E_aggr),
+		varying = list(colnames(x@E_aggr)),
 		v.names = 'Edge_val',
-		times = colnames(rnet.list@E_matrix),
+		times = colnames(x@E_aggr),
 		timevar = 'Stratum'
 		)
 
-	edge_list$Stratum <- gsub(paste(slot(rnet.list, 'Stratify_by'), '.', sep = ''), '', edge_list$Stratum)
+	edge_list$Stratum <- gsub(paste(slot(x, 'stratify_by'), '.', sep = ''), '', edge_list$Stratum)
 	edge_list$Palette_code <- unlist(sapply(edge_list$Edge_val, function (x) {
 		if(is.na(x)) return ('NA')
 		switch(
 			sign(x) + 2,
-			paste('neg', as.integer(cut(abs(x), e.cutpoints)), sep = '.'),	
+			paste('neg', as.integer(cut(abs(x), e_cuts)), sep = '.'),	
 			'zero',
-			paste('pos', as.integer(cut(x, e.cutpoints)), sep = '.'),
+			paste('pos', as.integer(cut(x, e_cuts)), sep = '.'),
 			'NA'
 			)
 		}))
