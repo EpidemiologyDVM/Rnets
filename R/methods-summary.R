@@ -28,32 +28,32 @@ setMethod(f = 'summary',
 
 
 
-#'Summary - rnetMultiStrata
+#'Summary - rnetStrata
 #'
 #'Gives more information than 'print'.
-#' @param object an rnet object of class 'rnetMultiStrata'
-#' @rdname summary-rnetMultiStrata
+#' @param object an rnet object of class 'rnetStrata'
+#' @rdname summary-rnetStrata
 
 setMethod(f = 'summary',
           signature(object = 'rnetStrata'),
           function(object) {
-           Edges <- ifelse(object@E_matrix == 0, '', stringr::str_pad(abs(object@E_matrix), width = 5, side = 'right', pad = '0'))
-           Edges <- ifelse(object@E_matrix < 0, 
+           Edges <- ifelse(object@E_aggr == 0, '', stringr::str_pad(abs(object@E_aggr), width = 5, side = 'right', pad = '0'))
+           Edges <- ifelse(object@E_aggr < 0, 
                            stringr::str_pad(Edges, width = 6, side = 'left', pad = '-'),
                            stringr::str_pad(Edges, width = 6, side = 'left', pad = ' ')
                             )
-            colnames(Edges) <- paste(' ', gsub(paste(object@Stratify_by, '.', sep = ''), '', colnames(Edges)), sep = '')
+            colnames(Edges) <- paste(' ', gsub(paste(object@stratify_by, '.', sep = ''), '', colnames(Edges)), sep = '')
             summary_table <- rbind(
-                  sapply(object@R_Strata, function(x) dim(x@x)[1]),
-                  sapply(object@R_Strata, function(x) vcount(x@R)),
-                  sapply(object@R_Strata, function(x) ecount(x@R))
+                  sapply(object@R_set, function(x) dim(x@x)[1]),
+                  sapply(object@R_set, function(x) vcount(x@R)),
+                  sapply(object@R_set, function(x) ecount(x@R))
                   )
             dimnames(summary_table) <- list(c('Total n', 'Vertices', 'Edges'), colnames(Edges))
 
             cat( '\n   Stratfied R-net',
                  '\n',
-                 '\n Stratified by:', object@Stratify_by,
-                 '\n    L1 Penalty:', object@R_Strata[[1]]@L1,
+                 '\n Stratified by:', object@stratify_by,
+                 '\n    L1 Penalty:', object@R_set[[1]]@L1,
                  '\n',
                  '\nStrata Summary:\n'
                  )
@@ -67,12 +67,12 @@ setMethod(f = 'summary',
 
 
 
-#'Summary - rnetStrata
+#'Summary - rnetSubset
 #'
 #'Gives more information than 'print'.
-#' @param object an rnet object of class 'rnetStrata'
+#' @param object an rnet object of class 'rnetSubset'
 
-#' @rdname summary-rnetStrata
+#' @rdname summary-rnetSubset
 
 setMethod(f = 'summary',
           signature(object = 'rnetSubset'),
@@ -102,7 +102,7 @@ setMethod(f = 'summary',
 setMethod(f = 'summary',
           signature(object = 'rnet.L1.set'),
           function(object) {
-            E.long <- object@Edge_stability
+            E.long <- object@stability
             E.long$Percent <- paste('  ',as.character(E.long$Pr * 100), "%", sep = '')
             E.table <- reshape(
               E.long,
@@ -139,8 +139,8 @@ setMethod(f = 'summary',
               )
             }
           
-          max.loc <- which(object@StARS_D == max(object@StARS_D))
-          under.crit.loc <- which(object@StARS_D < 0.05)
+          max.loc <- which(object@D == max(object@D))
+          under.crit.loc <- which(object@D < 0.05)
           suggest.L1 <- names(under.crit.loc[min(which(under.crit.loc >= max.loc))] )  
           
           print(object)

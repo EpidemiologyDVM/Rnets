@@ -74,7 +74,7 @@ setGeneric('L1Selection',
 			x_b[,,b] <- as.matrix(x[sets_b[,b],vertices])
 			L1_n <- 1
 			m_i <- 1
-      if(!b%%10) cat(b, 'simulations completed,', proc.time()[3] - t_0, 'seconds elapsed.\n')
+      if(!b%%10 & verbose) cat(b, 'simulations completed,', proc.time()[3] - t_0, 'seconds elapsed.\n')
 			while(m_i > 0 & L1_n <= L1_N) {
 			  ti_0 <- proc.time()[3]
 				R_i <- Rnet(

@@ -24,7 +24,7 @@ setMethod(f = 'print',
 setMethod(f = 'print',
           signature(x = 'rnetSubset'),
           function(x) {
-            cat(	'\nRnet conditioned on', as.character(x@Strata_def), '\n')
+            cat(	'\nRnet conditioned on', as.character(x@subset), '\n')
             print(as(x, 'rnetBasic'))
           })
 
@@ -33,8 +33,8 @@ setMethod(f = 'print',
 setMethod(f = 'print',
           signature(x = 'rnetStrata'),
           function(x) {
-            cat(	"\nRnet stratified by ", x@Stratify_by, " (", length(x@R_Strata), " Strata)\n", sep = '')
-            cat(  '\nVertex set:',	paste(unique(unlist(lapply(x@R_Strata, function(x) x@V_set ))), collapse = ' '), "\n")
+            cat(	"\nRnet stratified by ", x@stratify_by, " (", length(x@R_set), " Strata)\n", sep = '')
+            cat(  '\nVertex set:',	paste(unique(unlist(lapply(x@R_set, function(x) x@V_set ))), collapse = ' '), "\n")
             cat(  '\nEdge set:\n')
             print(.Aggregate_Edges(x, 'omega'))
             
@@ -45,6 +45,6 @@ setMethod(f = 'print',
           signature(x = 'rnet.L1.set'),
           function(x) {
             cat('\nStability Approach for Regularization Selection (StARS) results\n\nD_b by L1\n')
-            output <- round(x@StARS_D, 4)
+            output <- round(x@D, 4)
             print(output)
           })

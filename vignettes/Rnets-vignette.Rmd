@@ -26,35 +26,55 @@ Where...
 * $\Omega$ is the partial correlation matrix, estimated as $\omega_{ij}=\frac{-\theta_{ij}}{\sqrt{\theta_{ii} \theta_{jj}}}|i\neq j$
 * $R$ is the network defined by the two sets:
     + The vertex set $V$, with $|V| = k$ vertices and
-    + The edge set $E$, with $|E| = m$edges. 
+    + The edge set $E$, with $|E| = m$edges.
+    
+The estimated structure of the network is conditional on the selected L~1~. The ```L1Selection()``` function discussed below uses a resampling and stability method assist in selecting an L~1~ penalty objectively.
 
 
 ## Important Functions & Methods
 
-### `Rnet()`
-The `Rnet` function is the core of the package. This function intakes a dataframe containing the AMR data, the L~1~ penalty, and other options and produces an rnet object (the specific type varies on how the "Stratify" argument is specified) that contains the processed network and associated attributes.
+### Network Estimation
+`Rnet()` is the core function of this package. This function intakes a data.frame containing the AMR data, the L~1~ penalty, and other options and produces one of several  object classes containing the processed network and associated attributes (the specific class is determined by the specification of the option ```subset``` argument). 
 
 The example dataset `NARMS_EC_DATA` is included in the package and contains a subset of AMR data from _E. coli_ isolates collected by the FDA & USDA as part of the National Antimicrobial Resistance Monitoring System^[<https://www.fda.gov/animalveterinary/safetyhealth/antimicrobialresistance/nationalantimicrobialresistancemonitoringsystem/>].
 
 ```{r, echo = FALSE, results = 'hide', message = F}
 library(Rnets)
-#load(file = 'data\\NARMS_EC_DATA.rda')
-
-```
-
-```{r}
+attach(Rnets::NARMS_EC_DATA)
 
 #Define the set of antimicrobials to include in the Rnet
 ABX_LIST <- c('AMC', 'AXO', 'TIO', 'CIP', 'TET', 'STR', 'GEN', 'CHL')
+```
 
+####Basic Rnets
+The simplest way to use ```Rnet()``` is to not specify ```subset```, in which case all the available data is used to estimate a single network. This creates an S4 object of class ```rnetBasic```.
+
+```{r}
 #Estimate the Rnet
-EC_all_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.25, vert = ABX_LIST)
+EC_all_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST)
                 
 #View Results
 summary(EC_all_Rnet)
 ```
 
-### `L1Selection()`
+####Subset Rnets
+In many cases, it is reasonable to believe that subpopulations in the data may have different partial correlation structures, in which case it is appropriate to estimate a seperate Rnet for each subpopulation. To estimate the network for a single subpopulation, an expression defining it should be passed to the function using the  optional ```subset``` arugument. For example, to create an Rnet for the isolates from 2008, add ``` subset = expression(Year == 2008)```. When ```subset``` is an expression, ```Rnet()``` returns an ```rnetSubset``` object.
+```{r}
+EC_2008_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = expression (Year == 2008))
+
+summary(EC_2008_Rnet)
+```
+
+####Stratified Rnets
+It is possible to create multiple Rnets with a single function call. To do so, ```subset``` can be defined as one of columns of ```x```,  specifically ```subset = 'column_name'```. In this case ```Rnet()``` will estimate a seperate Rnet for each unique level of ```x$column_name```, and will return an object of class ```rnetStrata``` (Note: this object has a slightly different structure than ```rnetBasic``` and ```rnetSubset```)
+```{r}
+EC_byYear_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
+
+summary(EC_byYear_Rnet)
+```
+
+
+### Penalty Selection
 
 Several methods have been proposed to select the 'appropriate' L~1~ penalty, represented by $\lambda$, to induce sparsity in MRFs. In general, $\lambda$ should be high enough to remove trivially small partial correlations while leaving intact stronger partial correlations that are presumbly caused by genetic associations. `L1Selection` implements the StARS method described by Liu, Roeder, and Wasserman (2010)^[Stability Approach to Regularization Selection (StARS) for High Dimensional Graphical Models. _Advances in Nerual Information Processing Systems 23_ (2010)]. Briefly, this method estimates MRFs using multiple subsets sampled without replacement from the empirical data over a range of $\lambda$ values. Individual edges/partial correlations from the subset-derived MRFs are evaluated for stability (defined as the std. deviation of the proportion of subsets in which they appear), and a score _D_ is assigned for each tested value of $\lambda$ based on the sum of stabilities for all edges over all subsets given the respective penalty. The suggested $\lambda$ value is the lowest value for which _D_ is below some threshold, typically 0.05. The goal is to find the densest network that is also stable across most data subsets.
 
@@ -63,16 +83,16 @@ This function defaults to a subsample size `n_b` of half the dataset, but smalle
 ```{r}
 EC_all_L1Selection <- L1Selection(
             x = NARMS_EC_DATA, 
-            L1_values = seq(0.05, 0.50, 0.05),
+            L1_values = seq(0.05, 0.45, 0.05),
             n_b = 1500,
-            vert = ABX_LIST
+            vert = ABX_LIST,
+            verbose = F
             )
 
-print(EC_all_L1Selection@D, 4)
+summary(EC_all_L1Selection)
 ```
-
-_generic `summary` & `print` methods for `class(x) = 'rnet.L1.set'` are still in development. Currently, stability scores are accessed direct via `x@StARS_D`_ 
-
 Given these results, the suggested regularization penalty would be $\lambda$ = 0.15, since StARS_D > 0.05 at $\lambda$ = 0.10.
 
 NOTE: The resampling approach can be time consuming large datasets, i.e. datasets with many observations or many variables. 
+
+### Network visualization
