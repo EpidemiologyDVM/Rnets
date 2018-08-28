@@ -12,7 +12,7 @@
 #' @import igraph
 #' @return An object of the same type as x, with the new vertex attributes assigned by matching 'match_attr' to 'V_match_attr'.
 #' @rdname Assign_Vmetadata
-#' @include Rnet_classes.R
+#' @include classes.R
 #' @examples 
 #' # V_ATTRS' is a data.frame included in the package containing vertex metadata
 #' #     regarding antimicrobial class and a color scheme for the vertices. These 

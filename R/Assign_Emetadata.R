@@ -12,7 +12,7 @@
 #' @param attr_abs_val A logical argument determining if the absolute value of match_attr is used when binning values.
 #' @param reassign A logical argument controling if the function should overwrite x in the parent environment. Defaults to TRUE for brevity.
 #' @import igraph
-#' @include Rnet_classes.R
+#' @include classes.R
 #' @return An object of the same type as x, with the new edge attributes assigned by binning the 'match_attr' in the igraph and assigning the matching rows in 'e.metadata'.
 
 #' @export
