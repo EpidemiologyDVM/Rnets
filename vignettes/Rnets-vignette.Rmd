@@ -10,9 +10,10 @@ vignette: >
 ---
 ## Introduction
 
-The `Rnets` package provides a mostly automated analysis pipeline for translating antimicrobial resistance (AMR) data from bacterial populations into network models. Representing resistance relationships as networks greatly facilitates visualization of data and allows noval analytic approaches by mapping the relationships to a network. Currently, the package is focused on mapping relationships betweeen phenotypic resistances, e.g. minimum inihibitory concentrations (MICs), but methods to incorporate genetic information into the analysis are currently in development.
+The `Rnets` package provides a mostly automated analysis pipeline for translating antimicrobial resistance (AMR) data from bacterial populations into network models. Representing resistance relationships as networks greatly facilitates visualization of data and allows noval analytic approaches by mapping the relationships to a network. Currently, the package is focused on mapping relationships betweeen phenotypic resistances, e.g. minimum inihibitory concentrations (MICs).
+
 ##Under the Hood
-The networks models created by this package are probabalistic graphical models (PGMs), more specifically Markov random fields (MRF). MRFs are undirected graphical models where the vertex set is defined by a set of random variables and the edge set is defined by non-zero partial correlations between variables in the dataset. Sparse MRFs of AMR data are network models of resistance relationships, referred to as 'rnets' for brevity.
+The networks models created by this package are probabalistic graphical models (PGMs), more specifically Markov random fields (MRF). MRFs are undirected graphical models where the vertex set is defined by a set of random variables and the edge set is defined by non-zero partial correlations between variables in the dataset. Sparse MRFs of AMR data are network models of resistance relationships, referred to as 'Rnets' for brevity.
 
 _Sparsity_ is a concept in network models desribing how many or how few links, or _edges_, exist between the units, or _vertices_, of the network. A network in which all possible edges exist is referred to as dense. Sparsity is an appealing characteristic because sparse networks are much easier to interpret than completely dense networks. An MRF may be made sparse by reducing trivially small partial correlations to 0. Several approaches to this problem, and we employ the graphical least absolute shrinkage and selection operator (LASSO) here using the `glasso` function from the eponymous package maintained by R. Tibshirani^[Friedman, Hastie & Tibshirani. "Sparse inverse covariance estimation with the graphical lasso." _Biostatistics_ (2007)]. This method applies an L~1~ penalty to the inverse covariance matrix to increase it's sparsity. Higher L~1~ values leads to fewer edges and a sparser network and the graph is empty when $L_1 \geq max(|\sigma_{ij}|)$, i.e., there a no edges and all the variables appear to be conditionally independent. 
 
@@ -28,10 +29,10 @@ Where...
     + The vertex set $V$, with $|V| = k$ vertices and
     + The edge set $E$, with $|E| = m$edges.
     
-The estimated structure of the network is conditional on the selected L~1~. The ```L1Selection()``` function discussed below uses a resampling and stability method assist in selecting an L~1~ penalty objectively.
+The estimated structure of the network is conditional on the selected L~1~. `L1Selection()` discussed below uses a resampling and stability method assist in selecting an L~1~ penalty objectively.
 
 
-## Important Functions & Methods
+## Using Rnets
 
 ### Network Estimation
 `Rnet()` is the core function of this package. This function intakes a data.frame containing the AMR data, the L~1~ penalty, and other options and produces one of several  object classes containing the processed network and associated attributes (the specific class is determined by the specification of the option ```subset``` argument). 
@@ -57,8 +58,12 @@ EC_all_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST)
 summary(EC_all_Rnet)
 ```
 
+### Rnet objects
+
+The results of ```Rnet()```, in addition to the input arguments are stored in the S4 classes `rnetBasic`, `rnetSubset`, and `rnetStrata`. The specific output class is determined by the optional `subset` arugment as discussed above.  
+
 ####Subset Rnets
-In many cases, it is reasonable to believe that subpopulations in the data may have different partial correlation structures, in which case it is appropriate to estimate a seperate Rnet for each subpopulation. To estimate the network for a single subpopulation, an expression defining it should be passed to the function using the  optional ```subset``` arugument. For example, to create an Rnet for the isolates from 2008, add ``` subset = expression(Year == 2008)```. When ```subset``` is an expression, ```Rnet()``` returns an ```rnetSubset``` object.
+In many cases, it is reasonable to believe that subpopulations in the data may have different partial correlation structures, in which case it is appropriate to estimate a seperate Rnet for each subpopulation. To estimate the network for a single subpopulation, an expression defining it should be passed to the function using the  optional `subset` arugument. For example, to create an Rnet for the isolates from 2008, add `subset = expression(Year == 2008)`. When `subset` is an expression, `Rnet()` returns an `rnetSubset` object.
 ```{r}
 EC_2008_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = expression (Year == 2008))
 
@@ -66,7 +71,8 @@ summary(EC_2008_Rnet)
 ```
 
 ####Stratified Rnets
-It is possible to create multiple Rnets with a single function call. To do so, ```subset``` can be defined as one of columns of ```x```,  specifically ```subset = 'column_name'```. In this case ```Rnet()``` will estimate a seperate Rnet for each unique level of ```x$column_name```, and will return an object of class ```rnetStrata``` (Note: this object has a slightly different structure than ```rnetBasic``` and ```rnetSubset```)
+It is possible to create multiple Rnets with a single function call. To do so, `subset` can be defined as one of columns of `x`,  specifically `subset = 'column_name'`. In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata` (Note: this object has a slightly different structure than `rnetBasic` and `rnetSubset`)
+
 ```{r}
 EC_byYear_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
 
@@ -93,6 +99,16 @@ summary(EC_all_L1Selection)
 ```
 Given these results, the suggested regularization penalty would be $\lambda$ = 0.15, since StARS_D > 0.05 at $\lambda$ = 0.10.
 
-NOTE: The resampling approach can be time consuming large datasets, i.e. datasets with many observations or many variables. 
+NOTE: The resampling approach can be time consuming large datasets, i.e. datasets with many observations or many variables.
+
+
+### Assigning network metadata
 
 ### Network visualization
+
+Two primary methods are used to visualize the Rnets: individual networks can be visualized with the generic method ```plot()``` and heatmaps can be used visualize the edges in multiple graphs using `Rnet_Heatmap()`. 
+
+
+### Network analysis
+
+
