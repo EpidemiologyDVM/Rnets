@@ -141,6 +141,7 @@ setMethod('Rnet',
 		strata_vals <- unique(x[[subset]])
 		strat.obj <- as(as(rnet.obj, 'rnetInput'), 'rnetSubset')
 		rnet.obj@R_set <- lapply(strata_vals, function(x) {strat.obj@subset <- parse(text = paste(subset, '==', x)); .Gen_R(strat.obj)})
+		names(rnet.obj@R_set) <- strata_vals
 		rnet.obj@E_aggr <- .Aggregate_Edges(rnet.obj, 'omega')
 		return(rnet.obj)
 	})
