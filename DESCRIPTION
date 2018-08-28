@@ -21,7 +21,7 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Collate: 
-    'Rnet_classes.R'
+    'classes.R'
     'Assign_Emetadata.R'
     'Assign_Vmetadata.R'
     'Clean_Sigma.R'
@@ -32,7 +32,6 @@ Collate:
     'Rnet.R'
     'Rnet_heatmap.r'
     'Sq2L.R'
-    'classes.R'
     'data_e_attrs.R'
     'data_ec_coords.R'
     'data_narms_ec.r'
