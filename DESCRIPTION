@@ -32,6 +32,7 @@ Collate:
     'Rnet.R'
     'Rnet_heatmap.r'
     'Sq2L.R'
+    'classes.R'
     'data_e_attrs.R'
     'data_ec_coords.R'
     'data_narms_ec.r'

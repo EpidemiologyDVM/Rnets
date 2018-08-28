@@ -147,7 +147,7 @@ The slot `rnetstrata.obj@E_aggr` contains a matrix of estimated penalized partia
 
 ### Assigning network attributes
 
-Vertices and edges in `igraph` objects can be assigned a variety attributes, also referred to a _metadata_,  that are useful for decorating and analyzing the networks. Immeadiately after being output from `Rnet()`, the network objects in `rnetbasic@R` have one vertex attribute ( _name_, corresponding to the elements of the _vertices_ argument) and one edge attribute ( _omega_, the edges' estimated penalized partial corrleation). 
+Vertices and edges in `igraph` objects can be assigned a variety attributes, also referred to a _metadata_,  that are useful for decorating and analyzing the networks. Immeadiately after being output from `Rnet()`, the network objects in `rnetbasic@R` have one vertex attribute (`name`, corresponding to the elements of the _vertices_ argument) and one edge attribute (`omega`, the edges' estimated penalized partial corrleation). 
 
 Users have the option to access, add to, and remove from an rnet object's graphical metadata using `igraph` functions.  Examples include:
 
@@ -155,7 +155,17 @@ Users have the option to access, add to, and remove from an rnet object's graphi
 * `rnetbasic.obj@R <- set_vertex_attr(graph = rnetbasic.obj@R, name = 'vertex.shape', 'square')` to set all vertices' to have a square shape
 * `E(rnetbasic.obj@R)$edge.color <- 0` to make edges be colored black.
 
-With 
+Assigning each attribute individually can be time-consuming, so `Rnets` provides `Assign_Emetadata` and `Assign_Vmetadata` to more efficiently assign vertex and vertex attributes, respectively. These functions match vertex or edge attributes to a column in a data.frame, and then assign corresponding values as attributes. 
+
+####Assign_Vmetadata
+
+This method is used to simultaneously assign multiple vertex attributes to an `igraph` networks, including those stored in `rnetbasic@R`. The vertex attributes are stored in data.frame that can be viewed easily. An example frame of vertex attributes is included in the package
+```{r}
+Rnets::V_ATTRS[1:10,]
+```
+The first column contains NARMS' 3-letter code for the resistance and the other columns include the drug's full name, a code for the drug class ("AMINO" for aminoglycoside, "FQ" for fluoroquinolones, etc.), a color to use for vertices of each class, and the label text color for the vertex.
+
+We could use a series of four `V(rnetbasic.obj@R)$attr` or `set_vertex_attr(...)` calls (one for each additional attribute to add), but it is more efficient to use `Assign_Vmetadata`. We will the vertex attribute `name`( `V(rnetbasic.obj@R)$name`)  to entries `V_ATTRS$Code` to assign the data.
 
 ### Network visualization
 
