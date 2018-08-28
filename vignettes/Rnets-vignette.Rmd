@@ -10,12 +10,12 @@ vignette: >
 ---
 ## Introduction
 
-The `Rnets` package provides a mostly automated analysis pipeline for translating antimicrobial resistance (AMR) data from bacterial populations into network models. Representing resistance relationships as networks greatly facilitates visualization of data and allows noval analytic approaches by mapping the relationships to a network. Currently, the package is focused on mapping relationships betweeen phenotypic resistances, e.g. minimum inihibitory concentrations (MICs).
+This package provides a mostly automated analysis pipeline for translating antimicrobial resistance (AMR) data from bacterial populations into network models. Representing resistance relationships as networks facilitates visualization and understand of this multivariate data and opens up a novel set of analytic approaches. The focus of the package is to leverage existing and accessible phenotypic resistance data from clinical antimicrobial susceptibility testing (AST) to identify correlated resistances. Correlations with other factors, e.g., patient characteristics and additional isolate details, can also be included in the networks.
 
-##Under the Hood
-The networks models created by this package are probabalistic graphical models (PGMs), more specifically Markov random fields (MRF). MRFs are undirected graphical models where the vertex set is defined by a set of random variables and the edge set is defined by non-zero partial correlations between variables in the dataset. Sparse MRFs of AMR data are network models of resistance relationships, referred to as 'Rnets' for brevity.
+## Networks and Sparsity
+The networks models created by this package are probabalistic graphical models (PGMs), more specifically Markov random fields (MRF). MRFs are undirected graphical models where the vertex set is defined by a set of random variables and the edge set is defined by non-zero partial correlations between variables in the dataset. Sparse MRFs of AMR data are resistance relationship network models, which is shorted to 'R-nets'. The R-nets represent the estimated correlations in resistances across the population from which the AST results were drawn.
 
-_Sparsity_ is a concept in network models desribing how many or how few links, or _edges_, exist between the units, or _vertices_, of the network. A network in which all possible edges exist is referred to as dense. Sparsity is an appealing characteristic because sparse networks are much easier to interpret than completely dense networks. An MRF may be made sparse by reducing trivially small partial correlations to 0. Several approaches to this problem, and we employ the graphical least absolute shrinkage and selection operator (LASSO) here using the `glasso` function from the eponymous package maintained by R. Tibshirani^[Friedman, Hastie & Tibshirani. "Sparse inverse covariance estimation with the graphical lasso." _Biostatistics_ (2007)]. This method applies an L~1~ penalty to the inverse covariance matrix to increase it's sparsity. Higher L~1~ values leads to fewer edges and a sparser network and the graph is empty when $L_1 \geq max(|\sigma_{ij}|)$, i.e., there a no edges and all the variables appear to be conditionally independent. 
+_Sparsity_ is a concept in network models desribing how many or how few links, or _edges_, exist between the units, or _vertices_, of the network. A network in which all possible edges exist is referred to as dense. Sparsity is an appealing characteristic because sparse networks are much easier to interpret than completely dense networks. An MRF may be made sparse by reducing trivially small partial correlations to 0. Several approaches to this problem have been described, and we employ here the graphical least absolute shrinkage and selection operator (gLASSO). This method applies an L~1~ penalty when estimating the inverse covariance matrix (also refered to as the 'precision matrix') to increase it's sparsity. Higher L~1~ values leads to fewer edges and a sparser network and the graph is empty when $L_1 \geq max(|\sigma_{ij}|)$, i.e., there a no edges and all the variables appear to be conditionally independent. 
 
 The analysis pipeline can be summarized as follows:
 $$\Large D_{n \times k} \underset{cor}{\rightarrow} \Sigma_{k \times k} \underset{glasso}{\rightarrow} \Theta_{k \times k} \underset{std'ize}{\rightarrow}\Omega_{k \times k} \underset{igraph}{\rightarrow}R(V, E)$$
@@ -29,14 +29,25 @@ Where...
     + The vertex set $V$, with $|V| = k$ vertices and
     + The edge set $E$, with $|E| = m$edges.
     
-The estimated structure of the network is conditional on the selected L~1~. `L1Selection()` discussed below uses a resampling and stability method assist in selecting an L~1~ penalty objectively.
+The MRF can be thought of as a convenient way of visualizing the penalized $\Omega$. The estimated structure is conditional on the selected L~1~. `L1Selection()` discussed below uses a resampling and stability method assist in selecting an L~1~ penalty objectively.
 
+In an R-net, phenotypical resistances and other cofactors are represented as vertices, i.e., the observed MICs and cofactors are the random variables in the dataset represented by the R-net. The edges in an R-net represent resistances (or other cofactors) that have non-zero correlations after accounting for all the other covariances in the data. The significance of the non-zero partial correlations are that selecting for one resistance may indirectly select for the correlated resistance. For example, if AMP--TET edge is found to have $\omega \geq 0$ for a population of bacteria, it indicates that environments that select for increased AMP, e.g., therapeutic use of ampicillin, may indirectly select for increased TET as well. 
 
-## Using Rnets
+## Under the hood
 
-### Network Estimation
-`Rnet()` is the core function of this package. This function intakes a data.frame containing the AMR data, the L~1~ penalty, and other options and produces one of several  object classes containing the processed network and associated attributes (the specific class is determined by the specification of the option ```subset``` argument). 
+`Rnets` relies heavily on the `glasso` and `igraph` packages. `glasso`, maintained by R. Tibshirani^[Friedman, Hastie & Tibshirani. "Sparse inverse covariance estimation with the graphical lasso." _Biostatistics_ (2007)], provides the eponymous function for estimating sparse precision matrices. `igraph` is one of the most popular libraries on CRAN for working with network data and was developed by Gabor Csardi and Tamas Nepusz^[Gabor Csardi and Tamas Nepusz. "The igraph software package for complex network research." _InterJournal_ (2006)]. `Rnets` makes extensive use of the resources in `igraph` to store, analyze, and manipulate the estimated MRFs.
 
+## Using the Rnets package
+
+This package is designed to intake processed AST results and return usable networks for further analysis. The work flow in R can be generalized 
+
+1. Import and process AMR data (This is outside the scope )
+2. Use `L1selection()` or another method to select appropriate penalty
+3. Use `Rnet()` to estimate the MRF structures
+  + Assign metadata to rnet object as needed
+4. Visualize and analyze the R-nets
+
+####Example data
 The example dataset `NARMS_EC_DATA` is included in the package and contains a subset of AMR data from _E. coli_ isolates collected by the FDA & USDA as part of the National Antimicrobial Resistance Monitoring System^[<https://www.fda.gov/animalveterinary/safetyhealth/antimicrobialresistance/nationalantimicrobialresistancemonitoringsystem/>].
 
 ```{r, echo = FALSE, results = 'hide', message = F}
@@ -47,44 +58,18 @@ attach(Rnets::NARMS_EC_DATA)
 ABX_LIST <- c('AMC', 'AXO', 'TIO', 'CIP', 'TET', 'STR', 'GEN', 'CHL')
 ```
 
-####Basic Rnets
-The simplest way to use ```Rnet()``` is to not specify ```subset```, in which case all the available data is used to estimate a single network. This creates an S4 object of class ```rnetBasic```.
+####Notes on data processing and analysis
+Due to the variety of storage formats for AMR data, data preparation is beyond the scope of `Rnets`. Typically, MIC results from AST will be reported with an inequality sign and a numeric value, e.g., `= 16` or `> 4`. The functions in `Rnets` require only numeric values, so some degree of editing will often be required to make AST results usable. For entries preceeded by `=`, `<`, or `<=`, we suggest simply trimming the sign. However, `>` and `>=` indicate that the MIC was in excess of highest tested concentation. Therefore, an MIC reported as `> 4` represents a greater resistance than `= 4`. In these cases, we suggest doubling  MIC values reported as `>` or `>=`, e.g. `> 4` is transformed to `8` for analysis. Doubling the MIC aims to represent the higher resistance as being in the next higher two-fold concentration that was not tested.
 
-```{r}
-#Estimate the Rnet
-EC_all_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST)
-                
-#View Results
-summary(EC_all_Rnet)
-```
-
-### Rnet objects
-
-The results of ```Rnet()```, in addition to the input arguments are stored in the S4 classes `rnetBasic`, `rnetSubset`, and `rnetStrata`. The specific output class is determined by the optional `subset` arugment as discussed above.  
-
-####Subset Rnets
-In many cases, it is reasonable to believe that subpopulations in the data may have different partial correlation structures, in which case it is appropriate to estimate a seperate Rnet for each subpopulation. To estimate the network for a single subpopulation, an expression defining it should be passed to the function using the  optional `subset` arugument. For example, to create an Rnet for the isolates from 2008, add `subset = expression(Year == 2008)`. When `subset` is an expression, `Rnet()` returns an `rnetSubset` object.
-```{r}
-EC_2008_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = expression (Year == 2008))
-
-summary(EC_2008_Rnet)
-```
-
-####Stratified Rnets
-It is possible to create multiple Rnets with a single function call. To do so, `subset` can be defined as one of columns of `x`,  specifically `subset = 'column_name'`. In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata` (Note: this object has a slightly different structure than `rnetBasic` and `rnetSubset`)
-
-```{r}
-EC_byYear_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
-
-summary(EC_byYear_Rnet)
-```
-
+We suggest using the non-parametric estimators for correlation such as Kendall's $\tau_b$ or Spearman's $\rho$ to estimate $\Sigma$ instead of Pearson's method. The gLASSO method was orignally described for Gaussian data, but MICs rarely conform to a normal distribution. Therefore using Pearson's method, which assumes Gaussianity, to estimate $\Sigma$ may result in biased results. The non-parametric rank-based estimators have been shown to produce less biased with gLASSO when the underlying data is not Gaussian. The user can choose any of the three methods to estimate $\Sigma$, but `Rnet()` defaults to Spearman's (`Rnet(..., cor_method = 's')`) and Kendall's $\tau_b$ (`Rnet(..., cor_method = 'k')`) is suggested when some of the variables are binomial. When parametric tests are needed, we suggest using a `log2(MIC)` transformation to reduce skewness.
 
 ### Penalty Selection
 
 Several methods have been proposed to select the 'appropriate' L~1~ penalty, represented by $\lambda$, to induce sparsity in MRFs. In general, $\lambda$ should be high enough to remove trivially small partial correlations while leaving intact stronger partial correlations that are presumbly caused by genetic associations. `L1Selection` implements the StARS method described by Liu, Roeder, and Wasserman (2010)^[Stability Approach to Regularization Selection (StARS) for High Dimensional Graphical Models. _Advances in Nerual Information Processing Systems 23_ (2010)]. Briefly, this method estimates MRFs using multiple subsets sampled without replacement from the empirical data over a range of $\lambda$ values. Individual edges/partial correlations from the subset-derived MRFs are evaluated for stability (defined as the std. deviation of the proportion of subsets in which they appear), and a score _D_ is assigned for each tested value of $\lambda$ based on the sum of stabilities for all edges over all subsets given the respective penalty. The suggested $\lambda$ value is the lowest value for which _D_ is below some threshold, typically 0.05. The goal is to find the densest network that is also stable across most data subsets.
 
-This function defaults to a subsample size `n_b` of half the dataset, but smaller subsamples are typically appropriate. Liu, Roeder, and Wasserman suggest a n_b = 10$\sqrt{n}$
+`L1Selection` defaults to a subsample size `n_b` of half the dataset, but smaller subsamples are typically appropriate. Liu, Roeder, and Wasserman suggest $n_b = 10\sqrt{n}$. `n_b` can be set to a proportion of the sample size by setting `n_b < 1` or as a set number of individuals with `1 < n_b < n`.
+
+
 
 ```{r}
 EC_all_L1Selection <- L1Selection(
@@ -101,12 +86,80 @@ Given these results, the suggested regularization penalty would be $\lambda$ = 0
 
 NOTE: The resampling approach can be time consuming large datasets, i.e. datasets with many observations or many variables.
 
+### Network Estimation
+`Rnet()` is the core function of this package. This function intakes a data.frame containing the AMR data, the L~1~ penalty, and other options and produces one of several  object classes containing the processed network and associated attributes (the specific class is determined by the specification of the option ```subset``` argument). 
 
-### Assigning network metadata
+
+####Basic Rnets
+The simplest way to use ```Rnet()``` is to not specify ```subset```, in which case all the available data is used to estimate a single network. This creates an S4 object of class ```rnetBasic```.
+
+```{r}
+#Estimate the Rnet
+EC_all_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST)
+                
+#View Results
+summary(EC_all_Rnet)
+```
+
+####Subset Rnets
+In many cases, it is reasonable to believe that subpopulations in the data may have different partial correlation structures, in which case it is appropriate to estimate a seperate Rnet for each subpopulation. To estimate the network for a single subpopulation, an expression defining it should be passed to the function using the  optional `subset` arugument. For example, to create an Rnet for the isolates from 2008, add `subset = expression(Year == 2008)`. When `subset` is an expression, `Rnet()` returns an `rnetSubset` object.
+```{r}
+EC_2008_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = expression (Year == 2008))
+
+summary(EC_2008_Rnet)
+```
+
+####Stratified Rnets
+It is possible to create multiple R-nets with a single function call. To do so, `subset` can be defined as one of columns of `x`,  specifically `subset = 'column_name'`. In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata` (Note: this object has a slightly different structure than `rnetBasic` and `rnetSubset`)
+
+```{r}
+EC_byYear_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
+
+summary(EC_byYear_Rnet)
+```
+### Rnet objects
+
+The results of `Rnet()`, in addition to the input arguments are stored in the S4 classes `rnetBasic`, `rnetSubset`, and `rnetStrata`. All three output classes inherit from `rnetInput`, but the user shouldn't have reason to interact with this class. The output class returned is determined by the optional `subset` arugment as discussed above. A complete accounting of the objects' slots are provided in the help files, but several particularly useful slots for each of the classes are described below.
+
+####rnetBasic
+
+The slot `rnetbasic.obj@Omega` contains the estimated penalized partial correlation matrix, $\Omega$. This can be used as a weighted adjacency matrix.
+
+The slot `rnetbasic.obj@R` contains the `igraph` object representing the estimated MRFs. This slot can be accessed and manipulated like any other `igraph` object:
+
+* `igraph::ecount(rnetbasic.obj@R)`
+* `igraph::set_vertex_attr(graph = rnetbasic.obj@R, name = 'vertex.color', value = 'red')`
+* `plot.igraph(x = rnetbasic.obj@R)`
+
+The slot `rnetbasic.obj@layout` contains a matrix of x & y coordinates for placing the vertices for `rnetbasic.obj@R`. Called by the `plot(x)` generic method when `class(x) = "rnetBasic"`, but is not used by `plot.igraph()`. 
+
+####rnetSubset
+`rnetSubset` objects inherit from `rnetBasic`, and gain the `@subset` slot, which contains the expression used to define the subset.
+
+####rnetStrata
+`rnetStrata` does not inherit from either of the two other classes. 
+
+The slot `rnetstrata.obj@stratify_by` contains the string matching column in `x` used for stratification.
+
+The slot `rnetstrata.obj@R_set` is a list of `rnetSubset` objects. The names of the list's elements match the value defining the stratum, i.e., `names(rnetstrata.obj@R_set) <- unique(x$stratify_by)`. A specific `rnetStrata` object in the list can be accessed using `rnetstrata.obj@R_set[['subset_val']]`.
+
+The slot `rnetstrata.obj@E_aggr` contains a matrix of estimated penalized partial correlation values for each observed edge (rows) in each R-net (columns). 
+
+### Assigning network attributes
+
+Vertices and edges in `igraph` objects can be assigned a variety attributes, also referred to a _metadata_,  that are useful for decorating and analyzing the networks. Immeadiately after being output from `Rnet()`, the network objects in `rnetbasic@R` have one vertex attribute ( _name_, corresponding to the elements of the _vertices_ argument) and one edge attribute ( _omega_, the edges' estimated penalized partial corrleation). 
+
+Users have the option to access, add to, and remove from an rnet object's graphical metadata using `igraph` functions.  Examples include:
+
+* `V(rnetbasic.obj@R)$name` to access vertex names
+* `rnetbasic.obj@R <- set_vertex_attr(graph = rnetbasic.obj@R, name = 'vertex.shape', 'square')` to set all vertices' to have a square shape
+* `E(rnetbasic.obj@R)$edge.color <- 0` to make edges be colored black.
+
+With 
 
 ### Network visualization
 
-Two primary methods are used to visualize the Rnets: individual networks can be visualized with the generic method ```plot()``` and heatmaps can be used visualize the edges in multiple graphs using `Rnet_Heatmap()`. 
+Two primary methods are used to visualize the R-nets: individual networks can be visualized with the generic method ```plot()``` and heatmaps can be used visualize the edges in multiple graphs using `Rnet_Heatmap()`. 
 
 
 ### Network analysis
