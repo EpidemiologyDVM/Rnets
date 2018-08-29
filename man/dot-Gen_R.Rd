@@ -3,12 +3,12 @@
 \docType{methods}
 \name{.Gen_R}
 \alias{.Gen_R}
-\alias{.Gen_R,rnetStrata-method}
+\alias{.Gen_R,rnetSubset-method}
 \title{.Gen_R - internal methods for generating Rnets.}
 \usage{
 .Gen_R(rnet.obj)
 
-\S4method{.Gen_R}{rnetStrata}(rnet.obj)
+\S4method{.Gen_R}{rnetSubset}(rnet.obj)
 }
 \arguments{
 \item{rnet.obj}{an Rnet S4 object created by Rnet()}

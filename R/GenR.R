@@ -70,22 +70,22 @@ setGeneric('.Gen_R', function(rnet.obj){
 
 #' 
 setMethod('.Gen_R',
-	'rnetStrata',
+	'rnetSubset',
 	function (rnet.obj) {
-		rnet.obj@Data <- rnet.obj@RawData[eval(rnet.obj@Strata_def, rnet.obj@RawData),rnet.obj@V_orig]
+		rnet.obj@x <- rnet.obj@raw_data[eval(rnet.obj@subset, rnet.obj@raw_data),rnet.obj@V_orig]
 		rnet.obj@L1 <- rnet.obj@L1_orig
 
-		if(!all(rnet.obj@V_orig%in%names(rnet.obj@Data))) stop("One or more vertex names declared in 'vertices' do not match data column names.")
+		if(!all(rnet.obj@V_orig%in%names(rnet.obj@x))) stop("One or more vertex names declared in 'vertices' do not match data column names.")
 
-		rnet.obj@vertices <- rnet.obj@V_orig[lapply(rnet.obj@Data, function(x) sum(!is.na(x))) > rnet.obj@n_min]
+		rnet.obj@vertices <- rnet.obj@V_orig[lapply(rnet.obj@x, function(x) sum(!is.na(x))) > rnet.obj@n_min]
 		V_sorted <- sort(rnet.obj@vertices)
-		rnet.obj@Data <- rnet.obj@Data[V_sorted]
+		rnet.obj@x <- rnet.obj@x[V_sorted]
 
-		if(!all(apply(rnet.obj@Data, c(1, 2), is.numeric))) stop("Non-numeric results provided in data for correlation matrix")
+		if(!all(apply(rnet.obj@x, c(1, 2), is.numeric))) stop("Non-numeric results provided in data for correlation matrix")
 
-		rnet.obj@Sigma <- Clean_Sigma(rnet.obj@Data, rnet.obj@cor_method, rnet.obj@cor_pairing)
+		rnet.obj@Sigma <- Clean_Sigma(rnet.obj@x, rnet.obj@cor_method, rnet.obj@cor_pairing)
 
-		rnet.obj@n <- t(!is.na(rnet.obj@Data))%*%!is.na(rnet.obj@Data)
+		rnet.obj@n <- t(!is.na(rnet.obj@x))%*%!is.na(rnet.obj@x)
 		n_list <- Sq2Long(rnet.obj@n, c("V1", "V2", "n"), drop.values = NULL)
 
 		rnet.obj@zeros <- list(
