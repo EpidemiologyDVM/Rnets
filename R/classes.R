@@ -41,7 +41,7 @@ rnetInput <- setClass(Class = "rnetInput",
 #' @slot Omega The penalized partial correlation matrix. Also the weighted adajacency matrix used for the network.
 #' @slot A The adjacency matrix (omega_ij != 0)
 #' @slot R An igraph object derived from Omega
-#' @slot layout A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed.
+#' @slot layout A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed, typically due to a variable having fewer than n_min observations.
 #' @rdname rnetBasic
 #' 
 rnetBasic <- setClass(Class = "rnetBasic",

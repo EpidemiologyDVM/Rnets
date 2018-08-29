@@ -18,3 +18,4 @@
 ^vignettes\Network-terminology.Rmd
 ^\.install_newRnetVersion\.R$
 ^vignettes\Rnets-vignette\.rmd$
+^.test.heatmap.R$
