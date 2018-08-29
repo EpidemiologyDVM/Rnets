@@ -67,4 +67,22 @@ setMethod('plot',
 	    dimnames(layout.mat) <- list(V(x@R)$name[seq.vec],c('x', 'y'))
     }   
 	return(layout.mat)
-	}
+}
+
+#' image() method for plotting Rnet heatmaps
+#' @param x An object with class(x) = 'edge_heatmap', produced by Rnet_Heatmap()
+#' @param axes logical; if TRUE add axes to the heatmap plot. 
+#' @param ... graphical parameters to be passed to image.default() inside this method.
+#' @rdname image.edge_heatmap
+#' @aliases image
+#' @export
+
+image.edge_heatmap <- function(x, axes = T, ...) 
+{
+  image.default(x, col = attr(x, 'palette'), axes = FALSE, ...)
+  
+  if(axes) {
+    axis(1, at = seq(0, 1, 1/(dim(x)[1]-1)), labels = rownames(x), tck = -0.02)
+    axis(2, at = seq(0, 1, 1/(dim(x)[2]-1)), labels = colnames(x), tck = -0.015, las = 2, cex.axis = 10/12)
+  }  
+}

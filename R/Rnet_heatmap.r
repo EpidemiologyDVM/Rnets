@@ -9,15 +9,16 @@
 #' @param zero_col A single value for coloring edges with value = 0 (typically corresponds to an absent edge).
 #' @param NA_col A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
 #' The length of pos_col and neg_col must be the same and must be of length 1 greater than e_cuts.
+#' @importFrom graphics axis image.default
 #' @export
-#' @return A matrix of integers corresponding to positions in the containing the colors to plot on the bitmap, with an additional attribute 'palette' containing the colors to .
-#' @section This function does *not* plot the heatmap. The matrix produced by Rnet_Heatmap should be called by 
+#' @return a S3 object of class 'edge_heatmap' that includes an attribute ('palatte') with the assigned colors.
+#' @section This function does *not* plot the heatmap; The object should be plotted using the associated method image.edge_heatmap().
 #' @examples
 #' #Example using EC_Rnets_byYear
 #' EC_Rnets_byYear <- Rnet(x = NARMS_EC_DATA, 
 #' 						L1 = 0.25, 
 #' 						vert = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 
-#' 						  'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
+#' 						  'CIP', 'STR', 'GEN', 'COT', 'FIS', 'AZI'), 
 #' 						n_min = 20,
 #'						subset = 'Year'
 #' 						)
@@ -25,23 +26,7 @@
 #' EC_Heatmap <- Rnet_Heatmap(EC_Rnets_byYear, e_cuts = c(0, 0.05, 0.1, 0.2, 1))
 #'
 #'par(mar = c(4, 5, 1, 1)+0.1)
-#'image(EC_Heatmap, col = attr(EC_Heatmap, 'palette'),
-#'	axes = FALSE)
-
-#'axis(1, 
-#'	at = seq(0, 1, 1/(dim(EC_Heatmap)[1]-1)),
-#'	labels = rownames(EC_Heatmap),
-#'	tck = -0.02
-#'	)
-#'
-#'axis(2,
-#'	at = seq(0, 1, 1/(dim(EC_Heatmap)[2]-1)),
-#'	labels = colnames(EC_Heatmap),
-#'	tck = -0.015,
-#'	las = 2,
-#'	cex.axis = 5/6
-#'	)
-
+#'image(EC_Heatmap)
 
 Rnet_Heatmap <- function(x,
 			e_cuts,
@@ -58,42 +43,16 @@ Rnet_Heatmap <- function(x,
 	names(NA_col) <- 'NA'
 	palette_set <- c(pos_col, neg_col, zero_col, NA_col)
 
-	edge_list <- reshape(as.data.frame(x@E_aggr),
-		direction = 'l',
-		idvar = 'Edge',
-		ids = rownames(x@E_aggr),
-		varying = list(colnames(x@E_aggr)),
-		v.names = 'Edge_val',
-		times = colnames(x@E_aggr),
-		timevar = 'Stratum'
-		)
-
-	edge_list$Stratum <- gsub(paste(slot(x, 'stratify_by'), '.', sep = ''), '', edge_list$Stratum)
-	edge_list$Palette_code <- unlist(sapply(edge_list$Edge_val, function (x) {
-		if(is.na(x)) return ('NA')
-		switch(
-			sign(x) + 2,
-			paste('neg', as.integer(cut(abs(x), e_cuts)), sep = '.'),	
-			'zero',
-			paste('pos', as.integer(cut(x, e_cuts)), sep = '.'),
-			'NA'
-			)
-		}))
-
-	edge_list$Palette_num <- match(edge_list$Palette_code, names(palette_set))
-	color_frame <- reshape(edge_list,
-		idvar = 'Edge',
-		timevar = 'Stratum',
-		drop = c('Edge_val', 'Palette_code'),
-		direction =  'w'
-		)
-
-	color_mat <- t(as.matrix(color_frame[, -1]))
-	dimnames(color_mat) <- list(
-		gsub("Palette_num.", '', rownames(color_mat)),
-		color_frame$Edge
-		)
-	attr(color_mat, 'palette') <- palette_set
+	heatmap.val <- function(x) {
+	  if(is.na(x)) return(length(palette_set)) 
+	  if(!x) return(length(palette_set)-1)
+	  return(match(paste(ifelse(x > 0, 'pos', 'neg'), as.numeric(cut(x, e_cuts)), sep = '.'), names(palette_set)))
+	}
 	
+	color_mat <- t(apply(x@E_aggr, c(1, 2), FUN = heatmap.val))
+	row.names(color_mat) <- gsub(paste(x@stratify_by , '.', sep = ''), '', row.names(color_mat))
+
+	class(color_mat) <- 'edge_heatmap'
+	attr(color_mat, 'palette') <- palette_set
 	return(color_mat)
 }

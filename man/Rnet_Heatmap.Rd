@@ -4,30 +4,34 @@
 \alias{Rnet_Heatmap}
 \title{Rnet_Heatmap - Function to generate a bitmap figure to represent edges in similar networks over time.}
 \usage{
-Rnet_Heatmap(x, e_cuts, pos_colors = c("#FFBBBB", "#FF8888", "#FF4444",
-  "#FF0000"), neg_colors = c("#BBFFBB", "#88FF88", "#44FF44", "#00FF00"),
-  zero_color = "#FFFFFF", NA_color = "#CCCCCC")
+Rnet_Heatmap(x, e_cuts, pos_col = c("#FFBBBB", "#FF8888", "#FF4444",
+  "#FF0000"), neg_col = c("#BBFFBB", "#88FF88", "#44FF44", "#00FF00"),
+  zero_col = "#FFFFFF", NA_col = "#CCCCCC")
 }
 \arguments{
 \item{x}{An object of class 'rnetStrata'}
 
 \item{e_cuts}{A vector of numeric values used to cut the edge attribute values in x@E_aggr. Note binning of negative values is based on absolute value, making the categories symmetric around 0.}
 
-\item{pos_colors}{A vector of colors corresponding to the binned positive x@E_aggr values. Defaults to 4 shades of red.}
+\item{pos_col}{A vector of colors corresponding to the binned positive x@E_aggr values. Defaults to 4 shades of red.}
 
-\item{neg_colors}{A vector of colors corresponding to the binned negative x@E_aggr values. Defaults to 4 shades of green.}
+\item{neg_col}{A vector of colors corresponding to the binned negative x@E_aggr values. Defaults to 4 shades of green.}
 
-\item{zero_color}{A single value for coloring edges with value = 0 (typically corresponds to an absent edge).}
+\item{zero_col}{A single value for coloring edges with value = 0 (typically corresponds to an absent edge).}
 
-\item{NA_color}{A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
-The length of pos_colors and neg_colors must be the same and must be of length 1 greater than e_cuts.}
+\item{NA_col}{A single value for color invalid edges. Edges will typically be found to be in valid if one or both incident vertices were missing in some strata or insufficient observations were available to estimate an edge in a stratum (see the 'n_threshold' argument in the method 'Rnet').
+The length of pos_col and neg_col must be the same and must be of length 1 greater than e_cuts.}
 }
 \value{
-The code used to produce the plot.
+a S3 object of class 'edge_heatmap' that includes an attribute ('palatte') with the assigned colors.
 }
 \description{
-Bitmaps can be used to show how edges in a network change over time or other criteria. This function takes an object of the 'rnet.multi.strata' class, specifically the E_matrix, and returns a numerical matrix used to visualize E_matrix. The numerical matrix can be visualized with a call to the 'image' function; The assinged colors are stored in the 'palette' attribute attached to the matrix. This matrix can then be used to plot the bitmap in which each horizontal row in the bitmap represents a unique edge found in the set of networks in rnet.multi.strata object and each vertical column is a network stratum (see the 'Rnet' method for more information). The colors represent the binned values in the E_matrix.
+bitmap can be used to show how edges in a network change over time or other criteria. This function takes an object of the 'rnetStrata' class, specifically @E_aggr, and returns a numerical matrix used to visualize E_matrix. The numerical matrix can be visualized with a call to the 'image' function; The assinged colors are stored in the 'palette' attribute attached to the matrix. This matrix can then be used to plot the bitmap in which each horizontal row in the bitmap represents a unique edge found in the set of networks in rnet.multi.strata object and each vertical column is a network stratum (see the 'Rnet' method for more information). The colors represent the binned penalized partial correlation estimates in the E_aggr.
 }
+\section{This function does *not* plot the heatmap; The object should be plotted using the associated method image.edge_heatmap().}{
+NA
+}
+
 \examples{
 #Example using EC_Rnets_byYear
 EC_Rnets_byYear <- Rnet(x = NARMS_EC_DATA, 
@@ -41,19 +45,5 @@ EC_Rnets_byYear <- Rnet(x = NARMS_EC_DATA,
 EC_Heatmap <- Rnet_Heatmap(EC_Rnets_byYear, e_cuts = c(0, 0.05, 0.1, 0.2, 1))
 
 par(mar = c(4, 5, 1, 1)+0.1)
-image(EC_Heatmap, col = attr(EC_Heatmap, 'palette'),
-axes = FALSE)
-axis(1, 
-at = seq(0, 1, 1/(dim(EC_Heatmap)[1]-1)),
-labels = rownames(EC_Heatmap),
-tck = -0.02
-)
-
-axis(2,
-at = seq(0, 1, 1/(dim(EC_Heatmap)[2]-1)),
-labels = colnames(EC_Heatmap),
-tck = -0.015,
-las = 2,
-cex.axis = 5/6
-)
+image(EC_Heatmap)
 }
