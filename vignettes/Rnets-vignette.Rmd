@@ -69,8 +69,6 @@ Several methods have been proposed to select the 'appropriate' L~1~ penalty, rep
 
 `L1Selection` defaults to a subsample size `n_b` of half the dataset, but smaller subsamples are typically appropriate. Liu, Roeder, and Wasserman suggest $n_b = 10\sqrt{n}$. `n_b` can be set to a proportion of the sample size by setting `n_b < 1` or as a set number of individuals with `1 < n_b < n`.
 
-
-
 ```{r}
 EC_all_L1Selection <- L1Selection(
             x = NARMS_EC_DATA, 
@@ -134,7 +132,7 @@ The slot `rnetbasic.obj@R` contains the `igraph` object representing the estimat
 The slot `rnetbasic.obj@layout` contains a matrix of x & y coordinates for placing the vertices for `rnetbasic.obj@R`. Called by the `plot(x)` generic method when `class(x) = "rnetBasic"`, but is not used by `plot.igraph()`. 
 
 ####rnetSubset
-`rnetSubset` objects inherit from `rnetBasic`, and gain the `@subset` slot, which contains the expression used to define the subset.
+This class inherits from `rnetBasic` and gains the `@subset` slot, which contains the expression used to define the subset.
 
 ####rnetStrata
 `rnetStrata` does not inherit from either of the two other classes. 
@@ -159,7 +157,7 @@ Assigning each attribute individually can be time-consuming, so `Rnets` provides
 
 ####Assign_Vmetadata
 
-This method is used to simultaneously assign multiple vertex attributes to an `igraph` networks, including those stored in `rnetbasic@R`. The vertex attributes are stored in data.frame that can be viewed easily. An example frame of vertex attributes is included in the package
+This method is used to simultaneously assign multiple vertex attributes to an `igraph` networks, including those stored in `rnetbasic@R`. The vertex attributes are stored in a data.frame that can be viewed easily. `Rnets::V_ATTRS` is included as example of attribute table.
 ```{r}
 Rnets::V_ATTRS[1:10,]
 ```
@@ -169,9 +167,13 @@ We could use a series of four `V(rnetbasic.obj@R)$attr` or `set_vertex_attr(...)
 
 ### Network visualization
 
-Two primary methods are used to visualize the R-nets: individual networks can be visualized with the generic method ```plot()``` and heatmaps can be used visualize the edges in multiple graphs using `Rnet_Heatmap()`. 
+Two primary methods are used to visualize the R-nets: generic `plot()` methods for visualizing individual networks and `Rnet_Heatmap()` for multiple graphs. 
 
+#### Rnet plot() methods
 
+Since `@R` in `rnetBasic` and `rnetSubset` objects and elements of `@R_set` in `RnetStrata` objects store `igraph` class objects, they can be plotted using the respective S3 `plot()` method, e.g., `plot.igraph(rnetbasic.obj@R)`. `plot.igraph()` allows the user to assign arguments controling the appearance of vertices (e.g., vertex.size, vertex.color), edges (e.g. edge.lty, edge.width), and the layout of the graph (see `?igraph.plotting` for more details and a complete of parameters). Additionally, `plot.igraph()` will automatically identify any edge and vertex attribute names matching parameter names and apply those in place of undeclared arguments.
+
+`Rnets` also includes S4 `plot()` methods for `rnetBasic` and `rnetSubset`. These functions 
 ### Network analysis
 
 
