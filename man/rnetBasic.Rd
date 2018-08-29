@@ -37,6 +37,6 @@ Inherits from 'rnetInput'
 
 \item{\code{R}}{An igraph object derived from Omega}
 
-\item{\code{layout}}{A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed.}
+\item{\code{layout}}{A k' x 2 matrix containing the x & y coords for the vertices for plotting. k' indicates that some of the k vertices declared may have been removed, typically due to a variable having fewer than n_min observations.}
 }}
 

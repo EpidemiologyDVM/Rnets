@@ -37,7 +37,7 @@ NA
 EC_Rnets_byYear <- Rnet(x = NARMS_EC_DATA, 
 						L1 = 0.25, 
 						vert = c('AMP', 'AMC', 'AXO', 'TIO', 'NAL', 
-						  'CIP', 'STR', 'GEN', 'COT', 'FIS'), 
+						  'CIP', 'STR', 'GEN', 'COT', 'FIS', 'AZI'), 
 						n_min = 20,
 					subset = 'Year'
 						)
