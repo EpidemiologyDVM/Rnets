@@ -4,6 +4,7 @@
 #' @param x an rnet object of class 'rnet.basic'
 #' @param layout a matrix or dataframe containing coordinates for laying out graph. If declared, it will override coordinates stored in 'Layout' and 'layout_master' slots, which are used by default
 #' @param ... additional arguments passed to plot.igraph()
+#' @import igraph
 #' @rdname plot-RnetBasic
 #' @aliases plot
 #' @export
@@ -13,27 +14,59 @@ setMethod('plot',
 	function (x, layout = NULL, ...) {
 		VERT.PARAMS <- c('size','size2','color','frame.color','shape','label','label.family','label.font','label.cex','label.dist','label.degree','label.color')
 		EDGE.PARAMS <- c('color','width','lty','label','label.family','label.font','label.cex','label.color','label.x','label.y','curved')
+    
+		OPEN.ARGS <- list(...)
+		OPEN.PARAMS <- names(OPEN.ARGS)
+		
+		vert.args <- character(0)
+		for(i in VERT.PARAMS) {
+		  param.name <- paste('vertex',i, sep = '.')
+  	  if(param.name%in% OPEN.PARAMS) {
+		    if(length(OPEN.ARGS[[param.name]])!= gorder(x@R)) if(length(OPEN.ARGS[[param.name]]) == 1) OPEN.ARGS[[param.name]] <- rep(OPEN.ARGS[[param.name]], gorder(x@R)) else stop("Length of argument", i, "doesn't match number of vertices in x@R.")
+		    if(is.character(OPEN.ARGS[[param.name]])) arg.vals <- paste("'", OPEN.ARGS[[param.name]], "'", sep = '') else arg.vals <- OPEN.ARGS[[param.name]]
+		    vert.args <- c(vert.args, paste('vertex.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    
+		  } else if(param.name%in% vertex_attr_names(x@R)) {
+		    if(is.character(vertex_attr(x@R, param.name))) arg.vals <- paste("'", vertex_attr(x@R, param.name), "'", sep = '') else arg.vals <- vertex_attr(x@R, param.name)
+		    vert.args <- c(vert.args, paste('vertex.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    
+		  } else if(i%in%vertex_attr_names(x@R)) {
+		    if(is.character(vertex_attr(x@R, i))) arg.vals <- paste("'", vertex_attr(x@R, i), "'", sep = '') else arg.vals <- vertex_attr(x@R, i)
+		    vert.args <- c(vert.args, paste('vertex.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		  }
+		}
 
-		vert.attrib.lines <- character(0)
-		vert.attribs <- intersect(x@V_metadata, VERT.PARAMS)
-		if(length(vert.attribs) > 0) for(attrib.name in vert.attribs) vert.attrib.lines <- c(vert.attrib.lines, paste('vertex.', attrib.name, '= V(x@R)$', attrib.name, sep = ''))
+		edge.args <- character(0)
+		for(i in EDGE.PARAMS) {
+		  param.name <- paste('edge', i, sep = '.')
+		  if(param.name%in% OPEN.PARAMS) {
+		    if(length(OPEN.ARGS[[param.name]])!= ecount(x@R)) if(length(OPEN.ARGS[[param.name]]) == 1) OPEN.ARGS[[param.name]] <- rep(OPEN.ARGS[[param.name]], ecount(x@R)) else stop("Length of argument", i, "doesn't match number of edges in x@R.")
+		    if(is.character(OPEN.ARGS[[param.name]])) arg.vals <- paste("'", OPEN.ARGS[[param.name[1]]], "'", sep = '') else arg.vals <- OPEN.ARGS[[param.name[1]]]
+		    edge.args <- c(edge.args, paste('edge.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
 
-		edge.attrib.lines <- character(0)
-		edge.attribs <- intersect(x@E_metadata, EDGE.PARAMS)
-		if(length(edge.attribs) > 0) for(attrib.name in edge.attribs) edge.attrib.lines <- c(edge.attrib.lines, paste('edge.', attrib.name, '= E(x@R)$', attrib.name, sep = ''))
-
+		  } else if(param.name%in% edge_attr_names(x@R)) {
+		    if(is.character(edge_attr(x@R, param.name))) arg.vals <- paste("'", edge_attr(x@R, param.name), "'", sep = '') else arg.vals <- edge_attr(x@R, param.name)
+		    edge.args <- c(edge.args, paste('edge.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    
+		  } else if(i%in%edge_attr_names(x@R)) {
+		    if(is.character(edge_attr(x@R, i))) arg.vals <- paste("'", edge_attr(x@R, i), "'", sep = '') else arg.vals <- edge_attr(x@R, i)
+		    edge.args <- c(edge.args, paste('edge.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		  }
+		}
+		
+		
 		if(!is.null(layout)) x@layout_master <- layout
 		x@layout <- Rnets:::.Assign_Layout_Matrix(x)
 
-		attrib.lines <- c(vert.attrib.lines, edge.attrib.lines)
+		plot.args  <- c(vert.args, edge.args)
 
-		if(length(attrib.lines)==0) plot.call <- 'plot.igraph(x@R, layout = x@layout)' else plot.call <- paste('plot.igraph(x@R', paste(vert.attrib.lines, collapse = ','), 'layout = x@layout)', sep = ',')
+		if(length(plot.args)==0) plot.call <- 'plot.igraph(x@R, layout = x@layout)' else plot.call <- paste('plot.igraph(x@R', paste(plot.args, collapse = ', '), 'layout = x@layout)', sep = ', ')
 
 		#rnetBasic()
 
 		eval(parse(text = plot.call))
 		#plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
-		#return(plot.call)
+		return(plot.call)
 	})
 
 #' Hidden function for assigning layout matrix
@@ -41,8 +74,9 @@ setMethod('plot',
 #' @rdname dot-Assign_Layout_Matrix
 #' 
 .Assign_Layout_Matrix <- function(x){ 
-  if(is.null(x@layout_master)| dim(x@layout_master)[1]==0) return(layout_with_fr(x@R))
-	
+  if(is.null(x@layout_master)) return(layout_with_fr(x@R))
+	if(dim(x@layout)[1]==0) return(layout_with_fr(x@R))
+  
   if(dim(x@layout_master)[2] == 3) {
     coord_ref.vec <- x@layout_master[,1]
     coord_x.vec <- x@layout_master[,2]
