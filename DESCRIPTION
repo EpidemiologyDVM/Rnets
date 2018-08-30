@@ -1,6 +1,6 @@
 Package: Rnets
 Title: Resistance Relationship Networks using Graphical LASSO
-Version: 1.0.0.9002
+Version: 1.0.0.9003
 Date: 2018-08-27
 Authors@R: person("William", "Love", email = "wjlove@ncsu.edu", role = c("aut", "cre"))
 Maintainer: William Love <wjlove@ncsu.edu>

@@ -12,11 +12,8 @@
 ^Archive\$
 ^\.todolist\.R$
 ^\.*\.R$
-^\.test\.signedModularity\.R$
 ^Archive$
+^tests_examples$
 ^vignettes\Rnets-vignette\.html$
 ^vignettes\Network-terminology.Rmd
 ^\.install_newRnetVersion\.R$
-^vignettes\Rnets-vignette\.rmd$
-^.test.heatmap.R$
-^.test.plotmethods.R$
