@@ -7,6 +7,7 @@
 #' @details Extends generic plot() to rnetBasic objects to avoid needing to use plot.igraph(rnetbasic.obj@R). igraph plotting arguments (see ?igraph.plotting) can still be declared and will override the attributes used by default in V(x@R) and E(x@r). Other standard arguments from plot.igraph() are also used.\cr The plot can be drawn automatically, or just the function call to draw the plot later using eval(parse(text = 'plot.call.string')).
 #' @return A character string containing the function call to plot the graph (used inside the function generate plot).
 #' @import igraph
+#' @importFrom rlang call_args
 #' @rdname plot-RnetBasic
 #' @aliases plot
 #' @export
@@ -23,7 +24,7 @@
 #' plot(R_EC_08)
 #' 
 #' #View the function call and use it to plot the network with plot.igraph() 
-#' plot_call <- plot(R_EC_08, draw_plot = F)
+#' plot_call <- plot(R_EC_08, draw_plot = FALSE)
 #' plot_call
 #' eval(parse(text = plot_call))
 #' 
@@ -44,7 +45,7 @@
 
 setMethod('plot',
 	signature(x = 'rnetBasic'),
-	function (x, draw_plot = T, ...) {
+	function (x, draw_plot = TRUE, ...) {
 		VERT.PARAMS <- c('size','size2','color','frame.color','shape','label','label.family','label.font','label.cex','label.dist','label.degree','label.color')
 		EDGE.PARAMS <- c('color','width','lty','label','label.family','label.font','label.cex','label.color','label.x','label.y','curved')
     OTHER.PARAMS <- c('axes', 'add', 'xlim', 'ylim', 'mark.groups', 'mark.shape', 'mark.col', 'mark.border', 'mark.expand')
@@ -52,7 +53,7 @@ setMethod('plot',
 		OPEN.ARGS <- list(...)
 		OPEN.PARAMS <- names(OPEN.ARGS)
 		call.src <- sys.call(1)
-		args.src <- rlang:::call_args(call.src)
+		args.src <- rlang::call_args(call.src)
 		
 		obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
 

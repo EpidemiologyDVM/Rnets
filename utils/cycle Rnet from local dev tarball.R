@@ -1,4 +1,4 @@
-latest <- '1.0.0.9002'
+latest <- '1.0.0.9003'
 
 remove.packages('Rnets')
 detach('package:Rnets')

@@ -10,7 +10,8 @@ Depends:
     glasso (>= 1.8),
     igraph(>= 1.0),
     data.table(>= 1.9.6),
-    stringr(>= 1.2.0)
+    stringr(>= 1.2.0),
+    rlang(>= 0.2.2)
 Imports:
     methods
 License: GPL-3
