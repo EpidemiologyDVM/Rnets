@@ -6,15 +6,21 @@
 \alias{plot}
 \title{Plot methods for R-nets}
 \usage{
-\S4method{plot}{rnetBasic}(x, layout = NULL, ...)
+\S4method{plot}{rnetBasic}(x, draw_plot = T, ...)
 }
 \arguments{
-\item{x}{an rnet object of class 'rnet.basic'}
+\item{x}{an rnet object of class 'rnetBasic'}
 
-\item{layout}{a matrix or dataframe containing coordinates for laying out graph. If declared, it will override coordinates stored in 'Layout' and 'layout_master' slots, which are used by default}
+\item{draw_plot}{logial. Will produce plot if TRUE. Only returns function call when FALSE.}
 
-\item{...}{additional arguments passed to plot.igraph()}
+\item{...}{additional arguments passed to plot.igraph(). Currently, partial matches are not allowed.}
+}
+\value{
+A character string containing the function call to plot the graph (used inside the function generate plot).
 }
 \description{
 A plot method for R-nets, and incorporates vertex and edge metadata and layout, if assigns. Only vertex and edge metadata with names that match igraph decoration options (without 'vertex.' or 'edge.' appended to the attribute name; see plot.igraph). layout is pulled from 'layout_master' in the rnet object, if it exists. The layout frame can contain 3 columns, with the first column used to match the coordinates in the next two columns to graph vertices OR can contain 2 columns with the same number of vertices in the graph.
+}
+\details{
+Extends generic plot() to rnetBasic objects to avoid needing to use plot.igraph(rnetbasic.obj@R). igraph plotting arguments (see ?igraph.plotting) can still be declared and will override the attributes used by default in V(x@R) and E(x@r). Other standard arguments from plot.igraph() are also used.\cr The plot can be drawn automatically, or just the function call to draw the plot later using eval(parse(text = 'plot.call.string')).
 }

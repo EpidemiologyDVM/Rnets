@@ -26,7 +26,7 @@ devtools::use_build_ignore("vignettes\\Rnets-vignette.html") #TEMPORARILY IGNORE
 devtools::use_build_ignore("vignettes\\Rnets-vignette.rmd") #TEMPORARILY IGNORE INCOMPLETE VIGNETTES!!!
 
 
-document() #IGNORE warning about no defined signature for igraph?
+document() #IGNORE warning about no defined signature for igraph
 build(path = '.')
 #sink(file = 'check.txt')
 check()

@@ -16,5 +16,21 @@ x <- R_EC_08
 x
 eval(parse(text = plot.call))
 
-is.character(edge_attr(R_EC_08@R, 'color'))
+plot(R_EC_08, 
+     vertex.frame.color = NA,
+     vertex.color = 'black',
+     axes = T,
+     ylim = c(-0.9, 0.9)
+)
 
+plot.call <-plot(R_EC_08, 
+                 vertex.frame.color = NA, 
+                 vertex.shape = c('square', 'circle'),
+                 axes = T,
+                 ylim = c(-0.9, 0.9),
+                 draw_plot = T,
+                 debug = F
+                 )
+plot.call
+
+R_EC_08@layout

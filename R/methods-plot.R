@@ -1,73 +1,101 @@
 #' Plot methods for R-nets
 #'
 #' A plot method for R-nets, and incorporates vertex and edge metadata and layout, if assigns. Only vertex and edge metadata with names that match igraph decoration options (without 'vertex.' or 'edge.' appended to the attribute name; see plot.igraph). layout is pulled from 'layout_master' in the rnet object, if it exists. The layout frame can contain 3 columns, with the first column used to match the coordinates in the next two columns to graph vertices OR can contain 2 columns with the same number of vertices in the graph.
-#' @param x an rnet object of class 'rnet.basic'
-#' @param layout a matrix or dataframe containing coordinates for laying out graph. If declared, it will override coordinates stored in 'Layout' and 'layout_master' slots, which are used by default
-#' @param ... additional arguments passed to plot.igraph()
+#' @param x an rnet object of class 'rnetBasic'
+#' @param draw_plot logial. Will produce plot if TRUE. Only returns function call when FALSE.
+#' @param ... additional arguments passed to plot.igraph(). Currently, partial matches are not allowed.
+#' @details Extends generic plot() to rnetBasic objects to avoid needing to use plot.igraph(rnetbasic.obj@R). igraph plotting arguments (see ?igraph.plotting) can still be declared and will override the attributes used by default in V(x@R) and E(x@r). Other standard arguments from plot.igraph() are also used.\cr The plot can be drawn automatically, or just the function call to draw the plot later using eval(parse(text = 'plot.call.string')).
+#' @return A character string containing the function call to plot the graph (used inside the function generate plot).
 #' @import igraph
 #' @rdname plot-RnetBasic
 #' @aliases plot
 #' @export
+#' @examples 
+#' 
+#' #Create Rnet object
+#' R_EC_08 <- Rnet(x = NARMS_EC_DATA,
+#'   L1 = 0.15,
+#'   vertices = c('AMP', 'AMC','FOX', 'TIO', 'AXO', 'CIP', 'NAL', 'TET', 'COT', 'FIS'),
+#'   subset = expression(Year == 2008)
+#'   )
+#' 
+#' #Plot the network without decoration
+#' plot(R_EC_08)
+#' 
+#' #View the function call and use it to plot the network with plot.igraph() 
+#' plot_call <- plot(R_EC_08, draw_plot = F)
+#' plot_call
+#' eval(parse(text = plot_call))
+#' 
+#' #Decorate the graph using igraph plotting arguments
+#' plot_call_decorated <- plot(R_EC_08, vertex.shape = 'square', vertex.color = 'cyan', edge.width = 3)
+#' plot_call_decorated
+#' 
+#' #Decorate the graph using Assign_Vmetadata() and Assign_Emetadata()
+#' Assign_Emetadata(R_EC_08, E_ATTRS, 'omega', e_cuts = c(0, 0.05, 0.10, 0.20, 1))
+#' Assign_Vmetadata(R_EC_08, V_ATTRS, 'Code')
+#' 
+#' plot_call_metadata <- plot(R_EC_08, vertex.frame.color = NA)
+#' plot_call_metadata
+#' 
+#' #Override a previously assigned graphical attribute (vertex.color)
+#' plot_call_metadata <- plot(R_EC_08, vertex.frame.color = NA, vertex.color = c('red', 'green'))
+#' plot_call_metadata
 
 setMethod('plot',
 	signature(x = 'rnetBasic'),
-	function (x, layout = NULL, ...) {
+	function (x, draw_plot = T, ...) {
 		VERT.PARAMS <- c('size','size2','color','frame.color','shape','label','label.family','label.font','label.cex','label.dist','label.degree','label.color')
 		EDGE.PARAMS <- c('color','width','lty','label','label.family','label.font','label.cex','label.color','label.x','label.y','curved')
+    OTHER.PARAMS <- c('axes', 'add', 'xlim', 'ylim', 'mark.groups', 'mark.shape', 'mark.col', 'mark.border', 'mark.expand')
     
 		OPEN.ARGS <- list(...)
 		OPEN.PARAMS <- names(OPEN.ARGS)
+		call.src <- sys.call(1)
+		args.src <- rlang:::call_args(call.src)
 		
-		vert.args <- character(0)
+		obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+
+		plot.args <- character(0)
 		for(i in VERT.PARAMS) {
 		  param.name <- paste('vertex',i, sep = '.')
   	  if(param.name%in% OPEN.PARAMS) {
-		    if(length(OPEN.ARGS[[param.name]])!= gorder(x@R)) if(length(OPEN.ARGS[[param.name]]) == 1) OPEN.ARGS[[param.name]] <- rep(OPEN.ARGS[[param.name]], gorder(x@R)) else stop("Length of argument", i, "doesn't match number of vertices in x@R.")
-		    if(is.character(OPEN.ARGS[[param.name]])) arg.vals <- paste("'", OPEN.ARGS[[param.name]], "'", sep = '') else arg.vals <- OPEN.ARGS[[param.name]]
-		    vert.args <- c(vert.args, paste('vertex.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    plot.args <- c(plot.args, paste(param.name, '=', deparse(args.src[[param.name]], width.cutoff = 500L)))
 		    
 		  } else if(param.name%in% vertex_attr_names(x@R)) {
-		    if(is.character(vertex_attr(x@R, param.name))) arg.vals <- paste("'", vertex_attr(x@R, param.name), "'", sep = '') else arg.vals <- vertex_attr(x@R, param.name)
-		    vert.args <- c(vert.args, paste('vertex.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    plot.args <- c(plot.args, paste(param.name, ' = ', obj.src, '@', param.name, sep = ''))
 		    
 		  } else if(i%in%vertex_attr_names(x@R)) {
-		    if(is.character(vertex_attr(x@R, i))) arg.vals <- paste("'", vertex_attr(x@R, i), "'", sep = '') else arg.vals <- vertex_attr(x@R, i)
-		    vert.args <- c(vert.args, paste('vertex.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    plot.args <- c(plot.args, paste(param.name, ' = V(', obj.src, '@R)$', i, sep = ''))
 		  }
 		}
 
-		edge.args <- character(0)
 		for(i in EDGE.PARAMS) {
 		  param.name <- paste('edge', i, sep = '.')
 		  if(param.name%in% OPEN.PARAMS) {
-		    if(length(OPEN.ARGS[[param.name]])!= ecount(x@R)) if(length(OPEN.ARGS[[param.name]]) == 1) OPEN.ARGS[[param.name]] <- rep(OPEN.ARGS[[param.name]], ecount(x@R)) else stop("Length of argument", i, "doesn't match number of edges in x@R.")
-		    if(is.character(OPEN.ARGS[[param.name]])) arg.vals <- paste("'", OPEN.ARGS[[param.name[1]]], "'", sep = '') else arg.vals <- OPEN.ARGS[[param.name[1]]]
-		    edge.args <- c(edge.args, paste('edge.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
-
-		  } else if(param.name%in% edge_attr_names(x@R)) {
-		    if(is.character(edge_attr(x@R, param.name))) arg.vals <- paste("'", edge_attr(x@R, param.name), "'", sep = '') else arg.vals <- edge_attr(x@R, param.name)
-		    edge.args <- c(edge.args, paste('edge.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		    plot.args <- c(plot.args, paste(param.name, '=', deparse(args.src[[param.name]], width.cutoff = 500L)))
 		    
-		  } else if(i%in%edge_attr_names(x@R)) {
-		    if(is.character(edge_attr(x@R, i))) arg.vals <- paste("'", edge_attr(x@R, i), "'", sep = '') else arg.vals <- edge_attr(x@R, i)
-		    edge.args <- c(edge.args, paste('edge.', i, ' = c(', paste(arg.vals, collapse = ', '), ')', sep = ''))
+		  } else if(param.name%in% vertex_attr_names(x@R)) {
+		    plot.args <- c(plot.args, paste(param.name, ' = ', obj.src, '@', param.name, sep = ''))
+		    
+		  } else if(i%in%vertex_attr_names(x@R)) {
+		    plot.args <- c(plot.args, paste(param.name, ' = E(', obj.src, '@R)$', i, sep = ''))
 		  }
 		}
 		
+		for(i in OTHER.PARAMS) if(i%in%OPEN.PARAMS) plot.args <- c(plot.args, paste(i, "=", deparse(args.src[[i]], width.cutoff = 500L)))
+
+		if('layout'%in%OPEN.PARAMS) plot.args <- c(plot.args, paste('layout = ', deparse(args.src$layout, width.cutoff = 500L))) else plot.args <- c(plot.args, paste('layout = ', obj.src, '@layout', sep = ''))
+
+		plot.call <- if(length(plot.args)==0) {paste('plot.igraph(', obj.src, '@R)', sep = '')
+		  } else paste('plot.igraph(', obj.src,'@R, ', paste(plot.args, collapse = ', '), ')', sep = '')
+
+		if(draw_plot) eval(parse(text = plot.call))
 		
-		if(!is.null(layout)) x@layout_master <- layout
-		x@layout <- Rnets:::.Assign_Layout_Matrix(x)
-
-		plot.args  <- c(vert.args, edge.args)
-
-		if(length(plot.args)==0) plot.call <- 'plot.igraph(x@R, layout = x@layout)' else plot.call <- paste('plot.igraph(x@R', paste(plot.args, collapse = ', '), 'layout = x@layout)', sep = ', ')
-
-		#rnetBasic()
-
-		eval(parse(text = plot.call))
-		#plot.call <- gsub('x', as.list(sys.call(1))[[2]], plot.call)
-		return(plot.call)
+		invisible(plot.call)
 	})
+
+
 
 #' Hidden function for assigning layout matrix
 #' @param x an Rnet object
@@ -103,6 +131,8 @@ setMethod('plot',
     }   
 	return(layout.mat)
 }
+
+
 
 #' image() method for plotting Rnet heatmaps
 #' @param x An object with class(x) = 'edge_heatmap', produced by Rnet_Heatmap()
