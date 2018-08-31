@@ -108,8 +108,7 @@ summary(EC_2008_Rnet)
 ```
 
 ####Stratified Rnets
-It is possible to create multiple R-nets with a single function call. To do so, `subset` can be defined as one of columns of `x`,  specifically `subset = 'column_name'`. In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata` (Note: this object has a slightly different structure than `rnetBasic` and `rnetSubset`)
-
+It is possible to create multiple R-nets with a single function call. To do so, `subset` can be defined as one of columns of `x`,  specifically `subset = 'column_name'`. In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata`.
 ```{r}
 EC_byYear_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
 
@@ -135,7 +134,7 @@ The slot `rnetbasic.obj@layout` contains a matrix of x & y coordinates for placi
 This class inherits from `rnetBasic` and gains the `@subset` slot, which contains the expression used to define the subset.
 
 ####rnetStrata
-`rnetStrata` does not inherit from either of the two other classes. 
+`rnetStrata` does not inherit from either of the two other output classes. 
 
 The slot `rnetstrata.obj@stratify_by` contains the string matching column in `x` used for stratification.
 
@@ -155,25 +154,61 @@ Users have the option to access, add to, and remove from an rnet object's graphi
 
 Assigning each attribute individually can be time-consuming, so `Rnets` provides `Assign_Emetadata` and `Assign_Vmetadata` to more efficiently assign vertex and vertex attributes, respectively. These functions match vertex or edge attributes to a column in a data.frame, and then assign corresponding values as attributes. 
 
-####Assign_Vmetadata
+####Assign_Vmetadata()
 
-This method is used to simultaneously assign multiple vertex attributes to an `igraph` networks, including those stored in `rnetbasic@R`. The vertex attributes are stored in a data.frame that can be viewed easily. `Rnets::V_ATTRS` is included as example of attribute table.
+This method is used to simultaneously assign multiple vertex attributes to an `igraph` network object, including those stored in `rnetbasic@R`. The vertex attributes are stored in a data.frame that can be viewed easily. `Rnets::V_ATTRS` is included as example of attribute table.
 ```{r}
 Rnets::V_ATTRS[1:10,]
 ```
 The first column contains NARMS' 3-letter code for the resistance and the other columns include the drug's full name, a code for the drug class ("AMINO" for aminoglycoside, "FQ" for fluoroquinolones, etc.), a color to use for vertices of each class, and the label text color for the vertex.
 
-We could use a series of four `V(rnetbasic.obj@R)$attr` or `set_vertex_attr(...)` calls (one for each additional attribute to add), but it is more efficient to use `Assign_Vmetadata`. We will the vertex attribute `name`( `V(rnetbasic.obj@R)$name`)  to entries `V_ATTRS$Code` to assign the data.
+We could use a series of four `V(rnetbasic.obj@R)$attr` or `set_vertex_attr()` calls (one for each additional attribute to add), but it is more efficient to use `Assign_Vmetadata`. We will the vertex attribute `name`( `V(rnetbasic.obj@R)$name`)  to entries `V_ATTRS$Code` to assign the data. The follwoing code is used to assign characteristics to the `EC_2008_Rnet` created above.
+
+```{r}
+Assign_Vmetadata(EC_2008_Rnet, V_ATTRS, match_attr = 'Code', V_match_attr = 'name')
+
+```
+The function returns a table of the assigned characteristics for transparency. It is unneccesary to include the final argument in this case since `V_match_attr` defaults to the `name` attribute, but it is explictly included for clarity. Attibutes can be assigned using other vertex attribues, including those assigned previously with  `Assign_Vmetadata(x, ...)`.
+
+Note that the it is not neccesary to define a new object or over-write the original object to assign the new attributes with `Assign_Vmetadata`. A new object can be created, or the old one redefined, e.g., `new_R_obj <- Assign_Vmetadata(EC_2008, V_ATTRS, match_attr = 'Code'`. However, the first part of the line `new_R_obj <- Assign_Vmetadata` can be omitted and the metadata will be added to the object represented by `x`. This feature is included to reduce redundant code and can be suppressed by including `reassign = F` as an argument.
+
+####Assign_Emetadata()
+
+This method is used to simulataneously assign multiple edge attributes to an `igraph` network object  based on a continuous edge attribute. in rnet objects, the attribute is typically `E(rnetbasic@R)$omega`, the penalized partial correlation between the two vertices/variables. Again, we include an example data.frame of edge attributes.
+```{r}
+Rnets::E_ATTRS
+```
+This frame is much simpler than `V_ATTRS`
+
+
 
 ### Network visualization
 
-Two primary methods are used to visualize the R-nets: generic `plot()` methods for visualizing individual networks and `Rnet_Heatmap()` for multiple graphs. 
+Two primary methods are used to visualize the R-nets: generic `plot()` methods for visualizing individual networks and `Rnet_Heatmap()` for comparing multiple graphs. 
 
 #### Rnet plot() methods
 
 Since `@R` in `rnetBasic` and `rnetSubset` objects and elements of `@R_set` in `RnetStrata` objects store `igraph` class objects, they can be plotted using the respective S3 `plot()` method, e.g., `plot.igraph(rnetbasic.obj@R)`. `plot.igraph()` allows the user to assign arguments controling the appearance of vertices (e.g., vertex.size, vertex.color), edges (e.g. edge.lty, edge.width), and the layout of the graph (see `?igraph.plotting` for more details and a complete of parameters). Additionally, `plot.igraph()` will automatically identify any edge and vertex attribute names matching parameter names and apply those in place of undeclared arguments.
 
-`Rnets` also includes S4 `plot()` methods for `rnetBasic` and `rnetSubset`. These functions 
+`Rnets` also includes an S4 `plot()` method for `rnetBasic` objects (and `rnetSubset` objects via inheritance). This method accepts all the standard and igraph plotting arguments for `plot.igraph()`. Arguments declared in the function call will override the values in `V(x@R)$attr` and `E(x@R)$attr`. For easy comparison, the graph layouts are kept the same between calls.
+
+A simple, undecorated graph can be drawn as follows:
+```{r}
+
+```
+
+#### Arranging network layouts
+
+The layout for plotting networks in an Rnet object can be defined at creation, using the optional `layout` argument for `Rnet()` to define a layout matrix, or at any later time by editing an existing rnet object's layout matrix in `@layout` slot. 
+
+The `igraph` package also includes `tkplot()` and its associated functions for manually laying out graphs. `tkplot()` creates an interative canvas in a seperate window to place (click-and-drag) vertices to create custom layouts, which can then be captured with `tk_coords()`. More information about these functions can be found in `?tkplot`.
+
+
+
+#### Rnet heatmaps
+
+Heatmaps can be used to compare the edges in multiple Rnets. In these plots, the penalized 
+
 ### Network analysis
 
 

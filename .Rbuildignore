@@ -1,21 +1,6 @@
-^Build Rnet package\.R$
 ^.*\.tar\.gz$
-^check\.txt$
-^.*\.Rproj$
-^\.Rproj\.user$
 ^\.*\.Rproj$
-^data\Source Data\*\.rdata$
-^data\SourceData\*\.rdata$
-^data\*\.rdata$
-^data\*\.Rdata$
-^data\\.*\.Rdata$
-^Archive\$
-^\.todolist\.R$
-^\.*\.R$
 ^Archive$
-^tests_examples$
-^vignettes\Rnets-vignette\.html$
-^vignettes\Network-terminology.Rmd
-^\.install_newRnetVersion\.R$
 ^utils$
-^vignettes\Rnets-vignette\.rmd$
+^tests_examples$
+^Rnets\.Rproj$
