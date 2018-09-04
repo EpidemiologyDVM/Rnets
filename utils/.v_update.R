@@ -1,6 +1,6 @@
 desc <- readLines("DESCRIPTION")
 
-load('.v_rec.rda')
+load('./utils/.v_rec.rda')
 
 build_date <- as.character(Sys.time())
 n <- dim(versionRec)[1]
@@ -28,7 +28,7 @@ versionRec[n + 1, 5] <- as.character(build_date)
 row.names(versionRec) <- 1:(n+1)
 v_new <- if(is.na(last(versionRec$build))) paste('Version:', paste(versionRec[n + 1, 1:3], collapse = '.')) else paste('Version:', paste(versionRec[n + 1, 1:4], collapse = '.')) 
 
-save(versionRec, file = '.v_rec.rda')
+save(versionRec, file = './utils/.v_rec.rda')
 
 desc[3] <- v_new
 desc[4] <- paste('Date:', Sys.Date())
