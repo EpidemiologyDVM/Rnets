@@ -15,7 +15,7 @@ devtools::use_build_ignore(".gitignore")
 #ver_num <- '1.0.1.9001'
 inc_major <- F
 inc_minor <- F
-source('.v_update.R')
+source('./utils/.v_update.R')
 
 devtools::build_vignettes()
 document() #IGNORE warning about no defined signature for igraph
