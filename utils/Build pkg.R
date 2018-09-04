@@ -8,7 +8,16 @@ devtools::use_build_ignore("Rnets.Rproj")
 devtools::use_build_ignore("Archive")
 devtools::use_build_ignore("utils")
 devtools::use_build_ignore("tests_examples")
+devtools::use_build_ignore(".v_update.R")
+devtools::use_build_ignore(".v_rec.rda")
+devtools::use_build_ignore(".gitignore")
 
+#ver_num <- '1.0.1.9001'
+inc_major <- F
+inc_minor <- F
+source('.v_update.R')
+
+devtools::build_vignettes()
 document() #IGNORE warning about no defined signature for igraph
 build(path = '.')
 #sink(file = 'utils/check.txt')

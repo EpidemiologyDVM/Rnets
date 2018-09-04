@@ -4,3 +4,6 @@
 ^utils$
 ^tests_examples$
 ^Rnets\.Rproj$
+^\.v_update\.R$
+^\.v_rec\.rda$
+^\.gitignore$

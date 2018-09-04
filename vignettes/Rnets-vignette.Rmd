@@ -52,7 +52,6 @@ The example dataset `NARMS_EC_DATA` is included in the package and contains a su
 
 ```{r, echo = FALSE, results = 'hide', message = F}
 library(Rnets)
-attach(Rnets::NARMS_EC_DATA)
 
 #Define the set of antimicrobials to include in the Rnet
 ABX_LIST <- c('AMC', 'AXO', 'TIO', 'CIP', 'TET', 'STR', 'GEN', 'CHL')
