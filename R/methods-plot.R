@@ -88,11 +88,11 @@ setMethod('plot',
 
 		if('layout'%in%OPEN.PARAMS) plot.args <- c(plot.args, paste('layout = ', deparse(args.src$layout, width.cutoff = 500L))) else plot.args <- c(plot.args, paste('layout = ', obj.src, '@layout', sep = ''))
 
-		plot.call <- if(length(plot.args)==0) {paste('plot.igraph(', obj.src, '@R)', sep = '')
-		  } else paste('plot.igraph(', obj.src,'@R, ', paste(plot.args, collapse = ', '), ')', sep = '')
+		plot.call <- if(length(plot.args)==0) {paste('plot.igraph(x@R)', sep = '')
+		  } else paste('plot.igraph(x@R', paste(plot.args, collapse = ', '), ')', sep = '')
 
 		if(draw_plot) eval(parse(text = plot.call))
-		
+		plot.call <- gsub('x@R', paste(obj.src, '@R', sep = ''), plot.call)
 		invisible(plot.call)
 	})
 

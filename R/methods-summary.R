@@ -62,7 +62,7 @@ setMethod(f = 'summary',
             print(Edges, quote = F)
             cat('\n\nNote: The "Total n" row in the summary refers to the size of dataset.',
               '\n  The number observations used to estimate partial correlations may vary by edge within each stratum.',
-              '\n  Stratum-sepcific details can be displayed by calling: summary(foo@R_Stratum[[1]])\n')
+              '\n  Stratum-sepcific details can be displayed by calling: summary(rnet.obj@R_set[[1]])\n')
           })
 
 

@@ -1,7 +1,6 @@
 ^.*\.tar\.gz$
 ^\.*\.Rproj$
 ^Archive$
-^utils$
 ^tests_examples$
 ^Rnets\.Rproj$
 ^\.v_update\.R$
