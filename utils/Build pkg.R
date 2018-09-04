@@ -7,7 +7,6 @@ use_data(NARMS_EC_DATA, V_ATTRS, E_ATTRS, EC_COORDS, overwrite = T)
 devtools::use_build_ignore("Rnets.Rproj")
 devtools::use_build_ignore("Archive")
 devtools::use_build_ignore("utils")
-devtools::use_build_ignore("tests_examples")
 devtools::use_build_ignore(".gitignore")
 
 #ver_num <- '1.0.1.9001'
