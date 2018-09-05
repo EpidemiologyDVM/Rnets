@@ -46,7 +46,7 @@ Rnet_Heatmap <- function(x,
 	heatmap.val <- function(x) {
 	  if(is.na(x)) return(length(palette_set)) 
 	  if(!x) return(length(palette_set)-1)
-	  return(match(paste(ifelse(x > 0, 'pos', 'neg'), as.numeric(cut(x, e_cuts)), sep = '.'), names(palette_set)))
+	  return(match(paste(ifelse(x > 0, 'pos', 'neg'), as.integer(cut(abs(x), e_cuts)), sep = '.'), names(palette_set)))
 	}
 	
 	color_mat <- t(apply(x@E_aggr, c(1, 2), FUN = heatmap.val))

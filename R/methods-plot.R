@@ -52,8 +52,17 @@ setMethod('plot',
     
 		OPEN.ARGS <- list(...)
 		OPEN.PARAMS <- names(OPEN.ARGS)
-		call.src <- sys.call(1)
-		args.src <- rlang::call_args(call.src)
+		
+		calls.src <- sys.calls()
+		calls.list <- lapply(calls.src, deparse)
+		call.found <- F
+		call.search.pos <- length(calls.list) + 1
+		while(!call.found) {
+		  call.search.pos <- call.search.pos - 1
+		  call.found <- grepl('plot', calls.list[[call.search.pos]])
+		}
+		
+		args.src <- rlang::call_args(sys.call(call.search.pos))
 		
 		obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
 
@@ -86,14 +95,13 @@ setMethod('plot',
 		
 		for(i in OTHER.PARAMS) if(i%in%OPEN.PARAMS) plot.args <- c(plot.args, paste(i, "=", deparse(args.src[[i]], width.cutoff = 500L)))
 
-		if('layout'%in%OPEN.PARAMS) plot.args <- c(plot.args, paste('layout = ', deparse(args.src$layout, width.cutoff = 500L))) else plot.args <- c(plot.args, paste('layout = ', obj.src, '@layout', sep = ''))
+		if('layout'%in%OPEN.PARAMS) plot.args <- c(plot.args, paste('layout = ', deparse(args.src$layout, width.cutoff = 500L))) else plot.args <- c(plot.args, paste('layout = x@layout', sep = ''))
 
-		plot.call <- if(length(plot.args)==0) {paste('plot.igraph(x@R)', sep = '')
-		  } else paste('plot.igraph(x@R', paste(plot.args, collapse = ', '), ')', sep = '')
+		call.int <- paste('plot.igraph(x@R, ', paste(plot.args, collapse = ', '), ')', sep = '')
 
-		if(draw_plot) eval(parse(text = plot.call))
-		plot.call <- gsub('x@R', paste(obj.src, '@R', sep = ''), plot.call)
-		invisible(plot.call)
+		if(draw_plot) eval(parse(text = call.int))
+		call.ext <- gsub('x@', paste(obj.src, '@', sep = ''), call.int)
+		invisible(call.ext)
 	})
 
 
@@ -133,8 +141,6 @@ setMethod('plot',
 	return(layout.mat)
 }
 
-
-
 #' image() method for plotting Rnet heatmaps
 #' @param x An object with class(x) = 'edge_heatmap', produced by Rnet_Heatmap()
 #' @param axes logical; if TRUE add axes to the heatmap plot. 
@@ -145,10 +151,12 @@ setMethod('plot',
 
 image.edge_heatmap <- function(x, axes = T, ...) 
 {
-  image.default(x, col = attr(x, 'palette'), axes = FALSE, ...)
-  
+  pal_colors <- attr(x, 'palette')
+  image.default(x = x, col = pal_colors, axes = FALSE, breaks = 0:length(pal_colors), ...)
   if(axes) {
     axis(1, at = seq(0, 1, 1/(dim(x)[1]-1)), labels = rownames(x), tck = -0.02)
     axis(2, at = seq(0, 1, 1/(dim(x)[2]-1)), labels = colnames(x), tck = -0.015, las = 2, cex.axis = 10/12)
   }  
 }
+
+
