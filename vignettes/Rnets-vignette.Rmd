@@ -54,7 +54,7 @@ The example dataset `NARMS_EC_DATA` is included in the package and contains a su
 library(Rnets)
 
 #Define the set of antimicrobials to include in the Rnet
-ABX_LIST <- c('AMC', 'AXO', 'TIO', 'CIP', 'TET', 'STR', 'GEN', 'CHL')
+ABX_LIST <- c('AMC', 'AXO', 'TIO', 'CIP', 'TET', 'STR', 'GEN', 'CHL', 'AZI')
 ```
 
 ####Notes on data processing and analysis
@@ -83,39 +83,39 @@ Given these results, the suggested regularization penalty would be $\lambda$ = 0
 
 NOTE: The resampling approach can be time consuming large datasets, i.e. datasets with many observations or many variables.
 
-### Network Estimation
+## Network Estimation
 `Rnet()` is the core function of this package. This function intakes a data.frame containing the AMR data, the L~1~ penalty, and other options and produces one of several  object classes containing the processed network and associated attributes (the specific class is determined by the specification of the option ```subset``` argument). 
 
 
 ####Basic Rnets
-The simplest way to use ```Rnet()``` is to not specify ```subset```, in which case all the available data is used to estimate a single network. This creates an S4 object of class ```rnetBasic```.
+The simplest way to use `Rnet()` is to not specify the optional argument `subset`, in which case a single MRF is estimateed using all rows of `x`. This creates an S4 object of class `rnetBasic`.
 
 ```{r}
 #Estimate the Rnet
-EC_all_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST)
+EC_all_Rnet <- Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST)
                 
 #View Results
 summary(EC_all_Rnet)
 ```
 
 ####Subset Rnets
-In many cases, it is reasonable to believe that subpopulations in the data may have different partial correlation structures, in which case it is appropriate to estimate a seperate Rnet for each subpopulation. To estimate the network for a single subpopulation, an expression defining it should be passed to the function using the  optional `subset` arugument. For example, to create an Rnet for the isolates from 2008, add `subset = expression(Year == 2008)`. When `subset` is an expression, `Rnet()` returns an `rnetSubset` object.
+Seperate subpopulations in the data may have different partial correlation structures, in which case an Rnet should be estimated using only observations from that subpopulation.   To estimate the network for a single subpopulation, the optional argument `subset` should be defined as an expression which describes the subpopulation. For example, to create an Rnet for the isolates from 2008, `Rnet(..., subset = expression(Year == 2008))`. When `subset` is an expression, `Rnet()` returns an `rnetSubset` object.
 ```{r}
-EC_2008_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = expression (Year == 2008))
+EC_2008_Rnet <- Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = expression (Year == 2008))
 
 summary(EC_2008_Rnet)
 ```
 
 ####Stratified Rnets
-It is possible to create multiple R-nets with a single function call. To do so, `subset` can be defined as one of columns of `x`,  specifically `subset = 'column_name'`. In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata`.
+It is possible to create multiple R-nets with a single function call. To do so, the `subset` argument can be defined as a character string that matches a value of `names(x)` (`Rnet(x, ..., subset = 'column_name'`). In this case `Rnet()` will estimate a seperate Rnet for each unique level of `x$column_name`, and will return an object of class `rnetStrata`.
 ```{r}
-EC_byYear_Rnet <- Rnets::Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
+EC_byYear_Rnet <- Rnet(x = NARMS_EC_DATA, L1 =  0.15, vert = ABX_LIST, subset = 'Year')
 
 summary(EC_byYear_Rnet)
 ```
-### Rnet objects
+## Rnet objects
 
-The results of `Rnet()`, in addition to the input arguments are stored in the S4 classes `rnetBasic`, `rnetSubset`, and `rnetStrata`. All three output classes inherit from `rnetInput`, but the user shouldn't have reason to interact with this class. The output class returned is determined by the optional `subset` arugment as discussed above. A complete accounting of the objects' slots are provided in the help files, but several particularly useful slots for each of the classes are described below.
+The results of `Rnet()`, in addition to the input arguments are stored in the S4 classes `rnetBasic`, `rnetSubset`, and `rnetStrata`. All three output classes inherit from `rnetInput`, though the user should have reason to interact with this class. The output class returned is determined by the optional `subset` arugment as discussed above. A complete accounting of the objects' slots are provided in the help files, but several particularly useful slots for each of the classes are described below.
 
 ####rnetBasic
 
@@ -141,7 +141,7 @@ The slot `rnetstrata.obj@R_set` is a list of `rnetSubset` objects. The names of 
 
 The slot `rnetstrata.obj@E_aggr` contains a matrix of estimated penalized partial correlation values for each observed edge (rows) in each R-net (columns). 
 
-### Assigning network attributes
+## Assigning network attributes
 
 Vertices and edges in `igraph` objects can be assigned attributes, also referred to _metadata_. These attributes are useful for plotting decorated graphs (via `plot()` methods) and network analysis (e.g. `igraph::modularity()`). When created by `Rnet()`, the `'igraph'` objects in `rnetbasic@R` have one vertex attribute (`name`, corresponding to the elements of the _vertices_ argument) and one edge attribute (`omega`, the edges' estimated penalized partial corrleation). 
 
@@ -165,7 +165,6 @@ We could use a series of four `V(rnetbasic.obj@R)$attr` or `set_vertex_attr()` c
 
 ```{r}
 Assign_Vmetadata(EC_2008_Rnet, V_ATTRS, match_attr = 'Code', V_match_attr = 'name')
-
 ```
 The function returns a table of the assigned characteristics for transparency. It is unneccesary to include the final argument in this case since `V_match_attr` defaults to the `name` attribute, but it is explictly included for clarity. Attibutes can be assigned using other vertex attribues, including those assigned previously with  `Assign_Vmetadata(x, ...)`.
 
@@ -188,7 +187,7 @@ Assign_Emetadata(EC_2008_Rnet, E_ATTRS, match_attr = 'omega', e_cuts = E_CUTS)
 ```
 `Assign_Emetadata()` handles the edge attribute `color` differently since since it is often used to denote the sign of edge attribute. By default, edges are assigned `color = 'black'` where `E(rnet.obj@R)$match_attr > 0` and `color = 'red'` where `E(rnet.obj@R)$match_attr < 0`. Different colors for positive and negative edges can be assigned using the `edge_col` argument. A column named `color` in the edge metadata frame will override this this argument. No edge colors will be assigned if `edge_col = FALSE`, `edge_col = NA`, or `edge_col = NULL`. 
 
-### Network visualization
+## Network visualization
 
 Two primary methods are used to visualize the R-nets: generic `plot()` methods for visualizing individual networks and `Rnet_Heatmap()` for comparing multiple graphs. 
 
@@ -203,6 +202,7 @@ A simple, undecorated graph can be drawn as follows:
 EC_2012_Rnet <- Rnet(NARMS_EC_DATA, L1 = 0.15, vert = ABX_LIST, subset = expression(Year == 2012))
 plot(EC_2012_Rnet)
 ```
+
 The plot can be decorated by adding arguments from `plotting.igraphs`:
 ```{r}
 plot(
@@ -215,21 +215,26 @@ plot(
 )
 ```
 
-The `EC_2008_Rnet`, with metadata attributes that were previously assigned with `Assign_Vmetadata()` and `Assign_Emetadata()`, can be plotted without additional arugments:
+`EC_2008_Rnet` with metadata attributes previously assigned by `Assign_Vmetadata()` and `Assign_Emetadata()` can be plotted without additional arugments:
 ```{r}
 plot(EC_2008_Rnet)
+
 ```
-This plot with these pre-defined attributes can also be plotted using `plot.igraph()`:
+
+This plot with these pre-defined attributes can also be plotted using `plot.igraph()`, but a random layout will be reassigned with every call:
 ```{r}
 plot.igraph(EC_2008_Rnet@R)
 ```
-Some Ppreviously defined attributes can be overridden while leaving other attributes intact by declaring the respective arguments in the `plot()` call:
+
+Some previously defined attributes can be overridden while leaving other attributes intact by declaring the respective arguments in the `plot()` call:
 ```{r}
-plot(EC_2008_Rnet,
+plot(x = EC_2008_Rnet,
      vertex.color = 'red',
-     edge.lty = '4231'
+     edge.lty = '4313'
      )
 ```
+
+Note the layout using `plot()` is the same as the previous call to `plot()`, but is again different than the `plot.igraph()` call.
 
 #### (Re)arranging network layouts
 
@@ -252,10 +257,55 @@ plot(EC_2008_Rnet)
 
 #### Rnet heatmaps
 
-Heatmaps can be used to compare the edges in multiple Rnets. The plots visually compare the edge weights from multiple graphs sharing a common vertex set. For MRFs estimated via the gLASSO, the graphs should also share a common $L[1]$ penalty to maintain comparability. The function Rnet_Heatmap 
+Heatmaps can be used to compare the edges in multiple Rnets. The plots visually compare the edge weights from multiple graphs sharing a common vertex set. For MRFs estimated via the gLASSO, the graphs should also share a common L~1~ penalty to maintain comparability.
 
-in `rnetStrata@E_aggr` (based on $\omega_ij$) 
+`Rnet_Heatmap()` returns an S3 object containing a matrix for visualizing all the edges found in the list of networks in `rnetstrata.obj@R_set`. The edge weights in this heatmap are based on $\omega_{ij}$ which are binned using the `e_cuts` argument just like they were in the `E_metadata()`. The matrix object can be plotted using an S3 `image()` method. 
+```{r}
+EC_edge_heatmap <- Rnet_Heatmap(EC_byYear_Rnet, e_cuts = c(0, 0.05, 0.10, 0.20, 1.0))
+image(EC_edge_heatmap)
 
-### Network analysis
+```
+
+The `image()` method provides 4 shades of red for positive colors, 4 shades of green for negative colors, edges that are absent have white cells, and edges that were 'invalid' are colored grey. The invalid edges typically occur because one or both of the resistances were tested in that particular set of isolates.
+
+## Network analysis
+
+There are various strategies to summarize network structures numerically. Two common summary measures used to describe MRFs are *density* and *modularity*.
+
+####Density
+
+Density describes the porportion of existing edges (*m*) in a graph compared to the maximum number of edges, *m*~max~. The maximum number of edges is determined by size of the vertex set (*k*):  *m*~max~ = ~*k *~C~2~ = *k* ( *k* - 1) /2, and density can be estimated as *m* / *m*~max~.
+
+`igraph::edge_density()` can be used to calculate density for any `'igraph'` object.
+```{r}
+edge_density(EC_2008_Rnet@R)
+```
+
+####Modularity
+
+Modularity (*Q*) describes how frequently similar vertices are adjacent. Vertex attributes are used to determine which vertex similarity: a vertex pair is similar the pair has the same value for the attribute, and dissimilar otherwise. *Q* is bounded by [-1,1]; *Q* is positive when similar vertices tend to be more connected than dissimilar vertices, and negative when similar vertices tend to be less connected than dissimilar vertices.
+
+`igraph::modularity()` can be used to estimate modularity, but the vertex membership must first be corerced to a numeric (or factor).
+
+The following code estiamtes the modularity for the MRF for 
+```{r}
+v_mem <- as.factor(V(EC_2008_Rnet@R)$Class)
+Q <- modularity(x = EC_2008_Rnet@R, mem = v_mem)
+Q
+```
+
+Edge weights can be incorporated into *Q* estimates as well (becoming *Q*~w~), and subtly changes the interpretation: when *Q*~w~ > 1, similar vertices tend to be *more strongly* connected than dissimilar vertices, and  *Q*~w~ < 1 when similar vertices tend to be *less strongly* connected than dissimilar vertices.
+
+```{r}
+Q_w <- modularity(x = EC_2008_Rnet@R, mem = v_mem, weights = E(EC_2008_Rnet@R)$omega)
+Q_w
+```
+
+A major limitation of `igraph::modularity()` is that it can only handle positive edge weights. Edges in MRFs are defined by, and often weighted by, the penalized partial correlations which can take on values below 0. The above example has only positive partial correlations. `Rnets::signed_modularity()` uses a more robust approach^[Sergio Gomez, Pablo Jensen, and Alex Arenax. "Analysis of community structure in networks of correlated data." _IXXI - Institut des Syst`emes Complexes_. (June 18 2009)] to estimate modularity and is provided to allow *Q* calculation with negative edge weights. 
+
+`Rnets::signed_modularity()` is parameterized in a similar way, but `membership` and `weight` arguments can be called by simply providing the attribute names, and `membership` does not have to be a numeric or factor.
+```{r}
+signed_modularity(EC_2008_Rnet, membership = 'Class', weight = 'omega')
+```
 
 

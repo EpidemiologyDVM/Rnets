@@ -4,7 +4,6 @@
 \name{Assign_Vmetadata}
 \alias{Assign_Vmetadata}
 \alias{Assign_Vmetadata,rnetBasic-method}
-\alias{Assign_Vmetadata,rnetSubset-method}
 \alias{Assign_Vmetadata,rnetStrata-method}
 \title{Assign_Vmetadata - Methods for assigning network vertex metadata}
 \usage{
@@ -12,9 +11,6 @@ Assign_Vmetadata(x, V_metadata, match_attr = NULL,
   V_match_attr = "name", reassign = T)
 
 \S4method{Assign_Vmetadata}{rnetBasic}(x, V_metadata, match_attr = NULL,
-  V_match_attr = "name", reassign = T)
-
-\S4method{Assign_Vmetadata}{rnetSubset}(x, V_metadata, match_attr = NULL,
   V_match_attr = "name", reassign = T)
 
 \S4method{Assign_Vmetadata}{rnetStrata}(x, V_metadata, match_attr = NULL,
