@@ -59,25 +59,33 @@
 setGeneric('Assign_Emetadata',
 	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = T)
 	{
+	  calls.src <- sys.calls()
+	  calls.list <- lapply(calls.src, deparse)
+	  call.found <- F
+	  call.search.pos <- length(calls.list) + 1
+	  while(!call.found) {
+	    call.search.pos <- call.search.pos - 1
+	    call.found <- grepl('Emetadata', calls.list[[call.search.pos]][1])
+	  }
+	  
+	  args.src <- rlang::call_args(sys.call(call.search.pos))
+	  obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+	  source.env <- parent.frame()
+	  
 		if(!match_attr%in%edge_attr_names(x)) stop(paste("Edge attribute '", match_attr, "' not found in x", sep = ''))
 		if(!is.numeric(edge_attr(x, match_attr))) stop("match_attr is not numeric")
 		if(attr_abs_val) match_attr_vals <- abs(edge_attr(x, match_attr)) else match_attr_vals <- edge_attr(x, match_attr)
 		if(is.null(e_cuts)) e_cuts <- seq(min(0, min(match_attr_vals)), max(match_attr_vals), max(match_attr_vals)/dim(E_metadata)[1])
 		E_cat <- cut(match_attr_vals, e_cuts)
 		for(attr in names(E_metadata)) x <- set_edge_attr(x, attr, value = E_metadata[E_cat,attr])
-		if(!'color'%in%names(E_metadata)) if(sign_col[1] == FALSE|is.null(sign_col)[1]|is.na(sign_col)[1]) else {
+		if(!'color'%in%names(E_metadata)) if(sign_col[1] == FALSE|is.null(sign_col)[1]|is.na(sign_col)[1]) {} else {
 			E(x)$color <- sign_col[1]; E(x)$color[sign(edge_attr(x, match_attr))==-1] <- sign_col[2]
 			}
 
 		if(reassign){
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				parent.frame()
-				)
+		  assign(obj.src,	x, source.env)
 			return(as.data.frame(edge_attr(x@R)))
 		}
-
-		
 		return(x)
 	})
 
@@ -86,16 +94,26 @@ setGeneric('Assign_Emetadata',
 setMethod('Assign_Emetadata',
 	signature(x = 'rnetBasic'),
 	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = T) 
-	{
-		x@R <- Assign_Emetadata(x@R, E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, F)
+	{	  
+	  calls.src <- sys.calls()
+  	calls.list <- lapply(calls.src, deparse)
+	  call.found <- F
+	  call.search.pos <- length(calls.list) + 1
+	  while(!call.found) {
+	  call.search.pos <- call.search.pos - 1
+	  call.found <- grepl('Emetadata', calls.list[[call.search.pos]][1])
+	  }
+	
+  	args.src <- rlang::call_args(sys.call(call.search.pos))
+  	obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+  	source.env <- parent.frame()
+	
+		x@R <- Assign_Emetadata(x = x@R, E_metadata = E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, F)
 		x@E_metadata <- names(E_metadata)
 
 		if(reassign){
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				parent.frame()
-				)
-			return(as.data.frame(edge_attr(x@R)))
+		  assign(obj.src,	x, source.env)
+		  return(as.data.frame(edge_attr(x@R)))
 		}
 		return(x) 
 
@@ -106,14 +124,25 @@ setMethod('Assign_Emetadata',
 setMethod('Assign_Emetadata',
 	signature(x = 'rnetStrata'),
 	function(x, E_metadata, match_attr, e_cuts = NULL, sign_col = c('black', 'red'), attr_abs_val = T, reassign = TRUE) 
-	{	
-		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Emetadata, E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, FALSE)
+	{
+	  calls.src <- sys.calls()
+	  calls.list <- lapply(calls.src, deparse)
+	  call.found <- F
+	  call.search.pos <- length(calls.list) + 1
+	  while(!call.found) {
+	    call.search.pos <- call.search.pos - 1
+	    call.found <- grepl('Emetadata', calls.list[[call.search.pos]][1])
+	  }
+	  
+	  args.src <- rlang::call_args(sys.call(call.search.pos))
+	  obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+	  source.env <- parent.frame()
+	  
+		slot(x, "R_set") <- lapply(slot(x, "R_set"), Assign_Emetadata, E_metadata, match_attr, e_cuts, sign_col, attr_abs_val, FALSE)
+		
 		if(reassign){
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				parent.frame()
-				)
-			return(as.data.frame(edge_attr(x@R_Strata[[1]]@R)))
+		  assign(obj.src,	x, source.env)
+		  return(as.data.frame(edge_attr(x@R)))
 		}
 		return(x) 
 	})

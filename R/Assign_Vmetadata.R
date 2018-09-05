@@ -54,6 +54,19 @@ setGeneric('Assign_Vmetadata',
 
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
+	  calls.src <- sys.calls()
+	  calls.list <- lapply(calls.src, deparse)
+	  call.found <- F
+	  call.search.pos <- length(calls.list) + 1
+	  while(!call.found) {
+	    call.search.pos <- call.search.pos - 1
+	    call.found <- grepl('Vmetadata', calls.list[[call.search.pos]][1])
+	  }
+	  
+	  args.src <- rlang::call_args(sys.call(call.search.pos))
+	  obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+	  source.env <- parent.frame()
+	  
 		if(is.null(match_attr)) {
 			match_attr <- names(V_metadata)[1]
 			warning("No column containing vertex names declared, first column of V_metadata is assumed to contain vertex names")
@@ -64,7 +77,6 @@ setGeneric('Assign_Vmetadata',
 
 		if(!all(vertex_attr(x, V_match_attr)%in%unlist(V_metadata[match_attr]))) stop('Not all vertices appear in V_metadata$', match_attr, sep = '')
 		match.vec <- match(vertex_attr(x, V_match_attr), V_metadata[[match_attr]])
-		source.env <- parent.frame()
 
 		attr.frame <- data.frame(V = vertex_attr(x, 'name'))
 
@@ -72,16 +84,16 @@ setGeneric('Assign_Vmetadata',
 			x <- set_vertex_attr(x, attrib, value = V_metadata[match.vec, attrib])
 			attr.frame[[attrib]] <- V_metadata[match.vec, attrib]
 		}
-
+		
 		if(reassign) {
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				source.env
-				)
-			return(attr.frame)
+		  assign(obj.src,	x, source.env)
+			return(as.data.frame(vertex_attr(x)))
 		}
 		return(x)
 	})
+
+
+
 
 #' @rdname Assign_Vmetadata
 #'
@@ -90,35 +102,25 @@ setMethod('Assign_Vmetadata',
 
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
-		x@R <- Assign_Vmetadata(x@R, V_metadata, match_attr, V_match_attr, F)
+	  calls.src <- sys.calls()
+	  calls.list <- lapply(calls.src, deparse)
+	  call.found <- F
+	  call.search.pos <- length(calls.list) + 1
+	  while(!call.found) {
+	    call.search.pos <- call.search.pos - 1
+	    call.found <- grepl('Vmetadata', calls.list[[call.search.pos]][1])
+	  }
+	  
+	  args.src <- rlang::call_args(sys.call(call.search.pos))
+	  obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+    source.env <- parent.frame()
+    
+	  x@R <- Assign_Vmetadata(x = slot(x, "R"), V_metadata, match_attr, V_match_attr, F)
 		x@V_metadata <- names(V_metadata)
 
 		if(reassign) {
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				parent.frame()
-				)
-			return(as.data.frame(vertex_attr(x@R)))
-		}
-		return(x)
-	})
-
-#' @rdname Assign_Vmetadata
-#'
-setMethod('Assign_Vmetadata',
-	signature(x = 'rnetSubset'),
-
-	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
-	{
-		x@R <- Assign_Vmetadata(x@R, V_metadata, match_attr, V_match_attr, F)
-		x@V_metadata <- names(V_metadata)
-
-		if(reassign) {
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				parent.frame()
-				)
-			return(as.data.frame(vertex_attr(x@R)))
+		  assign(obj.src,	x, source.env)
+		  return(as.data.frame(vertex_attr(x@R)))
 		}
 		return(x)
 	})
@@ -130,14 +132,23 @@ setMethod('Assign_Vmetadata',
 
 	function(x, V_metadata, match_attr = NULL, V_match_attr = 'name', reassign = T)
 	{
-	
-		slot(x, "R_Strata") <- lapply(slot(x, "R_Strata"), Assign_Vmetadata, V_metadata, match_attr, V_match_attr, reassign = F)
+	  calls.src <- sys.calls()
+	  calls.list <- lapply(calls.src, deparse)
+	  call.found <- F
+	  call.search.pos <- length(calls.list) + 1
+	  while(!call.found) {
+	    call.search.pos <- call.search.pos - 1
+	    call.found <- grepl('Vmetadata', calls.list[[call.search.pos]][1])
+	  }
+	  
+	  args.src <- rlang::call_args(sys.call(call.search.pos))
+	  obj.src <- if('x'%in%names(args.src)) deparse(args.src[['x']], width.cutoff = 500L) else deparse(args.src[[min(which(names(args.src)==''))]], width.cutoff = 500L)
+	  source.env <- parent.frame()
+	  
+		slot(x, "R_set") <- lapply(slot(x, "R_set"), Assign_Vmetadata, V_metadata, match_attr, V_match_attr, reassign = F)
 		if(reassign) {
-			assign(as.character(as.list(sys.call())[[2]]),
-				x,
-				parent.frame()
-				)
-			return(as.data.frame(vertex_attr(x@R_Strata[[1]]@R)))
+		  assign(obj.src,	x, source.env)
+		  return(as.data.frame(vertex_attr(x@R)))
 		}
 		return(x)
 	})
